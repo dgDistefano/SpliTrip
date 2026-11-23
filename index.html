@@ -488,6 +488,57 @@
       color: #e2e8f0;
     }
 
+    .fx-bar {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 14px 16px;
+      margin: 14px 0 18px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .fx-main {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .fx-title {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .fx-rate-line {
+      font-size: 1.04rem;
+      font-weight: 700;
+    }
+
+    .fx-sub {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .fx-controls {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .fx-manual-input {
+      width: 132px !important;
+      flex: 0 0 auto !important;
+      padding: 8px 10px !important;
+      font-size: 0.95rem !important;
+    }
+
     .stats-row {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(175px, 1fr));
@@ -582,6 +633,12 @@
     select {
       flex: 1 1 150px;
       min-width: 0;
+    }
+
+    .expense-currency-select {
+      flex: 0 0 auto !important;
+      width: auto !important;
+      min-width: 105px !important;
     }
 
     .btn {
@@ -719,7 +776,7 @@
       </svg>
       <div>
         <div class="brand-title">Splitrip</div>
-        <div class="brand-sub">Itinerari e spese condivise</div>
+        <div class="brand-sub">Itinerari e spese condivise in EUR</div>
       </div>
     </div>
 
@@ -807,7 +864,7 @@
         <rect x="102" y="124" width="50" height="9" rx="4.5" fill="url(#welCoral)" />
       </svg>
       <h1>Benvenuti su Splitrip</h1>
-      <p>Pianifica i viaggi con il tuo gruppo, segna le tappe, carica una foto di copertina e dividi le spese nella valuta del paese che visiti.</p>
+      <p>Pianifica i viaggi con il tuo gruppo, monitora il cambio giornaliero in Euro, registra spese in valuta o in EUR e dividi le quote in Euro.</p>
       <button class="btn btn-primary" id="welcomeCreateBtn" type="button">+ Crea il tuo primo viaggio</button>
     </section>
 
@@ -841,13 +898,27 @@
         </div>
       </div>
 
+      <div class="fx-bar" id="fxBar">
+        <div class="fx-main">
+          <span class="fx-title" id="fxLabelTitle">Cambio giornaliero verso l'Euro</span>
+          <div class="fx-rate-line" id="fxRateDisplay">1,00 € = 1,00 €</div>
+          <div class="fx-sub" id="fxMetaDisplay">Ogni spesa in valuta estera blocca il cambio del giorno alla registrazione.</div>
+        </div>
+        <div class="fx-controls" id="fxControlsBox">
+          <button class="btn btn-ghost btn-sm" id="refreshFxBtn" type="button">Aggiorna cambio oggi</button>
+          <input type="number" id="manualFxInput" class="fx-manual-input" step="0.000001" min="0.000001" placeholder="1 XXX = ? €" title="Valore in EUR di 1 unità di valuta estera" />
+          <button class="btn btn-ghost btn-sm" id="saveManualFxBtn" type="button">Imposta cambio</button>
+          <button class="btn btn-ghost btn-sm" id="alignExpensesFxBtn" type="button" title="Aggiorna le spese esistenti in valuta estera al cambio attuale">Allinea spese al cambio attuale</button>
+        </div>
+      </div>
+
       <div class="stats-row">
         <div class="stat-box">
-          <div class="stat-label">Spesa totale</div>
+          <div class="stat-label">Spesa totale (EUR)</div>
           <div class="stat-val" id="statTotal">0,00 €</div>
         </div>
         <div class="stat-box">
-          <div class="stat-label">Quota media a persona</div>
+          <div class="stat-label">Quota media a persona (EUR)</div>
           <div class="stat-val" id="statPerPerson">0,00 €</div>
         </div>
         <div class="stat-box">
@@ -855,14 +926,14 @@
           <div class="stat-val" id="statMembersCount">0</div>
         </div>
         <div class="stat-box">
-          <div class="stat-label">Valuta e paese</div>
+          <div class="stat-label">Valuta di riferimento</div>
           <div class="stat-val" id="statCurrency">🇮🇹 EUR — Area Euro / Italia</div>
         </div>
       </div>
 
       <div class="grid-2">
         <div class="sub-card">
-          <h3>Partecipanti e saldi netti</h3>
+          <h3>Partecipanti e saldi netti (EUR)</h3>
           <ul class="list-clean" id="membersList"></ul>
           <form class="row-form" id="addMemberForm">
             <input type="text" id="memberNameInput" placeholder="Nome partecipante" required />
@@ -871,18 +942,19 @@
         </div>
 
         <div class="sub-card">
-          <h3>Rimborsi consigliati</h3>
+          <h3>Rimborsi consigliati (EUR)</h3>
           <ul class="list-clean" id="settlementsList"></ul>
         </div>
       </div>
 
       <div class="grid-2">
         <div class="sub-card">
-          <h3>Spese condivise</h3>
+          <h3>Spese condivise (convertite in EUR)</h3>
           <ul class="list-clean" id="expensesList"></ul>
           <form class="row-form" id="addExpenseForm">
             <input type="text" id="expenseTitleInput" placeholder="Descrizione (es. Cena)" required />
             <input type="number" id="expenseAmountInput" placeholder="Importo" step="0.01" min="0.01" required />
+            <select id="expenseCurrencyInputSelect" class="expense-currency-select" aria-label="Valuta importo inserito"></select>
             <select id="expensePayerSelect" required></select>
             <button class="btn btn-coral btn-sm" type="submit">Registra</button>
           </form>
@@ -909,7 +981,7 @@
         <input type="hidden" id="editingTripId" />
         <div class="field-group">
           <label for="tripTitleInput">Titolo del viaggio</label>
-          <input type="text" id="tripTitleInput" placeholder="Es. Weekend a Napoli" required />
+          <input type="text" id="tripTitleInput" placeholder="Es. Viaggio a Tokyo" required />
         </div>
         <div class="field-group">
           <label for="tripStartInput">Data di partenza</label>
@@ -920,7 +992,7 @@
           <input type="date" id="tripEndInput" required />
         </div>
         <div class="field-group">
-          <label for="tripCurrencySelect">Valuta, paese e bandiera</label>
+          <label for="tripCurrencySelect">Valuta per cambio giornaliero verso EUR e inserimento spese</label>
           <input type="search" id="currencyFilterInput" placeholder="Filtra per paese, bandiera o codice (es. Giappone, JPY, CHF)..." autocomplete="off" />
           <select id="tripCurrencySelect" required></select>
         </div>
@@ -948,7 +1020,7 @@
   </div>
 
   <script>
-    const STORAGE_KEY = 'splitrip_data_v2';
+    const STORAGE_KEY = 'splitrip_data_v4';
     const ALLOWED_APP_THEMES = ['dark', 'light', 'ocean', 'sunset', 'forest'];
 
     const CURRENCIES = [
@@ -1158,6 +1230,7 @@
     };
 
     let draftPhotoDataUrl = null;
+    let isFetchingFx = false;
 
     function getSeedTrips() {
       const today = new Date();
@@ -1166,6 +1239,7 @@
         dt.setDate(dt.getDate() + d);
         return dt.toISOString().slice(0, 10);
       };
+      const todayStr = today.toISOString().slice(0, 10);
 
       return [
         {
@@ -1174,12 +1248,15 @@
           startDate: addDays(5),
           endDate: addDays(8),
           currency: 'EUR',
+          eurPerUnit: 1,
+          fxDate: todayStr,
+          fxSource: 'eur',
           theme: 'coast',
           photo: null,
           members: ['Giulia', 'Marco', 'Luca'],
           expenses: [
-            { id: 'e1', title: 'Casa vacanze', amount: 240, payer: 'Giulia' },
-            { id: 'e2', title: 'Pranzo pesce', amount: 96, payer: 'Marco' }
+            { id: 'e1', title: 'Casa vacanze', amountEur: 240, originalAmount: 240, originalCurrency: 'EUR', fxRateApplied: 1, fxDateApplied: todayStr, payer: 'Giulia' },
+            { id: 'e2', title: 'Pranzo pesce', amountEur: 96, originalAmount: 96, originalCurrency: 'EUR', fxRateApplied: 1, fxDateApplied: todayStr, payer: 'Marco' }
           ],
           stops: [
             { id: 's1', title: 'Arrivo e check-in', note: 'Ore 15:00' },
@@ -1233,25 +1310,57 @@
       if (metaTheme) metaTheme.setAttribute('content', themeColors[safeTheme] || '#1d4ed8');
     }
 
+    function normalizeExpense(exp, fallbackCurrency = 'EUR', fallbackRate = 1, fallbackDate = null) {
+      const origCurr = CURRENCY_MAP[exp.originalCurrency] ? exp.originalCurrency : (exp.currency || fallbackCurrency || 'EUR');
+      const rawAmount = Number(exp.originalAmount ?? exp.amount ?? 0);
+      const appliedRate = origCurr === 'EUR'
+        ? 1
+        : (Number(exp.fxRateApplied) > 0
+            ? Number(exp.fxRateApplied)
+            : (Number(fallbackRate) > 0 ? Number(fallbackRate) : 1));
+      let amountEur = Number(exp.amountEur ?? exp.amount ?? 0);
+      if ((!amountEur || amountEur <= 0) && rawAmount > 0) {
+        amountEur = origCurr === 'EUR' ? rawAmount : (rawAmount * appliedRate);
+      }
+      return {
+        id: exp.id || ('exp-' + Date.now() + '-' + Math.random().toString(36).slice(2, 5)),
+        title: exp.title || 'Spesa',
+        amountEur: Number(amountEur) || 0,
+        originalAmount: Number(rawAmount) || Number(amountEur) || 0,
+        originalCurrency: origCurr,
+        fxRateApplied: appliedRate,
+        fxDateApplied: exp.fxDateApplied || fallbackDate || new Date().toISOString().slice(0, 10),
+        payer: exp.payer || 'Tu'
+      };
+    }
+
     function normalizeTrip(t) {
       const validCode = CURRENCY_MAP[t.currency] ? t.currency : (t.currency || 'EUR');
+      const rate = validCode === 'EUR' ? 1 : (Number(t.eurPerUnit) > 0 ? Number(t.eurPerUnit) : 1);
+      const todayStr = new Date().toISOString().slice(0, 10);
       return {
         id: t.id || ('trip-' + Date.now() + '-' + Math.random().toString(36).slice(2, 6)),
         title: t.title || 'Viaggio senza titolo',
-        startDate: t.startDate || new Date().toISOString().slice(0, 10),
-        endDate: t.endDate || new Date().toISOString().slice(0, 10),
+        startDate: t.startDate || todayStr,
+        endDate: t.endDate || todayStr,
         currency: validCode,
+        eurPerUnit: rate,
+        fxDate: t.fxDate || todayStr,
+        fxSource: t.fxSource || (validCode === 'EUR' ? 'eur' : 'manual'),
         theme: t.theme || 'coast',
         photo: typeof t.photo === 'string' && t.photo.startsWith('data:image/') ? t.photo : null,
         members: Array.isArray(t.members) && t.members.length ? t.members : ['Tu'],
-        expenses: Array.isArray(t.expenses) ? t.expenses : [],
+        expenses: Array.isArray(t.expenses) ? t.expenses.map(e => normalizeExpense(e, validCode, rate, t.fxDate || todayStr)) : [],
         stops: Array.isArray(t.stops) ? t.stops : []
       };
     }
 
     function loadState() {
       try {
-        const raw = localStorage.getItem(STORAGE_KEY) || localStorage.getItem('splitrip_data_v1');
+        const raw = localStorage.getItem(STORAGE_KEY)
+          || localStorage.getItem('splitrip_data_v3')
+          || localStorage.getItem('splitrip_data_v2')
+          || localStorage.getItem('splitrip_data_v1');
         if (raw) {
           const parsed = JSON.parse(raw);
           state.appTheme = ALLOWED_APP_THEMES.includes(parsed.appTheme) ? parsed.appTheme : 'dark';
@@ -1292,17 +1401,115 @@
       return sorted.length ? sorted[0].id : null;
     }
 
-    function formatMoney(val, currency = 'EUR') {
-      const meta = getCurrencyMeta(currency);
+    function formatEur(val) {
       const num = Number(val) || 0;
+      return new Intl.NumberFormat('it-IT', {
+        style: 'currency',
+        currency: 'EUR'
+      }).format(num);
+    }
+
+    function formatForeignAmount(val, currencyCode) {
+      const meta = getCurrencyMeta(currencyCode);
+      const num = Number(val) || 0;
+      if (meta.code === 'EUR') return formatEur(num);
       try {
         return new Intl.NumberFormat('it-IT', {
           style: 'currency',
           currency: meta.code
         }).format(num);
       } catch (e) {
-        return `${num.toFixed(2)} ${meta.symbol}`;
+        return `${num.toLocaleString('it-IT', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} ${meta.symbol}`;
       }
+    }
+
+    function formatRateNumber(rate) {
+      const n = Number(rate) || 0;
+      if (n === 0) return '0';
+      const decimals = n < 0.01 ? 6 : (n < 1 ? 4 : 4);
+      return n.toLocaleString('it-IT', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: decimals
+      });
+    }
+
+    async function fetchDailyFxToEur(currencyCode) {
+      if (!currencyCode || currencyCode === 'EUR') {
+        return {
+          eurPerUnit: 1,
+          fxDate: new Date().toISOString().slice(0, 10),
+          fxSource: 'eur'
+        };
+      }
+
+      const endpoints = [
+        `https://api.frankfurter.app/latest?from=${encodeURIComponent(currencyCode)}&to=EUR`,
+        `https://api.frankfurter.dev/v1/latest?base=${encodeURIComponent(currencyCode)}&symbols=EUR`
+      ];
+
+      for (const url of endpoints) {
+        try {
+          const resp = await fetch(url, { cache: 'no-store' });
+          if (!resp.ok) continue;
+          const data = await resp.json();
+          const eurVal = Number(data?.rates?.EUR);
+          if (eurVal > 0) {
+            return {
+              eurPerUnit: eurVal,
+              fxDate: data?.date || new Date().toISOString().slice(0, 10),
+              fxSource: 'api'
+            };
+          }
+        } catch (err) {}
+      }
+
+      try {
+        const respFallback = await fetch('https://open.er-api.com/v6/latest/EUR', { cache: 'no-store' });
+        if (respFallback.ok) {
+          const dataFallback = await respFallback.json();
+          const unitsPerEur = Number(dataFallback?.rates?.[currencyCode]);
+          if (unitsPerEur > 0) {
+            return {
+              eurPerUnit: 1 / unitsPerEur,
+              fxDate: dataFallback?.time_last_update_utc ? dataFallback.time_last_update_utc.slice(0, 16) : new Date().toISOString().slice(0, 10),
+              fxSource: 'api'
+            };
+          }
+        }
+      } catch (err) {}
+
+      return null;
+    }
+
+    async function syncTripDailyFx(trip, force = false) {
+      if (!trip) return;
+      const todayStr = new Date().toISOString().slice(0, 10);
+      if (trip.currency === 'EUR') {
+        trip.eurPerUnit = 1;
+        trip.fxDate = todayStr;
+        trip.fxSource = 'eur';
+        saveState();
+        return;
+      }
+
+      if (!force && trip.fxSource === 'api' && trip.fxDate && String(trip.fxDate).startsWith(todayStr) && Number(trip.eurPerUnit) > 0) {
+        return;
+      }
+
+      if (isFetchingFx) return;
+      isFetchingFx = true;
+      renderFxBar(trip, true);
+
+      const res = await fetchDailyFxToEur(trip.currency);
+      isFetchingFx = false;
+
+      if (res && res.eurPerUnit > 0) {
+        trip.eurPerUnit = res.eurPerUnit;
+        trip.fxDate = res.fxDate;
+        trip.fxSource = res.fxSource;
+        saveState();
+      }
+      render();
     }
 
     function getCoverCss(trip) {
@@ -1343,11 +1550,87 @@
       return state.trips.find(t => t.id === state.selectedTripId) || null;
     }
 
+    function syncExpenseCurrencyOptions(trip) {
+      const expCurSel = document.getElementById('expenseCurrencyInputSelect');
+      if (!expCurSel || !trip) return;
+      const cMeta = getCurrencyMeta(trip.currency);
+      const prev = expCurSel.value;
+
+      expCurSel.innerHTML = '';
+      const eurOpt = document.createElement('option');
+      eurOpt.value = 'EUR';
+      eurOpt.textContent = '🇮🇹 EUR (€)';
+      expCurSel.appendChild(eurOpt);
+
+      if (cMeta.code !== 'EUR') {
+        const foreignOpt = document.createElement('option');
+        foreignOpt.value = cMeta.code;
+        foreignOpt.textContent = `${cMeta.flag} ${cMeta.code} (${cMeta.symbol})`;
+        expCurSel.appendChild(foreignOpt);
+      }
+
+      if (prev && [...expCurSel.options].some(o => o.value === prev)) {
+        expCurSel.value = prev;
+      } else {
+        expCurSel.value = cMeta.code !== 'EUR' ? cMeta.code : 'EUR';
+      }
+    }
+
+    function renderFxBar(trip, loading = false) {
+      if (!trip) return;
+      const cMeta = getCurrencyMeta(trip.currency);
+      const titleEl = document.getElementById('fxLabelTitle');
+      const rateEl = document.getElementById('fxRateDisplay');
+      const metaEl = document.getElementById('fxMetaDisplay');
+      const controlsBox = document.getElementById('fxControlsBox');
+      const manualInput = document.getElementById('manualFxInput');
+      const refreshBtn = document.getElementById('refreshFxBtn');
+      const alignBtn = document.getElementById('alignExpensesFxBtn');
+
+      if (cMeta.code === 'EUR') {
+        titleEl.textContent = 'Valuta di riferimento';
+        rateEl.textContent = '1,00 € = 1,00 € (Area Euro)';
+        metaEl.textContent = 'Le spese vengono registrate direttamente in Euro.';
+        controlsBox.classList.add('hidden');
+        return;
+      }
+
+      controlsBox.classList.remove('hidden');
+      titleEl.textContent = `Cambio giornaliero verso l'Euro (${cMeta.code} → EUR)`;
+
+      if (loading) {
+        rateEl.textContent = `Aggiornamento cambio ${cMeta.code} → EUR in corso...`;
+        metaEl.textContent = 'Recupero tasso giornaliero...';
+        refreshBtn.disabled = true;
+        return;
+      }
+
+      refreshBtn.disabled = false;
+      const rate = Number(trip.eurPerUnit) > 0 ? Number(trip.eurPerUnit) : 1;
+      const inverse = rate > 0 ? (1 / rate) : 1;
+
+      rateEl.textContent = `1 ${cMeta.code} = ${formatRateNumber(rate)} €  •  1,00 € ≈ ${formatRateNumber(inverse)} ${cMeta.code}`;
+
+      const sourceLabel = trip.fxSource === 'manual'
+        ? 'Cambio impostato manualmente'
+        : (trip.fxSource === 'api' ? 'Cambio giornaliero aggiornato' : 'Cambio di riferimento');
+      const dateStr = trip.fxDate ? ` (${trip.fxDate})` : '';
+      const hasForeignExpenses = trip.expenses.some(e => e.originalCurrency === cMeta.code);
+      alignBtn.classList.toggle('hidden', !hasForeignExpenses);
+      metaEl.textContent = `${sourceLabel}${dateStr} • Ogni spesa in ${cMeta.code} conserva il cambio del momento in cui è stata inserita.`;
+
+      if (document.activeElement !== manualInput) {
+        manualInput.value = String(rate);
+      }
+    }
+
     function openTripDetail(tripId) {
       state.selectedTripId = tripId;
       state.view = 'detail';
       saveState();
       render();
+      const active = getActiveTrip();
+      if (active) syncTripDailyFx(active, false);
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
@@ -1377,8 +1660,11 @@
       for (const trip of orderedTrips) {
         const cover = COVER_STYLES[trip.theme] || COVER_STYLES.coast;
         const cMeta = getCurrencyMeta(trip.currency);
-        const total = trip.expenses.reduce((acc, e) => acc + Number(e.amount || 0), 0);
+        const totalEur = trip.expenses.reduce((acc, e) => acc + Number(e.amountEur ?? e.amount ?? 0), 0);
         const hasPhoto = typeof trip.photo === 'string' && trip.photo.startsWith('data:image/');
+        const fxBadge = cMeta.code === 'EUR'
+          ? '🇮🇹 EUR'
+          : `${cMeta.flag} 1 ${cMeta.code} = ${formatRateNumber(trip.eurPerUnit || 1)} €`;
 
         const card = document.createElement('article');
         card.className = 'trip-card' + (trip.id === state.selectedTripId ? ' selected' : '');
@@ -1405,7 +1691,7 @@
 
         const badgeRight = document.createElement('span');
         badgeRight.className = 'trip-badge';
-        badgeRight.textContent = `${cMeta.flag} ${cMeta.code}`;
+        badgeRight.textContent = fxBadge;
 
         coverDiv.appendChild(badgeLeft);
         coverDiv.appendChild(badgeRight);
@@ -1416,10 +1702,10 @@
           <h3 class="trip-card-title">${escapeHtml(trip.title)}</h3>
           <div class="trip-card-meta">
             <span>${escapeHtml(trip.startDate)} → ${escapeHtml(trip.endDate)}</span>
-            <strong>${formatMoney(total, cMeta.code)}</strong>
+            <strong>${formatEur(totalEur)}</strong>
           </div>
           <div class="trip-card-meta" style="font-size: 0.78rem;">
-            <span>${cMeta.flag} ${escapeHtml(cMeta.country)}</span>
+            <span>${cMeta.flag} ${escapeHtml(cMeta.code)} • ${escapeHtml(cMeta.country)}</span>
           </div>
         `;
 
@@ -1432,24 +1718,26 @@
       if (!showDetail || !active) return;
 
       const cMeta = getCurrencyMeta(active.currency);
-      const cur = cMeta.code;
+      syncExpenseCurrencyOptions(active);
+      renderFxBar(active, isFetchingFx);
+
       document.getElementById('activeTripCover').style.backgroundImage = getCoverCss(active);
       document.getElementById('activeTripTitle').textContent = active.title;
       document.getElementById('activeTripMeta').textContent = `${active.startDate} → ${active.endDate} • ${cMeta.flag} ${cMeta.country} • ${active.members.length} partecipanti`;
 
-      const total = active.expenses.reduce((acc, e) => acc + Number(e.amount || 0), 0);
+      const totalEur = active.expenses.reduce((acc, e) => acc + Number(e.amountEur ?? e.amount ?? 0), 0);
       const count = active.members.length;
-      const perPerson = count > 0 ? total / count : 0;
+      const perPersonEur = count > 0 ? totalEur / count : 0;
 
-      document.getElementById('statTotal').textContent = formatMoney(total, cur);
-      document.getElementById('statPerPerson').textContent = formatMoney(perPerson, cur);
+      document.getElementById('statTotal').textContent = formatEur(totalEur);
+      document.getElementById('statPerPerson').textContent = formatEur(perPersonEur);
       document.getElementById('statMembersCount').textContent = String(count);
-      document.getElementById('statCurrency').textContent = `${cMeta.flag} ${cur} — ${cMeta.country}`;
+      document.getElementById('statCurrency').textContent = `${cMeta.flag} ${cMeta.code} — ${cMeta.country}`;
 
       const paidMap = Object.fromEntries(active.members.map(m => [m, 0]));
       for (const exp of active.expenses) {
         if (paidMap[exp.payer] !== undefined) {
-          paidMap[exp.payer] += Number(exp.amount || 0);
+          paidMap[exp.payer] += Number(exp.amountEur ?? exp.amount ?? 0);
         }
       }
 
@@ -1460,7 +1748,7 @@
       payerSelect.innerHTML = '';
 
       for (const member of active.members) {
-        const balance = (paidMap[member] || 0) - perPerson;
+        const balance = (paidMap[member] || 0) - perPersonEur;
         balances[member] = balance;
         const sign = balance > 0.009 ? '+' : '';
         const color = balance > 0.009 ? 'var(--accent-ok)' : (balance < -0.009 ? 'var(--accent-coral)' : 'var(--text-muted)');
@@ -1470,7 +1758,7 @@
         li.innerHTML = `
           <span>${escapeHtml(member)}</span>
           <div style="display:flex;align-items:center;gap:8px;">
-            <strong style="color: ${color}">${sign}${formatMoney(balance, cur)}</strong>
+            <strong style="color: ${color}">${sign}${formatEur(balance)}</strong>
             ${active.members.length > 1 ? `<button class="btn btn-ghost btn-sm" data-remove-member="${escapeAttr(member)}" type="button" title="Rimuovi">×</button>` : ''}
           </div>
         `;
@@ -1505,7 +1793,7 @@
           li.className = 'list-item';
           li.innerHTML = `
             <span><strong>${escapeHtml(tr.from)}</strong> → <strong>${escapeHtml(tr.to)}</strong></span>
-            <strong style="color: var(--accent-cyan)">${formatMoney(tr.amount, cur)}</strong>
+            <strong style="color: var(--accent-cyan)">${formatEur(tr.amount)}</strong>
           `;
           settlementsList.appendChild(li);
         }
@@ -1514,15 +1802,23 @@
       const expensesList = document.getElementById('expensesList');
       expensesList.innerHTML = '';
       for (const exp of active.expenses) {
+        const amtEur = Number(exp.amountEur ?? exp.amount ?? 0);
+        const origCurr = exp.originalCurrency || 'EUR';
+        const origAmt = Number(exp.originalAmount ?? amtEur);
+        const appliedRate = Number(exp.fxRateApplied) > 0 ? Number(exp.fxRateApplied) : 1;
+        const origNote = origCurr !== 'EUR'
+          ? ` • ${formatForeignAmount(origAmt, origCurr)} (cambio: 1 ${origCurr} = ${formatRateNumber(appliedRate)} €${exp.fxDateApplied ? ` del ${exp.fxDateApplied}` : ''})`
+          : '';
+
         const li = document.createElement('li');
         li.className = 'list-item';
         li.innerHTML = `
           <div>
             <div><strong>${escapeHtml(exp.title)}</strong></div>
-            <div style="font-size: 0.82rem; color: var(--text-muted)">Pagato da ${escapeHtml(exp.payer)}</div>
+            <div style="font-size: 0.82rem; color: var(--text-muted)">Pagato da ${escapeHtml(exp.payer)}${escapeHtml(origNote)}</div>
           </div>
           <div style="display:flex;align-items:center;gap:8px;">
-            <strong>${formatMoney(exp.amount, cur)}</strong>
+            <strong>${formatEur(amtEur)}</strong>
             <button class="btn btn-ghost btn-sm" data-remove-exp="${escapeAttr(exp.id)}" type="button" title="Elimina spesa">×</button>
           </div>
         `;
@@ -1694,6 +1990,44 @@
       tripModal.classList.remove('open');
     }
 
+    document.getElementById('refreshFxBtn').addEventListener('click', () => {
+      const active = getActiveTrip();
+      if (active) syncTripDailyFx(active, true);
+    });
+
+    document.getElementById('saveManualFxBtn').addEventListener('click', () => {
+      const active = getActiveTrip();
+      if (!active || active.currency === 'EUR') return;
+      const val = parseFloat(document.getElementById('manualFxInput').value);
+      if (isNaN(val) || val <= 0) {
+        alert('Inserisci un valore di cambio valido in EUR maggiore di zero.');
+        return;
+      }
+      active.eurPerUnit = val;
+      active.fxDate = new Date().toISOString().slice(0, 10);
+      active.fxSource = 'manual';
+      saveState();
+      render();
+    });
+
+    document.getElementById('alignExpensesFxBtn').addEventListener('click', () => {
+      const active = getActiveTrip();
+      if (!active || active.currency === 'EUR') return;
+      const currentRate = Number(active.eurPerUnit) > 0 ? Number(active.eurPerUnit) : 1;
+      const currentDate = active.fxDate || new Date().toISOString().slice(0, 10);
+
+      for (const exp of active.expenses) {
+        if (exp.originalCurrency === active.currency) {
+          const origAmt = Number(exp.originalAmount ?? 0);
+          exp.fxRateApplied = currentRate;
+          exp.fxDateApplied = currentDate;
+          exp.amountEur = origAmt * currentRate;
+        }
+      }
+      saveState();
+      render();
+    });
+
     document.getElementById('tripStartInput').addEventListener('change', () => {
       syncReturnDateFromStart(true);
     });
@@ -1808,7 +2142,7 @@
       }
     });
 
-    document.getElementById('tripForm').addEventListener('submit', (e) => {
+    document.getElementById('tripForm').addEventListener('submit', async (e) => {
       e.preventDefault();
       const editId = document.getElementById('editingTripId').value;
       const title = document.getElementById('tripTitleInput').value.trim();
@@ -1820,17 +2154,27 @@
       if (!title || !startDate || !endDate) return;
       if (endDate < startDate) endDate = startDate;
 
+      let targetTrip = null;
       if (editId) {
         const existing = state.trips.find(t => t.id === editId);
         if (existing) {
+          const currencyChanged = existing.currency !== currency;
           existing.title = title;
           existing.startDate = startDate;
           existing.endDate = endDate;
           existing.currency = currency;
+          if (currency === 'EUR') {
+            existing.eurPerUnit = 1;
+            existing.fxDate = new Date().toISOString().slice(0, 10);
+            existing.fxSource = 'eur';
+          } else if (currencyChanged) {
+            existing.fxDate = null;
+          }
           existing.theme = theme;
           existing.photo = draftPhotoDataUrl;
           state.selectedTripId = existing.id;
           state.view = 'detail';
+          targetTrip = existing;
         }
       } else {
         const newTrip = normalizeTrip({
@@ -1848,11 +2192,13 @@
         state.trips.unshift(newTrip);
         state.selectedTripId = newTrip.id;
         state.view = 'detail';
+        targetTrip = newTrip;
       }
 
       saveState();
       render();
       closeTripModal();
+      if (targetTrip) await syncTripDailyFx(targetTrip, false);
     });
 
     document.getElementById('deleteTripBtn').addEventListener('click', () => {
@@ -1885,18 +2231,30 @@
 
       const titleInput = document.getElementById('expenseTitleInput');
       const amountInput = document.getElementById('expenseAmountInput');
+      const curSelect = document.getElementById('expenseCurrencyInputSelect');
       const payerSelect = document.getElementById('expensePayerSelect');
 
       const title = titleInput.value.trim();
-      const amount = parseFloat(amountInput.value);
+      const rawAmount = parseFloat(amountInput.value);
+      const inputCurrency = curSelect.value || 'EUR';
       const payer = payerSelect.value;
 
-      if (!title || isNaN(amount) || amount <= 0 || !payer) return;
+      if (!title || isNaN(rawAmount) || rawAmount <= 0 || !payer) return;
+
+      const rate = inputCurrency === 'EUR'
+        ? 1
+        : (Number(active.eurPerUnit) > 0 ? Number(active.eurPerUnit) : 1);
+      const fxDateApplied = active.fxDate || new Date().toISOString().slice(0, 10);
+      const amountEur = inputCurrency === 'EUR' ? rawAmount : (rawAmount * rate);
 
       active.expenses.push({
         id: 'exp-' + Date.now(),
         title,
-        amount,
+        amountEur,
+        originalAmount: rawAmount,
+        originalCurrency: inputCurrency,
+        fxRateApplied: rate,
+        fxDateApplied,
         payer
       });
 
@@ -1932,6 +2290,11 @@
     loadState();
     render();
     rasterizeBrandIconToPng(192);
+
+    const initialActive = getActiveTrip();
+    if (state.view === 'detail' && initialActive) {
+      syncTripDailyFx(initialActive, false);
+    }
 
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
