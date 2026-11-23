@@ -3,39 +3,66 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#0f172a" />
-  <meta name="description" content="Splitrip: pianificazione viaggi, foto luoghi, voli, preventivo, itinerario con date e Google Maps e spese." />
+  <meta name="theme-color" content="#0284c7" />
+  <meta name="description" content="Splitrip: organizza viaggi con amici, attrazioni con foto, voli, preventivo, itinerario con date e Google Maps e riparto spese in locale." />
   <link rel="manifest" href="./manifest.json" />
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230f172a'/%3E%3Cpath d='M46 19L38 31l4 12-4 2-6-8-7 5 1 5-3 1-3-7-7-3 2-3 5 1 5-7 4-2-3 12 13-8c2-1 5 0 5 2 0 1-1 3-2 4z' fill='%23ffffff'/%3E%3C/svg%3E" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='fav' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%2306b6d4'/%3E%3Cstop offset='55%25' stop-color='%232563eb'/%3E%3Cstop offset='100%25' stop-color='%237c3aed'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='15' fill='url(%23fav)'/%3E%3Ccircle cx='32' cy='31' r='4.5' fill='%23ffffff'/%3E%3Cpath d='M24 48c0-5 3.5-8 8-8s8 3 8 8v2H24v-2z' fill='%23ffffff'/%3E%3Ccircle cx='21.5' cy='34' r='3.8' fill='%23ffffff' fill-opacity='0.9'/%3E%3Cpath d='M14 49c0-4 3-7 7-7 2 0 3.5.7 4.7 1.8-1.7 1.8-2.7 4.2-2.7 7v1.2h-9V49z' fill='%23ffffff' fill-opacity='0.9'/%3E%3Ccircle cx='42.5' cy='34' r='3.8' fill='%23ffffff' fill-opacity='0.9'/%3E%3Cpath d='M40.3 49c0-2.8-1-5.2-2.7-7 1.2-1.1 2.7-1.8 4.7-1.8 4 0 7 3 7 7v1.2h-9V49z' fill='%23ffffff' fill-opacity='0.9'/%3E%3Cpath d='M48 14l-7 11 4 10-3 2-5-7-6 4 1 4-3 1-2-6-6-2 2-3 4 1 4-6 3-2-3 10 11-7c2-1 4 0 4 2 0 1-1 3-2 3z' fill='%23ffffff'/%3E%3C/svg%3E" />
   <title>Splitrip — Viaggi, Itinerari & Spese</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
     body { background: #e2e8f0; color: #0f172a; line-height: 1.45; overflow-x: hidden; }
 
-    .topbar { background: #0f172a; color: #fff; padding: 12px 18px; position: sticky; top: 0; z-index: 50; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.18); }
-    .brand { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 16px; letter-spacing: -0.01em; }
-    .brand-icon { display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 8px; background: #0284c7; color: #fff; }
+    .topbar { background: #0f172a; color: #fff; padding: 12px 18px; position: sticky; top: 0; z-index: 60; display: flex; justify-content: space-between; align-items: center; gap: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.18); }
+    .brand { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 16px; letter-spacing: -0.01em; cursor: pointer; }
+    .brand-icon { display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 8px; background: linear-gradient(135deg, #06b6d4, #2563eb, #7c3aed); color: #fff; }
     .brand-pill { font-size: 11px; background: rgba(56, 189, 248, 0.2); color: #7dd3fc; padding: 3px 9px; border-radius: 999px; font-weight: 700; }
 
-    .mode-switch { display: flex; background: #1e293b; padding: 4px; border-radius: 10px; gap: 4px; }
-    .mode-btn { border: none; padding: 8px 14px; border-radius: 7px; font-size: 12px; font-weight: 700; cursor: pointer; background: transparent; color: #cbd5e1; transition: 0.15s; }
-    .mode-btn.active { background: #0284c7; color: #fff; }
+    .topbar-right { display: flex; align-items: center; gap: 8px; }
+    .burger-btn { border: 1px solid #334155; background: #1e293b; color: #fff; width: 38px; height: 36px; border-radius: 9px; font-size: 18px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; transition: 0.15s; }
+    .burger-btn:hover { background: #334155; }
+
+    .burger-drawer { position: fixed; top: 60px; right: 14px; width: min(310px, calc(100vw - 28px)); background: #0f172a; color: #f8fafc; border: 1px solid #334155; border-radius: 14px; padding: 10px; z-index: 80; box-shadow: 0 14px 30px rgba(0,0,0,0.32); display: flex; flex-direction: column; gap: 4px; }
+    .drawer-section-label { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; color: #94a3b8; padding: 6px 10px 2px; }
+    .drawer-item { width: 100%; border: none; background: transparent; color: #e2e8f0; padding: 10px 12px; border-radius: 9px; font-size: 13px; font-weight: 700; text-align: left; cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: 0.12s; }
+    .drawer-item:hover:not(:disabled) { background: #1e293b; color: #fff; }
+    .drawer-item.active { background: #0284c7; color: #fff; }
+    .drawer-item:disabled { opacity: 0.42; cursor: not-allowed; }
+    .drawer-divider { height: 1px; background: #1e293b; margin: 6px 4px; }
 
     .container { max-width: 1140px; margin: 0 auto; padding: 18px 14px 64px; }
     .hidden { display: none !important; }
 
-    .trip-bar { background: #fff; border: 1px solid #cbd5e1; border-radius: 14px; padding: 11px 14px; margin-bottom: 14px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
-    .trip-bar-left, .trip-bar-right { display: flex; align-items: center; gap: 7px; flex-wrap: wrap; }
-    .trip-label { font-size: 11px; font-weight: 800; text-transform: uppercase; color: #475569; }
+    .new-trip-panel { background: #fff; border: 1px solid #cbd5e1; border-radius: 16px; padding: 18px; margin-bottom: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+    .form-hint { font-size: 12px; color: #64748b; margin-top: 6px; }
 
-    .new-trip-panel { background: #f8fafc; border: 1px solid #94a3b8; border-radius: 14px; padding: 16px; margin-bottom: 14px; }
-    .form-hint { font-size: 11px; color: #64748b; margin-top: 6px; }
+    /* Pagina di benvenuto iniziale */
+    .welcome-card { background: #fff; border: 1px solid #cbd5e1; border-radius: 20px; padding: 36px 24px; text-align: center; box-shadow: 0 4px 16px rgba(15,23,42,0.06); max-width: 720px; margin: 18px auto; }
+    .welcome-badge { display: inline-block; background: #e0f2fe; color: #0369a1; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; padding: 4px 12px; border-radius: 999px; margin-bottom: 12px; }
+    .welcome-title { font-size: 24px; font-weight: 900; color: #0f172a; margin-bottom: 8px; }
+    .welcome-sub { font-size: 14px; color: #475569; max-width: 520px; margin: 0 auto 22px; }
+    .welcome-features { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 10px; margin-bottom: 24px; text-align: left; }
+    .welcome-feat { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 12px; font-size: 12px; color: #334155; }
+    .welcome-feat strong { display: block; color: #0f172a; margin-bottom: 3px; }
 
-    .empty-state { background: #fff; border: 1px solid #cbd5e1; border-radius: 16px; padding: 36px 20px; text-align: center; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
-
-    .trip-banner { background: linear-gradient(135deg, #0369a1, #0f766e); color: #fff; border-radius: 16px; padding: 18px 20px; margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+    /* Hero viaggio attivo con immagine sopra il nome */
+    .trip-hero { background: #fff; border: 1px solid #cbd5e1; border-radius: 18px; overflow: hidden; margin-bottom: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+    .trip-hero-cover { width: 100%; height: 190px; object-fit: cover; display: block; background: linear-gradient(135deg, #0369a1, #0f766e); }
+    .trip-hero-fallback { width: 100%; height: 150px; background: linear-gradient(135deg, #0284c7, #2563eb, #7c3aed); display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,0.92); font-size: 38px; }
+    .trip-hero-body { background: linear-gradient(135deg, #0369a1, #0f766e); color: #fff; padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
     .trip-sub { font-size: 12px; color: #ccfbf1; margin-top: 3px; }
     .local-tag { background: rgba(255,255,255,0.16); border: 1px solid rgba(255,255,255,0.25); padding: 5px 11px; border-radius: 999px; font-size: 11px; font-weight: 600; }
+
+    /* Griglia card viaggi per selezione visiva */
+    .trips-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 14px; }
+    .trip-card { background: #fff; border: 2px solid #e2e8f0; border-radius: 16px; overflow: hidden; cursor: pointer; transition: 0.15s; display: flex; flex-direction: column; }
+    .trip-card:hover { border-color: #0284c7; transform: translateY(-2px); }
+    .trip-card.active { border-color: #0284c7; box-shadow: 0 0 0 3px rgba(2,132,199,0.18); }
+    .trip-card-img { width: 100%; height: 132px; object-fit: cover; display: block; background: #cbd5e1; }
+    .trip-card-placeholder { width: 100%; height: 132px; background: linear-gradient(135deg, #06b6d4, #2563eb, #7c3aed); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 28px; }
+    .trip-card-content { padding: 12px 14px; display: flex; flex-direction: column; gap: 6px; flex: 1; }
+    .trip-card-title { font-size: 15px; font-weight: 800; color: #0f172a; }
+    .trip-card-meta { font-size: 11px; color: #64748b; }
+    .trip-card-actions { display: flex; justify-content: space-between; align-items: center; gap: 6px; margin-top: auto; padding-top: 8px; }
 
     .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
     @media (max-width: 880px) { .grid-2 { grid-template-columns: 1fr; } }
@@ -48,7 +75,7 @@
     /* font-size: 16px evita lo zoom automatico del browser su smartphone quando si tocca un campo */
     input, select { padding: 8px 10px; border: 1px solid #cbd5e1; border-radius: 9px; font-size: 16px; line-height: 1.25; background: #f8fafc; color: #0f172a; outline: none; max-width: 100%; }
     input:focus, select:focus { border-color: #0284c7; background: #fff; }
-    input[type="file"] { padding: 5px 7px; font-size: 12px; max-width: 190px; background: #fff; }
+    input[type="file"] { padding: 5px 7px; font-size: 12px; max-width: 210px; background: #fff; }
 
     .btn { border: none; padding: 8px 12px; border-radius: 9px; font-size: 12px; font-weight: 700; cursor: pointer; background: #0f172a; color: #fff; transition: 0.12s; text-decoration: none; display: inline-flex; align-items: center; gap: 4px; }
     .btn:hover { background: #1e293b; }
@@ -120,45 +147,69 @@
 <body>
 
   <header class="topbar">
-    <div class="brand">
+    <div class="brand" onclick="goHomeOrWelcome()">
       <span class="brand-icon" aria-hidden="true">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M21 3L14 14l2 6-2 1-4-5-5 3 1 3-2 1-2-5-5-2 1-2 4 1 4-5 2-1-2 8 8-5c1-1 3 0 3 2 0 1 0 2-1 3z"/>
+          <circle cx="12" cy="11" r="2.2"/>
+          <path d="M8.5 18.5c0-2 1.6-3.3 3.5-3.3s3.5 1.3 3.5 3.3v1h-7v-1z"/>
+          <path d="M19.5 4l-3 4.5 1.6 4.2-1.3.8-2-2.7-2.4 1.5.2 1.5-1.2.5-1-2.5-2.5-.9.8-1.2 1.7.4 1.7-2.5 1.2-.8-1.2 4.2 4.6-2.9c.7-.4 1.5.1 1.5.9 0 .5-.2 1-.7 1.2z"/>
         </svg>
       </span>
       <span>Splitrip</span>
-      <span class="brand-pill">PWA + GitHub Pages</span>
+      <span class="brand-pill">PWA</span>
     </div>
-    <div class="mode-switch">
-      <button id="tab-plan" class="mode-btn active" onclick="switchMode('plan')">1. Pianificazione</button>
-      <button id="tab-live" class="mode-btn" onclick="switchMode('live')">2. Viaggio & Spese</button>
+
+    <div class="topbar-right">
+      <button id="install-pwa-btn" class="btn btn-sm btn-teal" onclick="installPwa()">📲 Installa App</button>
+      <button id="burger-btn" class="burger-btn" aria-label="Apri menu" onclick="toggleBurgerMenu(event)">☰</button>
     </div>
   </header>
 
-  <div class="container">
-    <!-- BARRA MULTI-VIAGGIO & JSON -->
-    <div class="trip-bar">
-      <div class="trip-bar-left">
-        <span class="trip-label">🧳 Viaggio:</span>
-        <select id="trip-selector" onchange="selectTrip(this.value)" style="min-width:190px; font-weight:700;"></select>
-        <button class="btn btn-sm btn-sky" onclick="openNewTripForm()">+ Nuovo viaggio</button>
-        <button id="delete-trip-btn" class="btn btn-sm btn-danger" onclick="deleteCurrentTrip()">Elimina</button>
-      </div>
-      <div class="trip-bar-right">
-        <button id="install-pwa-btn" class="btn btn-sm btn-teal hidden" onclick="installPwa()">📲 Installa App</button>
-        <button id="export-json-btn" class="btn btn-sm btn-indigo" onclick="exportCurrentTripJson()">⬇️ Esporta JSON</button>
-        <label class="btn btn-sm btn-ghost" style="cursor:pointer;">
-          ⬆️ Importa JSON
-          <input type="file" id="json-import-input" accept=".json,application/json" style="display:none;" onchange="importTripJson(this)" />
-        </label>
-      </div>
-    </div>
+  <!-- MENU BURGER -->
+  <nav id="burger-menu" class="burger-drawer hidden" aria-label="Menu principale">
+    <div class="drawer-section-label">Sezioni viaggio</div>
+    <button id="nav-overview" class="drawer-item" onclick="navigateTo('overview')">
+      <span>🏠 Viaggio più vicino / Attivo</span>
+      <span>→</span>
+    </button>
+    <button id="nav-plan" class="drawer-item" onclick="navigateTo('plan')">
+      <span>🧭 Pianificazione</span>
+      <span>→</span>
+    </button>
+    <button id="nav-live" class="drawer-item" onclick="navigateTo('live')">
+      <span>🗓️ Viaggio &amp; Spese</span>
+      <span>→</span>
+    </button>
 
-    <!-- CREAZIONE VIAGGIO -->
-    <div id="new-trip-panel" class="new-trip-panel hidden">
-      <div style="font-size:12px; font-weight:800; text-transform:uppercase; color:#334155; margin-bottom:10px;">Crea viaggio</div>
+    <div class="drawer-divider"></div>
+    <div class="drawer-section-label">Gestione viaggi</div>
+    <button id="nav-trips" class="drawer-item" onclick="navigateTo('trips')">
+      <span>🧳 Tutti i viaggi programmati</span>
+      <span id="drawer-trips-count">0</span>
+    </button>
+    <button class="drawer-item" onclick="openNewTripFormFromMenu()">
+      <span>➕ Nuovo viaggio</span>
+      <span></span>
+    </button>
+
+    <div class="drawer-divider"></div>
+    <div class="drawer-section-label">Backup dati</div>
+    <button id="drawer-export-btn" class="drawer-item" onclick="exportCurrentTripJsonFromMenu()">
+      <span>⬇️ Esporta viaggio JSON</span>
+      <span></span>
+    </button>
+    <label class="drawer-item" style="cursor:pointer;">
+      <span>⬆️ Importa viaggio JSON</span>
+      <input type="file" id="json-import-input" accept=".json,application/json" style="display:none;" onchange="importTripJson(this)" />
+    </label>
+  </nav>
+
+  <div class="container" onclick="closeBurgerMenu()">
+    <!-- FORM CREAZIONE / MODIFICA COPERTINA VIAGGIO -->
+    <div id="new-trip-panel" class="new-trip-panel hidden" onclick="event.stopPropagation()">
+      <div style="font-size:13px; font-weight:800; text-transform:uppercase; color:#334155; margin-bottom:10px;">Nuovo viaggio con amici</div>
       <div class="row-form">
-        <input id="nt-title" type="text" placeholder="Titolo viaggio (es. Pechino & Shanghai)" style="flex:1; min-width:170px;" />
+        <input id="nt-title" type="text" placeholder="Titolo viaggio (es. Costiera & Napoli)" style="flex:1; min-width:180px;" />
         <label style="font-size:12px; font-weight:700; color:#475569; display:inline-flex; align-items:center; gap:5px; flex-wrap:wrap;">
           Data inizio:
           <input id="nt-start-date" type="date" />
@@ -166,18 +217,37 @@
         <select id="nt-currency-select" onchange="onCurrencySelectChange()" style="min-width:220px; font-weight:600;"></select>
         <input id="nt-rate" type="number" step="0.01" placeholder="1 EUR = ?" style="width:115px;" title="Valore in valuta scelta per 1 EUR" />
       </div>
-      <div class="row-form" style="margin-bottom:0;">
-        <input id="nt-members" type="text" placeholder="Partecipanti separati da virgola (es. Marco, Giulia, Luca)" style="flex:1; min-width:200px;" />
-        <button class="btn btn-teal" onclick="createNewTrip()">Salva viaggio</button>
-        <button id="cancel-trip-btn" class="btn btn-ghost" onclick="closeNewTripForm()">Chiudi</button>
+      <div class="row-form">
+        <input id="nt-cover-url" type="text" placeholder="URL immagine copertina viaggio (opzionale)" style="flex:1; min-width:190px;" />
+        <input id="nt-cover-file" type="file" accept="image/*" title="Oppure scegli immagine dal dispositivo" />
       </div>
-      <div class="form-hint">Seleziona dal menu a tendina la valuta del paese di destinazione (bandiera, sigla e paese). Il tasso indica quante unità di quella valuta corrispondono a 1 EUR.</div>
+      <div class="row-form" style="margin-bottom:0;">
+        <input id="nt-members" type="text" placeholder="Amici / partecipanti separati da virgola (es. Marco, Giulia, Luca)" style="flex:1; min-width:200px;" />
+        <button class="btn btn-teal" onclick="createNewTrip()">Salva viaggio</button>
+        <button class="btn btn-ghost" onclick="closeNewTripForm()">Chiudi</button>
+      </div>
+      <div class="form-hint">L'immagine scelta comparirà sopra il nome del viaggio così lo riconosci subito tra i viaggi programmati.</div>
     </div>
 
-    <!-- STATO VUOTO INIZIALE -->
-    <div id="empty-state" class="empty-state hidden">
-      <h2 style="font-size:18px; font-weight:800; margin-bottom:6px;">Nessun viaggio salvato</h2>
-      <p style="font-size:13px; color:#64748b; margin-bottom:16px;">Crea il tuo primo viaggio oppure importa un file <b>.json</b>.</p>
+    <!-- PAGINA DI BENVENUTO INIZIALE (SE NESSUN VIAGGIO È SALVATO) -->
+    <div id="welcome-state" class="welcome-card hidden">
+      <div class="welcome-badge">Benvenuto su Splitrip</div>
+      <h1 class="welcome-title">Organizza il tuo prossimo viaggio con gli amici</h1>
+      <p class="welcome-sub">Pianifica tappe con foto e Google Maps, tieni traccia di voli e preventivo, e dividi le spese in modo chiaro direttamente sul tuo dispositivo.</p>
+      <div class="welcome-features">
+        <div class="welcome-feat">
+          <strong>🧭 Pianificazione</strong>
+          Luoghi da vedere, cambio valuta, voli e stima dei costi.
+        </div>
+        <div class="welcome-feat">
+          <strong>🗓️ Itinerario a date</strong>
+          Giorni in formato italiano con spunta tappe e link Maps.
+        </div>
+        <div class="welcome-feat">
+          <strong>💳 Spese &amp; Rimborsi</strong>
+          Riparto personalizzato tra amici con calcolo finale.
+        </div>
+      </div>
       <div style="display:flex; justify-content:center; gap:10px; flex-wrap:wrap;">
         <button class="btn btn-sky" onclick="openNewTripForm()">+ Crea il tuo primo viaggio</button>
         <label class="btn btn-ghost" style="cursor:pointer;">
@@ -187,22 +257,59 @@
       </div>
     </div>
 
-    <!-- CONTENUTO VIAGGIO ATTIVO -->
-    <div id="trip-content">
-      <div class="trip-banner">
-        <div>
-          <h1 id="banner-title" style="font-size: 18px; font-weight: 800;">-</h1>
-          <div id="banner-sub" class="trip-sub">-</div>
+    <!-- CONTENUTO QUANDO ESISTONO VIAGGI -->
+    <div id="app-body">
+      <!-- HERO DEL VIAGGIO ATTIVO (IMMAGINE SOPRA IL NOME) -->
+      <div id="active-trip-hero" class="trip-hero">
+        <div id="hero-cover-container"></div>
+        <div class="trip-hero-body">
+          <div>
+            <h1 id="banner-title" style="font-size: 20px; font-weight: 900;">-</h1>
+            <div id="banner-sub" class="trip-sub">-</div>
+          </div>
+          <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+            <span class="local-tag" id="status-pill">💾 Salvataggio locale attivo</span>
+            <button class="btn btn-sm btn-ghost" onclick="navigateTo('trips')">Cambia viaggio</button>
+          </div>
         </div>
-        <div class="local-tag" id="status-pill">💾 Salvataggio locale attivo</div>
       </div>
 
-      <!-- SEZIONE 1: PIANIFICAZIONE -->
-      <section id="sec-plan" style="display:flex; flex-direction:column; gap:16px;">
+      <!-- VISTA 0: PANORAMICA VIAGGIO ATTIVO (ACCESSO RAPIDO) -->
+      <section id="sec-overview" class="hidden">
         <div class="grid-2">
           <div class="card">
             <div class="card-title">
-              <span>📍 Attrazioni & Punti d'Interesse</span>
+              <span>⚡ Accesso rapido</span>
+              <span class="tag" id="overview-date-badge">Viaggio più vicino</span>
+            </div>
+            <p style="font-size:13px; color:#475569; margin-bottom:14px;">Usa il menu <b>☰</b> in alto a destra o i pulsanti qui sotto per passare alla pianificazione o gestire l'itinerario e le spese del giorno.</p>
+            <div style="display:flex; gap:10px; flex-wrap:wrap;">
+              <button class="btn btn-sky" onclick="navigateTo('plan')">🧭 Vai a Pianificazione</button>
+              <button class="btn btn-teal" onclick="navigateTo('live')">🗓️ Vai a Viaggio &amp; Spese</button>
+              <button class="btn btn-ghost" onclick="navigateTo('trips')">🧳 Tutti i viaggi</button>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-title">
+              <span>🖼️ Cambia immagine viaggio</span>
+              <span class="tag tag-purple">Copertina</span>
+            </div>
+            <div class="row-form" style="margin-bottom:0;">
+              <input id="edit-cover-url" type="text" placeholder="Nuovo URL immagine..." style="flex:1; min-width:160px;" />
+              <input id="edit-cover-file" type="file" accept="image/*" />
+              <button class="btn btn-sky" onclick="updateCurrentTripCover()">Aggiorna foto</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- VISTA 1: PIANIFICAZIONE -->
+      <section id="sec-plan" class="hidden" style="display:flex; flex-direction:column; gap:16px;">
+        <div class="grid-2">
+          <div class="card">
+            <div class="card-title">
+              <span>📍 Attrazioni &amp; Punti d'Interesse</span>
               <span class="tag" id="poi-count">0 salvati</span>
             </div>
             <div class="row-form">
@@ -262,7 +369,7 @@
 
         <div class="card">
           <div class="card-title">
-            <span>📋 Preventivo & Stima Costi</span>
+            <span>📋 Preventivo &amp; Stima Costi</span>
             <span class="tag tag-purple">Hotel • Attrazioni • Voli</span>
           </div>
           <div class="row-form">
@@ -290,7 +397,7 @@
         </div>
       </section>
 
-      <!-- SEZIONE 2: VIAGGIO ATTUALE & SPESE -->
+      <!-- VISTA 2: VIAGGIO ATTUALE & SPESE -->
       <section id="sec-live" class="hidden">
         <div class="grid-2">
           <div class="card">
@@ -325,7 +432,7 @@
 
           <div class="card">
             <div class="card-title">
-              <span>💳 Spese & Riparto</span>
+              <span>💳 Spese &amp; Riparto</span>
               <span class="tag" id="exp-total">Totale: 0,00 €</span>
             </div>
 
@@ -349,6 +456,17 @@
               <div id="settle-list"></div>
             </div>
           </div>
+        </div>
+      </section>
+
+      <!-- VISTA 3: TUTTI I VIAGGI PROGRAMMATI (CARD CON FOTO SOPRA IL NOME) -->
+      <section id="sec-trips" class="hidden">
+        <div class="card">
+          <div class="card-title">
+            <span>🧳 Viaggi Programmati</span>
+            <button class="btn btn-sm btn-sky" onclick="openNewTripForm()">+ Nuovo viaggio</button>
+          </div>
+          <div id="trips-grid" class="trips-grid"></div>
         </div>
       </section>
     </div>
@@ -432,22 +550,83 @@
     }
 
     let deferredPrompt = null;
+
+    function updateInstallButtonVisibility() {
+      const btn = document.getElementById('install-pwa-btn');
+      if (!btn) return;
+      const isStandalone =
+        window.matchMedia('(display-mode: standalone)').matches ||
+        window.navigator.standalone === true;
+      btn.classList.toggle('hidden', isStandalone);
+    }
+
     window.addEventListener('beforeinstallprompt', (e) => {
       e.preventDefault();
       deferredPrompt = e;
-      const btn = document.getElementById('install-pwa-btn');
-      if (btn) btn.classList.remove('hidden');
+      updateInstallButtonVisibility();
+    });
+
+    window.addEventListener('appinstalled', () => {
+      deferredPrompt = null;
+      updateInstallButtonVisibility();
     });
 
     async function installPwa() {
-      if (!deferredPrompt) return;
-      deferredPrompt.prompt();
-      await deferredPrompt.userChoice;
-      deferredPrompt = null;
-      document.getElementById('install-pwa-btn').classList.add('hidden');
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        const choice = await deferredPrompt.userChoice;
+        deferredPrompt = null;
+        if (choice && choice.outcome === 'accepted') {
+          updateInstallButtonVisibility();
+        }
+        return;
+      }
+
+      const isIos = /iphone|ipad|ipod/i.test(navigator.userAgent);
+      if (isIos) {
+        alert('Su iPhone/iPad: tocca il pulsante Condividi (quadrato con freccia in alto) in Safari e seleziona "Aggiungi a schermata Home".');
+      } else {
+        alert('Per aggiungere Splitrip allo schermo: apri il menu del browser (⋮ o •••) e seleziona "Installa app" o "Aggiungi a schermata Home".');
+      }
+    }
+
+    updateInstallButtonVisibility();
+
+    // Trova automaticamente il viaggio più vicino alla data odierna
+    function pickClosestTripId(tripsObj) {
+      const trips = Object.values(tripsObj || {});
+      if (!trips.length) return null;
+
+      const now = new Date();
+      const todayMidnight = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
+      const DAY_MS = 24 * 60 * 60 * 1000;
+
+      let bestId = trips[0].id;
+      let bestScore = Infinity;
+
+      trips.forEach(t => {
+        if (!t.startDate) {
+          const fallbackScore = 36500 * DAY_MS;
+          if (fallbackScore < bestScore) { bestScore = fallbackScore; bestId = t.id; }
+          return;
+        }
+        const parts = t.startDate.split('-').map(Number);
+        if (parts.length !== 3 || parts.some(isNaN)) return;
+        const tripTime = new Date(parts[0], parts[1] - 1, parts[2]).getTime();
+        const diff = tripTime - todayMidnight;
+        // Preferisci viaggi futuri o appena iniziati; se tutti sono nel passato, prendi il più recente
+        const score = diff >= -3 * DAY_MS ? diff : (Math.abs(diff) + 10000 * DAY_MS);
+        if (score < bestScore) {
+          bestScore = score;
+          bestId = t.id;
+        }
+      });
+
+      return bestId;
     }
 
     let db = loadDb();
+    let currentView = 'overview';
     let lastSettlementText = '';
 
     function loadDb() {
@@ -456,7 +635,10 @@
         if (raw) {
           const parsed = JSON.parse(raw);
           if (parsed && typeof parsed === 'object' && parsed.trips) {
-            return { activeTripId: parsed.activeTripId || null, trips: parsed.trips };
+            const picked = parsed.activeTripId && parsed.trips[parsed.activeTripId]
+              ? parsed.activeTripId
+              : pickClosestTripId(parsed.trips);
+            return { activeTripId: picked, trips: parsed.trips };
           }
         }
       } catch (e) {}
@@ -478,9 +660,63 @@
       const ids = Object.keys(db.trips);
       if (!ids.length) return null;
       if (!db.activeTripId || !db.trips[db.activeTripId]) {
-        db.activeTripId = ids[0];
+        db.activeTripId = pickClosestTripId(db.trips);
       }
       return db.trips[db.activeTripId];
+    }
+
+    function toggleBurgerMenu(e) {
+      if (e) e.stopPropagation();
+      document.getElementById('burger-menu').classList.toggle('hidden');
+    }
+
+    function closeBurgerMenu() {
+      document.getElementById('burger-menu').classList.add('hidden');
+    }
+
+    function navigateTo(view) {
+      closeBurgerMenu();
+      if (!getTrip() && view !== 'trips') return;
+      currentView = view;
+      renderViews();
+    }
+
+    function goHomeOrWelcome() {
+      closeBurgerMenu();
+      if (!getTrip()) return;
+      currentView = 'overview';
+      renderViews();
+    }
+
+    function renderViews() {
+      const hasTrip = Boolean(getTrip());
+      document.getElementById('welcome-state').classList.toggle('hidden', hasTrip);
+      document.getElementById('app-body').classList.toggle('hidden', !hasTrip);
+
+      ['overview', 'plan', 'live', 'trips'].forEach(v => {
+        const sec = document.getElementById('sec-' + v);
+        const nav = document.getElementById('nav-' + v);
+        if (sec) sec.classList.toggle('hidden', currentView !== v);
+        if (nav) nav.classList.toggle('active', currentView === v);
+      });
+
+      const tripsCount = Object.keys(db.trips).length;
+      document.getElementById('drawer-trips-count').innerText = String(tripsCount);
+      document.getElementById('drawer-export-btn').disabled = !hasTrip;
+      ['nav-overview', 'nav-plan', 'nav-live'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.disabled = !hasTrip;
+      });
+    }
+
+    function openNewTripFormFromMenu() {
+      closeBurgerMenu();
+      openNewTripForm();
+    }
+
+    function exportCurrentTripJsonFromMenu() {
+      closeBurgerMenu();
+      exportCurrentTripJson();
     }
 
     function toggleBox(id) {
@@ -505,6 +741,18 @@
       document.getElementById('new-trip-panel').classList.add('hidden');
     }
 
+    function formatItalianDateFromIso(isoDate) {
+      if (!isoDate) return '';
+      const parts = isoDate.split('-').map(Number);
+      if (parts.length !== 3 || parts.some(isNaN)) return '';
+      const dt = new Date(parts[0], parts[1] - 1, parts[2]);
+      if (isNaN(dt.getTime())) return '';
+      const dd = String(dt.getDate()).padStart(2, '0');
+      const mm = String(dt.getMonth() + 1).padStart(2, '0');
+      const yyyy = dt.getFullYear();
+      return `${dd}/${mm}/${yyyy}`;
+    }
+
     function getItalianDayDateText(startDateStr, dayNumber) {
       if (!startDateStr) return '';
       const parts = startDateStr.split('-').map(Number);
@@ -524,6 +772,7 @@
       if (!trip) return;
       trip.startDate = val || '';
       saveDb();
+      renderTripHero();
       renderDayTabs();
       renderStops();
     }
@@ -571,8 +820,21 @@
     function selectTrip(id) {
       if (!db.trips[id]) return;
       db.activeTripId = id;
+      currentView = 'overview';
       saveDb();
       renderAll();
+    }
+
+    function readImageInput(fileInput, urlInput, callback) {
+      const urlVal = urlInput ? urlInput.value.trim() : '';
+      const file = fileInput && fileInput.files && fileInput.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(ev) { callback(ev.target.result); };
+        reader.readAsDataURL(file);
+      } else {
+        callback(normalizeUrl(urlVal));
+      }
     }
 
     function createNewTrip() {
@@ -583,41 +845,67 @@
       const meta = getCurrencyMeta(code);
       const fxRate = parseFloat(document.getElementById('nt-rate').value) || meta.defaultRate || 1;
       const membersList = document.getElementById('nt-members').value.split(',').map(s => s.trim()).filter(Boolean);
-      const id = 'trip_' + Date.now();
+      const urlInp = document.getElementById('nt-cover-url');
+      const fileInp = document.getElementById('nt-cover-file');
 
-      db.trips[id] = {
-        id,
-        title,
-        startDate,
-        currency: meta.code,
-        country: meta.country,
-        flag: meta.flag,
-        symbol: meta.symbol,
-        decimals: meta.decimals,
-        fxRate,
-        members: membersList.length ? membersList : ['Io'],
-        pois: [],
-        flights: [],
-        quotes: [],
-        currentDay: 1,
-        daysStops: { 1: [] },
-        expenses: []
-      };
-      db.activeTripId = id;
-      document.getElementById('nt-title').value = '';
-      document.getElementById('nt-members').value = '';
-      closeNewTripForm();
-      saveDb();
-      renderAll();
+      readImageInput(fileInp, urlInp, function(coverImg) {
+        const id = 'trip_' + Date.now();
+        db.trips[id] = {
+          id,
+          title,
+          startDate,
+          coverImg,
+          currency: meta.code,
+          country: meta.country,
+          flag: meta.flag,
+          symbol: meta.symbol,
+          decimals: meta.decimals,
+          fxRate,
+          members: membersList.length ? membersList : ['Io'],
+          pois: [],
+          flights: [],
+          quotes: [],
+          currentDay: 1,
+          daysStops: { 1: [] },
+          expenses: []
+        };
+        db.activeTripId = id;
+        currentView = 'overview';
+        document.getElementById('nt-title').value = '';
+        document.getElementById('nt-members').value = '';
+        if (urlInp) urlInp.value = '';
+        if (fileInp) fileInp.value = '';
+        closeNewTripForm();
+        saveDb();
+        renderAll();
+      });
     }
 
-    function deleteCurrentTrip() {
+    function updateCurrentTripCover() {
       const trip = getTrip();
       if (!trip) return;
+      const urlInp = document.getElementById('edit-cover-url');
+      const fileInp = document.getElementById('edit-cover-file');
+      readImageInput(fileInp, urlInp, function(coverImg) {
+        if (!coverImg) return;
+        trip.coverImg = coverImg;
+        if (urlInp) urlInp.value = '';
+        if (fileInp) fileInp.value = '';
+        saveDb();
+        renderTripHero();
+        renderTripsGrid();
+      });
+    }
+
+    function deleteTripById(id, ev) {
+      if (ev) ev.stopPropagation();
+      const trip = db.trips[id];
+      if (!trip) return;
       if (!confirm(`Eliminare "${trip.title}"?`)) return;
-      delete db.trips[trip.id];
+      delete db.trips[id];
       const remaining = Object.keys(db.trips);
-      db.activeTripId = remaining.length ? remaining[0] : null;
+      db.activeTripId = remaining.length ? pickClosestTripId(db.trips) : null;
+      if (!db.activeTripId) currentView = 'overview';
       saveDb();
       renderAll();
     }
@@ -638,6 +926,7 @@
     }
 
     function importTripJson(input) {
+      closeBurgerMenu();
       const file = input.files && input.files[0];
       if (!file) return;
       const reader = new FileReader();
@@ -649,6 +938,7 @@
           const newId = imported.id && !db.trips[imported.id] ? imported.id : ('trip_' + Date.now());
           imported.id = newId;
           imported.startDate = imported.startDate || '';
+          imported.coverImg = normalizeUrl(imported.coverImg || '');
           imported.members = Array.isArray(imported.members) && imported.members.length ? imported.members : ['Io'];
           imported.pois = Array.isArray(imported.pois) ? imported.pois : [];
           imported.flights = Array.isArray(imported.flights) ? imported.flights : [];
@@ -664,6 +954,7 @@
           imported.fxRate = imported.fxRate || meta.defaultRate || 1;
           db.trips[newId] = imported;
           db.activeTripId = newId;
+          currentView = 'overview';
           closeNewTripForm();
           saveDb();
           renderAll();
@@ -674,13 +965,6 @@
         }
       };
       reader.readAsText(file);
-    }
-
-    function switchMode(mode) {
-      document.getElementById('sec-plan').classList.toggle('hidden', mode !== 'plan');
-      document.getElementById('sec-live').classList.toggle('hidden', mode !== 'live');
-      document.getElementById('tab-plan').classList.toggle('active', mode === 'plan');
-      document.getElementById('tab-live').classList.toggle('active', mode === 'live');
     }
 
     function fmtEur(val) {
@@ -705,18 +989,6 @@
         return `<img class="photo-thumb" src="${clean}" alt="${title}" onerror="this.outerHTML='<div class=\\'photo-placeholder\\'>🔄 Foto</div>'" />`;
       }
       return `<div class="photo-placeholder">🔄 Foto</div>`;
-    }
-
-    function readImageInput(fileInput, urlInput, callback) {
-      const urlVal = urlInput ? urlInput.value.trim() : '';
-      const file = fileInput && fileInput.files && fileInput.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = function(ev) { callback(ev.target.result); };
-        reader.readAsDataURL(file);
-      } else {
-        callback(urlVal);
-      }
     }
 
     function addPoi() {
@@ -761,7 +1033,7 @@
       trip.daysStops[day].push({ title: poi.name, zone: poi.zone, done: false, img: poi.img || '' });
       saveDb();
       renderStops();
-      switchMode('live');
+      navigateTo('live');
     }
 
     function renderPois() {
@@ -1107,46 +1379,67 @@
       setTimeout(() => { btn.innerText = prev; }, 1500);
     }
 
-    function renderTripSelector() {
-      const sel = document.getElementById('trip-selector');
+    function renderTripHero() {
       const trip = getTrip();
-      const emptyBox = document.getElementById('empty-state');
-      const tripContent = document.getElementById('trip-content');
-      const delBtn = document.getElementById('delete-trip-btn');
-      const expBtn = document.getElementById('export-json-btn');
-
-      if (!trip) {
-        sel.innerHTML = `<option value="">Nessun viaggio</option>`;
-        delBtn.classList.add('hidden');
-        expBtn.classList.add('hidden');
-        emptyBox.classList.remove('hidden');
-        tripContent.classList.add('hidden');
-        return;
-      }
-
+      if (!trip) return;
       const meta = getCurrencyMeta(trip.currency);
       const flag = trip.flag || meta.flag;
       const country = trip.country || meta.country;
+      const dateFormatted = formatItalianDateFromIso(trip.startDate);
+      const coverEl = document.getElementById('hero-cover-container');
+      const cleanCover = normalizeUrl(trip.coverImg);
 
-      delBtn.classList.remove('hidden');
-      expBtn.classList.remove('hidden');
-      emptyBox.classList.add('hidden');
-      tripContent.classList.remove('hidden');
+      coverEl.innerHTML = cleanCover
+        ? `<img class="trip-hero-cover" src="${cleanCover}" alt="${trip.title}" onerror="this.outerHTML='<div class=\\'trip-hero-fallback\\'>✈️</div>'" />`
+        : `<div class="trip-hero-fallback">✈️</div>`;
 
-      sel.innerHTML = Object.values(db.trips).map(t =>
-        `<option value="${t.id}" ${t.id === trip.id ? 'selected' : ''}>${t.title}</option>`
-      ).join('');
       document.getElementById('banner-title').innerText = trip.title;
       document.getElementById('banner-sub').innerHTML =
-        `Partecipanti: <b>${trip.members.join(', ')}</b> (${trip.members.length} pax) • Valuta: <b>${flag} ${trip.currency}${country ? ' — ' + country : ''}</b>`;
+        `${dateFormatted ? `Partenza: <b>${dateFormatted}</b> • ` : ''}Amici: <b>${trip.members.join(', ')}</b> (${trip.members.length} pax) • Valuta: <b>${flag} ${trip.currency}${country ? ' — ' + country : ''}</b>`;
+      document.getElementById('overview-date-badge').innerText = dateFormatted ? `📅 ${dateFormatted}` : 'Viaggio attivo';
       document.getElementById('fx-curr-label').innerText = `${flag} ${trip.currency}`;
       document.getElementById('fx-country-tag').innerText = country ? `${flag} ${country}` : `${flag} ${trip.currency}`;
       document.getElementById('fx-rate').value = trip.fxRate;
     }
 
+    function renderTripsGrid() {
+      const activeTrip = getTrip();
+      const grid = document.getElementById('trips-grid');
+      const list = Object.values(db.trips);
+
+      grid.innerHTML = list.map(t => {
+        const isSel = activeTrip && t.id === activeTrip.id;
+        const dateStr = formatItalianDateFromIso(t.startDate);
+        const meta = getCurrencyMeta(t.currency);
+        const flag = t.flag || meta.flag;
+        const cleanImg = normalizeUrl(t.coverImg);
+        const visualTop = cleanImg
+          ? `<img class="trip-card-img" src="${cleanImg}" alt="${t.title}" onerror="this.outerHTML='<div class=\\'trip-card-placeholder\\'>✈️</div>'" />`
+          : `<div class="trip-card-placeholder">✈️</div>`;
+
+        return `
+          <div class="trip-card ${isSel ? 'active' : ''}" onclick="selectTrip('${t.id}')">
+            ${visualTop}
+            <div class="trip-card-content">
+              <div class="trip-card-title">${t.title}</div>
+              <div class="trip-card-meta">
+                ${dateStr ? `📅 ${dateStr} • ` : ''}${flag} ${t.currency} • 👥 ${t.members.length}
+              </div>
+              <div class="trip-card-actions">
+                <span class="tag ${isSel ? 'tag-green' : ''}">${isSel ? 'Selezionato' : 'Apri viaggio'}</span>
+                <button class="btn btn-sm btn-danger" onclick="deleteTripById('${t.id}', event)">Elimina</button>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
     function renderAll() {
-      renderTripSelector();
+      renderViews();
       if (!getTrip()) return;
+      renderTripHero();
+      renderTripsGrid();
       renderPois();
       renderFlights();
       renderQuotes();
