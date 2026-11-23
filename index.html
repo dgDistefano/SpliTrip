@@ -2,1456 +2,1068 @@
 <html lang="it">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#0284c7" />
-  <meta name="description" content="Splitrip: organizza viaggi con amici, attrazioni con foto, voli, preventivo, itinerario con date e Google Maps e riparto spese in locale." />
-  <link rel="manifest" href="./manifest.json" />
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='fav' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%2306b6d4'/%3E%3Cstop offset='55%25' stop-color='%232563eb'/%3E%3Cstop offset='100%25' stop-color='%237c3aed'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='15' fill='url(%23fav)'/%3E%3Ccircle cx='32' cy='31' r='4.5' fill='%23ffffff'/%3E%3Cpath d='M24 48c0-5 3.5-8 8-8s8 3 8 8v2H24v-2z' fill='%23ffffff'/%3E%3Ccircle cx='21.5' cy='34' r='3.8' fill='%23ffffff' fill-opacity='0.9'/%3E%3Cpath d='M14 49c0-4 3-7 7-7 2 0 3.5.7 4.7 1.8-1.7 1.8-2.7 4.2-2.7 7v1.2h-9V49z' fill='%23ffffff' fill-opacity='0.9'/%3E%3Ccircle cx='42.5' cy='34' r='3.8' fill='%23ffffff' fill-opacity='0.9'/%3E%3Cpath d='M40.3 49c0-2.8-1-5.2-2.7-7 1.2-1.1 2.7-1.8 4.7-1.8 4 0 7 3 7 7v1.2h-9V49z' fill='%23ffffff' fill-opacity='0.9'/%3E%3Cpath d='M48 14l-7 11 4 10-3 2-5-7-6 4 1 4-3 1-2-6-6-2 2-3 4 1 4-6 3-2-3 10 11-7c2-1 4 0 4 2 0 1-1 3-2 3z' fill='%23ffffff'/%3E%3C/svg%3E" />
-  <title>Splitrip — Viaggi, Itinerari & Spese</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Splitrip — Viaggi e Quote</title>
+
+  <meta name="theme-color" content="#1d4ed8" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Splitrip" />
+  <link rel="manifest" href="/WayLocal/manifest.json" />
+
+  <link
+    rel="icon"
+    type="image/svg+xml"
+    href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Cdefs%3E%3ClinearGradient id='splitripRefinedBg' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%230b132b'/%3E%3Cstop offset='55%25' stop-color='%231d4ed8'/%3E%3Cstop offset='100%25' stop-color='%230ea5e9'/%3E%3C/linearGradient%3E%3ClinearGradient id='splitripCardFill' x1='0%25' y1='0%25' x2='0%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23ffffff'/%3E%3Cstop offset='100%25' stop-color='%23f8fafc'/%3E%3C/linearGradient%3E%3ClinearGradient id='splitripCoralBar' x1='0%25' y1='0%25' x2='100%25' y2='0%25'%3E%3Cstop offset='0%25' stop-color='%23f97316'/%3E%3Cstop offset='100%25' stop-color='%23fb7185'/%3E%3C/linearGradient%3E%3Cfilter id='refinedShadow' x='-15%25' y='-15%25' width='130%25' height='130%25'%3E%3CfeDropShadow dx='0' dy='10' stdDeviation='10' flood-color='%23060b19' flood-opacity='0.28'/%3E%3C/filter%3E%3C/defs%3E%3Crect width='192' height='192' rx='46' fill='url(%23splitripRefinedBg)'/%3E%3Ccircle cx='152' cy='34' r='64' fill='%2338bdf8' fill-opacity='0.16'/%3E%3Cg filter='url(%23refinedShadow)'%3E%3Crect x='24' y='34' width='144' height='124' rx='24' fill='url(%23splitripCardFill)' stroke='%23e2e8f0' stroke-width='1.5'/%3E%3Cline x1='96' y1='50' x2='96' y2='104' stroke='%23e2e8f0' stroke-width='2.5' stroke-linecap='round'/%3E%3Cpath d='M68 64 C68 57.5 62.5 53.5 55.5 53.5 C48.5 53.5 43 57.5 43 63.5 C43 69.5 49 72.5 56.5 74.5 C64 76.5 69.5 80 69.5 87 C69.5 93.5 63.5 98 55.5 98 C47.5 98 42 93.8 41.5 88' fill='none' stroke='%231d4ed8' stroke-width='6.5' stroke-linecap='round'/%3E%3Cpath d='M74 78 C84 78 90 73 102 73' fill='none' stroke='%2338bdf8' stroke-width='3.5' stroke-linecap='round' stroke-dasharray='4 5'/%3E%3Cpath d='M128 50 C117.5 50 109.5 58 109.5 68.5 C109.5 82.5 128 98 128 98 C128 98 146.5 82.5 146.5 68.5 C146.5 58 138.5 50 128 50 Z' fill='%230284c7'/%3E%3Ccircle cx='128' cy='68.5' r='5.5' fill='%23ffffff'/%3E%3Cline x1='40' y1='114' x2='152' y2='114' stroke='%23f1f5f9' stroke-width='2'/%3E%3Crect x='40' y='124' width='50' height='9' rx='4.5' fill='%231d4ed8' fill-opacity='0.85'/%3E%3Crect x='102' y='124' width='50' height='9' rx='4.5' fill='url(%23splitripCoralBar)'/%3E%3C/g%3E%3C/svg%3E"
+  />
+  <link
+    rel="apple-touch-icon"
+    href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Cdefs%3E%3ClinearGradient id='splitripRefinedBg' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%230b132b'/%3E%3Cstop offset='55%25' stop-color='%231d4ed8'/%3E%3Cstop offset='100%25' stop-color='%230ea5e9'/%3E%3C/linearGradient%3E%3ClinearGradient id='splitripCardFill' x1='0%25' y1='0%25' x2='0%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23ffffff'/%3E%3Cstop offset='100%25' stop-color='%23f8fafc'/%3E%3C/linearGradient%3E%3ClinearGradient id='splitripCoralBar' x1='0%25' y1='0%25' x2='100%25' y2='0%25'%3E%3Cstop offset='0%25' stop-color='%23f97316'/%3E%3Cstop offset='100%25' stop-color='%23fb7185'/%3E%3C/linearGradient%3E%3Cfilter id='refinedShadow' x='-15%25' y='-15%25' width='130%25' height='130%25'%3E%3CfeDropShadow dx='0' dy='10' stdDeviation='10' flood-color='%23060b19' flood-opacity='0.28'/%3E%3C/filter%3E%3C/defs%3E%3Crect width='192' height='192' rx='46' fill='url(%23splitripRefinedBg)'/%3E%3Ccircle cx='152' cy='34' r='64' fill='%2338bdf8' fill-opacity='0.16'/%3E%3Cg filter='url(%23refinedShadow)'%3E%3Crect x='24' y='34' width='144' height='124' rx='24' fill='url(%23splitripCardFill)' stroke='%23e2e8f0' stroke-width='1.5'/%3E%3Cline x1='96' y1='50' x2='96' y2='104' stroke='%23e2e8f0' stroke-width='2.5' stroke-linecap='round'/%3E%3Cpath d='M68 64 C68 57.5 62.5 53.5 55.5 53.5 C48.5 53.5 43 57.5 43 63.5 C43 69.5 49 72.5 56.5 74.5 C64 76.5 69.5 80 69.5 87 C69.5 93.5 63.5 98 55.5 98 C47.5 98 42 93.8 41.5 88' fill='none' stroke='%231d4ed8' stroke-width='6.5' stroke-linecap='round'/%3E%3Cpath d='M74 78 C84 78 90 73 102 73' fill='none' stroke='%2338bdf8' stroke-width='3.5' stroke-linecap='round' stroke-dasharray='4 5'/%3E%3Cpath d='M128 50 C117.5 50 109.5 58 109.5 68.5 C109.5 82.5 128 98 128 98 C128 98 146.5 82.5 146.5 68.5 C146.5 58 138.5 50 128 50 Z' fill='%230284c7'/%3E%3Ccircle cx='128' cy='68.5' r='5.5' fill='%23ffffff'/%3E%3Cline x1='40' y1='114' x2='152' y2='114' stroke='%23f1f5f9' stroke-width='2'/%3E%3Crect x='40' y='124' width='50' height='9' rx='4.5' fill='%231d4ed8' fill-opacity='0.85'/%3E%3Crect x='102' y='124' width='50' height='9' rx='4.5' fill='url(%23splitripCoralBar)'/%3E%3C/g%3E%3C/svg%3E"
+  />
+
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-    body { background: #e2e8f0; color: #0f172a; line-height: 1.45; overflow-x: hidden; }
+    :root {
+      --bg-app: #090e1a;
+      --bg-surface: #111827;
+      --bg-card: #162033;
+      --bg-card-hover: #1c2840;
+      --border: rgba(148, 163, 184, 0.16);
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --accent-blue: #2563eb;
+      --accent-cyan: #0ea5e9;
+      --accent-coral: #f97316;
+      --accent-ok: #10b981;
+      --radius-xl: 20px;
+      --radius-lg: 14px;
+      --radius-md: 10px;
+    }
 
-    .topbar { background: #0f172a; color: #fff; padding: 12px 18px; position: sticky; top: 0; z-index: 60; display: flex; justify-content: space-between; align-items: center; gap: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.18); }
-    .brand { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 16px; letter-spacing: -0.01em; cursor: pointer; }
-    .brand-icon { display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 8px; background: linear-gradient(135deg, #06b6d4, #2563eb, #7c3aed); color: #fff; }
-    .brand-pill { font-size: 11px; background: rgba(56, 189, 248, 0.2); color: #7dd3fc; padding: 3px 9px; border-radius: 999px; font-weight: 700; }
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
 
-    .topbar-right { display: flex; align-items: center; gap: 8px; }
-    .burger-btn { border: 1px solid #334155; background: #1e293b; color: #fff; width: 38px; height: 36px; border-radius: 9px; font-size: 18px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; transition: 0.15s; }
-    .burger-btn:hover { background: #334155; }
+    body {
+      margin: 0;
+      min-height: 100dvh;
+      background: radial-gradient(circle at top right, rgba(14, 165, 233, 0.14), transparent 45%), var(--bg-app);
+      color: var(--text-main);
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif;
+      line-height: 1.45;
+    }
 
-    .burger-drawer { position: fixed; top: 60px; right: 14px; width: min(310px, calc(100vw - 28px)); background: #0f172a; color: #f8fafc; border: 1px solid #334155; border-radius: 14px; padding: 10px; z-index: 80; box-shadow: 0 14px 30px rgba(0,0,0,0.32); display: flex; flex-direction: column; gap: 4px; }
-    .drawer-section-label { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; color: #94a3b8; padding: 6px 10px 2px; }
-    .drawer-item { width: 100%; border: none; background: transparent; color: #e2e8f0; padding: 10px 12px; border-radius: 9px; font-size: 13px; font-weight: 700; text-align: left; cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: 0.12s; }
-    .drawer-item:hover:not(:disabled) { background: #1e293b; color: #fff; }
-    .drawer-item.active { background: #0284c7; color: #fff; }
-    .drawer-item:disabled { opacity: 0.42; cursor: not-allowed; }
-    .drawer-divider { height: 1px; background: #1e293b; margin: 6px 4px; }
+    /* Header con menu burger */
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 12px 18px;
+      background: rgba(9, 14, 26, 0.84);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+    }
 
-    .container { max-width: 1140px; margin: 0 auto; padding: 18px 14px 64px; }
-    .hidden { display: none !important; }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      cursor: pointer;
+      user-select: none;
+    }
 
-    .new-trip-panel { background: #fff; border: 1px solid #cbd5e1; border-radius: 16px; padding: 18px; margin-bottom: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
-    .form-hint { font-size: 12px; color: #64748b; margin-top: 6px; }
+    .brand-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      flex-shrink: 0;
+      box-shadow: 0 6px 16px rgba(2, 132, 199, 0.28);
+    }
 
-    /* Pagina di benvenuto iniziale */
-    .welcome-card { background: #fff; border: 1px solid #cbd5e1; border-radius: 20px; padding: 36px 24px; text-align: center; box-shadow: 0 4px 16px rgba(15,23,42,0.06); max-width: 720px; margin: 18px auto; }
-    .welcome-badge { display: inline-block; background: #e0f2fe; color: #0369a1; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; padding: 4px 12px; border-radius: 999px; margin-bottom: 12px; }
-    .welcome-title { font-size: 24px; font-weight: 900; color: #0f172a; margin-bottom: 8px; }
-    .welcome-sub { font-size: 14px; color: #475569; max-width: 520px; margin: 0 auto 22px; }
-    .welcome-features { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 10px; margin-bottom: 24px; text-align: left; }
-    .welcome-feat { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 12px; font-size: 12px; color: #334155; }
-    .welcome-feat strong { display: block; color: #0f172a; margin-bottom: 3px; }
+    .brand-title {
+      font-weight: 700;
+      font-size: 1.05rem;
+      letter-spacing: -0.02em;
+    }
 
-    /* Hero viaggio attivo con immagine sopra il nome */
-    .trip-hero { background: #fff; border: 1px solid #cbd5e1; border-radius: 18px; overflow: hidden; margin-bottom: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
-    .trip-hero-cover { width: 100%; height: 190px; object-fit: cover; display: block; background: linear-gradient(135deg, #0369a1, #0f766e); }
-    .trip-hero-fallback { width: 100%; height: 150px; background: linear-gradient(135deg, #0284c7, #2563eb, #7c3aed); display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,0.92); font-size: 38px; }
-    .trip-hero-body { background: linear-gradient(135deg, #0369a1, #0f766e); color: #fff; padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
-    .trip-sub { font-size: 12px; color: #ccfbf1; margin-top: 3px; }
-    .local-tag { background: rgba(255,255,255,0.16); border: 1px solid rgba(255,255,255,0.25); padding: 5px 11px; border-radius: 999px; font-size: 11px; font-weight: 600; }
+    .brand-sub {
+      font-size: 0.74rem;
+      color: var(--text-muted);
+    }
 
-    /* Griglia card viaggi per selezione visiva */
-    .trips-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 14px; }
-    .trip-card { background: #fff; border: 2px solid #e2e8f0; border-radius: 16px; overflow: hidden; cursor: pointer; transition: 0.15s; display: flex; flex-direction: column; }
-    .trip-card:hover { border-color: #0284c7; transform: translateY(-2px); }
-    .trip-card.active { border-color: #0284c7; box-shadow: 0 0 0 3px rgba(2,132,199,0.18); }
-    .trip-card-img { width: 100%; height: 132px; object-fit: cover; display: block; background: #cbd5e1; }
-    .trip-card-placeholder { width: 100%; height: 132px; background: linear-gradient(135deg, #06b6d4, #2563eb, #7c3aed); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 28px; }
-    .trip-card-content { padding: 12px 14px; display: flex; flex-direction: column; gap: 6px; flex: 1; }
-    .trip-card-title { font-size: 15px; font-weight: 800; color: #0f172a; }
-    .trip-card-meta { font-size: 11px; color: #64748b; }
-    .trip-card-actions { display: flex; justify-content: space-between; align-items: center; gap: 6px; margin-top: auto; padding-top: 8px; }
+    .burger-btn {
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: var(--bg-surface);
+      color: var(--text-main);
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+      transition: background 0.15s ease, transform 0.12s ease;
+    }
 
-    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-    @media (max-width: 880px) { .grid-2 { grid-template-columns: 1fr; } }
+    .burger-btn:hover {
+      background: var(--bg-card);
+    }
 
-    .card { background: #fff; border: 1px solid #cbd5e1; border-radius: 14px; padding: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
-    .card-title { font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.04em; color: #475569; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .burger-btn:active {
+      transform: scale(0.96);
+    }
 
-    .row-form { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; align-items: center; }
-    .extra-box { background: #f1f5f9; border: 1px dashed #cbd5e1; border-radius: 10px; padding: 9px 10px; margin-bottom: 12px; }
-    /* font-size: 16px evita lo zoom automatico del browser su smartphone quando si tocca un campo */
-    input, select { padding: 8px 10px; border: 1px solid #cbd5e1; border-radius: 9px; font-size: 16px; line-height: 1.25; background: #f8fafc; color: #0f172a; outline: none; max-width: 100%; }
-    input:focus, select:focus { border-color: #0284c7; background: #fff; }
-    input[type="file"] { padding: 5px 7px; font-size: 12px; max-width: 210px; background: #fff; }
+    /* Drawer / Menu laterale */
+    .drawer-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 50;
+      background: rgba(2, 6, 23, 0.65);
+      backdrop-filter: blur(4px);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+    }
 
-    .btn { border: none; padding: 8px 12px; border-radius: 9px; font-size: 12px; font-weight: 700; cursor: pointer; background: #0f172a; color: #fff; transition: 0.12s; text-decoration: none; display: inline-flex; align-items: center; gap: 4px; }
-    .btn:hover { background: #1e293b; }
-    .btn-sky { background: #0284c7; }
-    .btn-sky:hover { background: #0369a1; }
-    .btn-teal { background: #0d9488; }
-    .btn-teal:hover { background: #0f766e; }
-    .btn-indigo { background: #4f46e5; }
-    .btn-indigo:hover { background: #4338ca; }
-    .btn-map { background: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe; }
-    .btn-map:hover { background: #dbeafe; }
-    .btn-link { background: #f0fdf4; color: #15803d; border: 1px solid #bbf7d0; }
-    .btn-link:hover { background: #dcfce7; }
-    .btn-sm { padding: 5px 8px; font-size: 11px; border-radius: 7px; }
-    .btn-ghost { background: #f1f5f9; color: #334155; border: 1px solid #e2e8f0; }
-    .btn-ghost:hover { background: #e2e8f0; }
-    .btn-danger { background: #fef2f2; color: #b91c1c; border: 1px solid #fecaca; }
-    .btn-danger:hover { background: #fee2e2; }
+    .drawer-backdrop.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
 
-    .list-stack { display: flex; flex-direction: column; gap: 8px; }
-    .item-box { border: 1px solid #e2e8f0; background: #f8fafc; border-radius: 11px; padding: 9px 11px; display: flex; justify-content: space-between; align-items: center; gap: 10px; }
-    .item-left { display: flex; align-items: center; gap: 10px; min-width: 0; flex: 1; }
-    .photo-thumb { width: 54px; height: 54px; border-radius: 9px; object-fit: cover; flex-shrink: 0; border: 1px solid #cbd5e1; background: #e2e8f0; }
-    .photo-placeholder { width: 54px; height: 54px; border-radius: 9px; flex-shrink: 0; border: 1px dashed #94a3b8; background: #f1f5f9; color: #64748b; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; text-align: center; padding: 2px; }
-    .item-info { min-width: 0; }
-    .item-title { font-size: 12px; font-weight: 700; color: #0f172a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .item-sub { font-size: 11px; color: #64748b; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; margin-top: 2px; }
-    .item-actions { display: flex; gap: 5px; align-items: center; flex-shrink: 0; flex-wrap: wrap; }
+    .drawer {
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      width: min(320px, 86vw);
+      z-index: 60;
+      background: var(--bg-surface);
+      border-left: 1px solid var(--border);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      transform: translateX(100%);
+      transition: transform 0.24s cubic-bezier(0.22, 1, 0.36, 1);
+    }
 
-    .tag { font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 999px; background: #e0f2fe; color: #0369a1; }
-    .tag-amber { background: #fef3c7; color: #92400e; }
-    .tag-green { background: #dcfce7; color: #166534; }
-    .tag-purple { background: #f3e8ff; color: #6b21a8; }
+    .drawer.open {
+      transform: translateX(0);
+    }
 
-    .flight-card { border: 1px solid #cbd5e1; border-radius: 12px; padding: 12px; background: #f8fafc; }
-    .flight-route { font-size: 13px; font-weight: 800; display: flex; justify-content: space-between; align-items: center; gap: 8px; }
-    .flight-price { font-size: 12px; font-weight: 800; color: #0f766e; background: #ccfbf1; padding: 2px 8px; border-radius: 8px; }
-    .flight-meta { font-size: 11px; color: #475569; margin-top: 6px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 6px; }
+    .drawer-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+    }
 
-    .fx-box { background: #f0f9ff; border: 1px solid #bae6fd; border-radius: 12px; padding: 14px; }
-    .fx-result { font-size: 20px; font-weight: 800; color: #0369a1; }
+    .drawer-nav-btn {
+      width: 100%;
+      text-align: left;
+      padding: 12px 14px;
+      border-radius: var(--radius-md);
+      border: 1px solid transparent;
+      background: transparent;
+      color: var(--text-main);
+      font-size: 0.95rem;
+      font-weight: 500;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
 
-    .quote-summary { background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 12px; padding: 14px; margin-top: 12px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
-    .quote-breakdown { display: flex; gap: 14px; flex-wrap: wrap; font-size: 12px; color: #334155; }
-    .quote-total-box { text-align: right; }
-    .quote-total { font-size: 20px; font-weight: 900; color: #0f172a; }
-    .quote-per-person { font-size: 11px; color: #0369a1; font-weight: 700; }
+    .drawer-nav-btn:hover,
+    .drawer-nav-btn.active {
+      background: var(--bg-card);
+      border-color: var(--border);
+    }
 
-    .day-tabs { display: flex; gap: 6px; margin-bottom: 10px; flex-wrap: wrap; align-items: center; }
-    .day-tab { padding: 6px 11px; border-radius: 8px; border: 1px solid #cbd5e1; background: #fff; font-size: 11px; font-weight: 700; cursor: pointer; }
-    .day-tab.active { background: #0f172a; color: #fff; border-color: #0f172a; }
-    .day-date-banner { background: #f1f5f9; border: 1px solid #e2e8f0; border-radius: 9px; padding: 7px 11px; margin-bottom: 10px; font-size: 12px; font-weight: 700; color: #334155; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 6px; }
+    /* Container principale */
+    .container {
+      max-width: 1040px;
+      margin: 0 auto;
+      padding: 22px 18px 64px;
+    }
 
-    .stop-item { border: 1px solid #e2e8f0; border-radius: 11px; padding: 9px 11px; display: flex; justify-content: space-between; align-items: center; gap: 10px; background: #fff; }
-    .stop-item.done { background: #f0fdf4; border-color: #bbf7d0; }
-    .stop-item.done .stop-name { text-decoration: line-through; color: #64748b; }
+    /* Schermata di benvenuto */
+    .welcome-box {
+      background: linear-gradient(145deg, rgba(29, 78, 216, 0.22), rgba(14, 165, 233, 0.08));
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      padding: 32px 24px;
+      text-align: center;
+      margin-bottom: 24px;
+    }
 
-    .split-bar { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; background: #f8fafc; border: 1px solid #e2e8f0; padding: 8px 10px; border-radius: 9px; margin-bottom: 12px; font-size: 11px; }
-    .split-bar label { display: inline-flex; align-items: center; gap: 4px; cursor: pointer; font-weight: 600; }
+    .welcome-icon {
+      width: 78px;
+      height: 78px;
+      border-radius: 20px;
+      margin: 0 auto 14px;
+      display: block;
+      box-shadow: 0 14px 28px rgba(2, 132, 199, 0.32);
+    }
 
-    .members-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(135px, 1fr)); gap: 8px; margin-top: 10px; }
-    .member-stat { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 8px 10px; font-size: 11px; }
+    .welcome-box h1 {
+      margin: 0 0 8px;
+      font-size: 1.65rem;
+      letter-spacing: -0.02em;
+    }
 
-    .settlement-box { background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 12px; padding: 12px; margin-top: 12px; }
-    .settle-line { font-size: 12px; padding: 6px 8px; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: space-between; }
-    .settle-line:last-child { border-bottom: none; }
+    .welcome-box p {
+      margin: 0 auto 20px;
+      max-width: 520px;
+      color: var(--text-muted);
+      font-size: 0.96rem;
+    }
+
+    /* Sezioni & Intestazioni */
+    .section-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .section-head h2 {
+      margin: 0;
+      font-size: 1.2rem;
+      letter-spacing: -0.015em;
+    }
+
+    /* Griglia card viaggi */
+    .trips-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+      gap: 18px;
+      margin-bottom: 28px;
+    }
+
+    .trip-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.16s ease, border-color 0.16s ease, background 0.16s ease;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .trip-card:hover {
+      transform: translateY(-3px);
+      background: var(--bg-card-hover);
+      border-color: rgba(56, 189, 248, 0.42);
+    }
+
+    .trip-card.selected {
+      border-color: var(--accent-cyan);
+      box-shadow: 0 0 0 1px rgba(14, 165, 233, 0.45);
+    }
+
+    /* Copertina sopra il titolo */
+    .trip-cover {
+      height: 124px;
+      width: 100%;
+      background-size: cover;
+      background-position: center;
+      position: relative;
+      display: flex;
+      align-items: flex-end;
+      padding: 10px 12px;
+    }
+
+    .trip-cover::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(9, 14, 26, 0.72), transparent 60%);
+    }
+
+    .trip-badge {
+      position: relative;
+      z-index: 1;
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 4px 9px;
+      border-radius: 999px;
+      background: rgba(9, 14, 26, 0.72);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      color: #e2e8f0;
+    }
+
+    .trip-card-body {
+      padding: 14px 16px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .trip-card-title {
+      margin: 0;
+      font-size: 1.05rem;
+      font-weight: 700;
+    }
+
+    .trip-card-meta {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    /* Pannello viaggio attivo */
+    .active-trip-panel {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      padding: 20px;
+    }
+
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 12px;
+      margin: 16px 0 22px;
+    }
+
+    .stat-box {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 12px 14px;
+    }
+
+    .stat-label {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .stat-val {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-top: 2px;
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+    }
+
+    .sub-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 16px;
+    }
+
+    .sub-card h3 {
+      margin: 0 0 12px;
+      font-size: 1rem;
+    }
+
+    .list-clean {
+      list-style: none;
+      margin: 0 0 14px;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .list-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 9px 11px;
+      border-radius: var(--radius-md);
+      background: rgba(9, 14, 26, 0.45);
+      border: 1px solid rgba(148, 163, 184, 0.1);
+      font-size: 0.88rem;
+    }
+
+    .row-form {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    input, select {
+      background: var(--bg-app);
+      color: var(--text-main);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 9px 11px;
+      font-size: 0.88rem;
+      outline: none;
+    }
+
+    input:focus, select:focus {
+      border-color: var(--accent-cyan);
+    }
+
+    input[type="text"], input[type="date"], input[type="number"] {
+      flex: 1 1 130px;
+      min-width: 0;
+    }
+
+    .btn {
+      border: 1px solid transparent;
+      border-radius: var(--radius-md);
+      padding: 9px 14px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      cursor: pointer;
+      color: var(--text-main);
+      background: var(--bg-card-hover);
+      transition: opacity 0.15s ease, transform 0.1s ease;
+    }
+
+    .btn:hover {
+      opacity: 0.92;
+    }
+
+    .btn:active {
+      transform: scale(0.98);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent-blue), var(--accent-cyan));
+      color: #ffffff;
+    }
+
+    .btn-coral {
+      background: linear-gradient(135deg, var(--accent-coral), #fb7185);
+      color: #ffffff;
+    }
+
+    .btn-ghost {
+      background: transparent;
+      border-color: var(--border);
+      color: var(--text-muted);
+    }
+
+    .btn-sm {
+      padding: 5px 9px;
+      font-size: 0.78rem;
+    }
+
+    /* Modale nuovo viaggio */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 70;
+      background: rgba(2, 6, 23, 0.72);
+      backdrop-filter: blur(4px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+
+    .modal-backdrop.open {
+      display: flex;
+    }
+
+    .modal-card {
+      width: 100%;
+      max-width: 440px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .modal-card h3 {
+      margin: 0;
+      font-size: 1.1rem;
+    }
+
+    .field-group {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .field-group label {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .hidden {
+      display: none !important;
+    }
   </style>
 </head>
 <body>
-
   <header class="topbar">
-    <div class="brand" onclick="goHomeOrWelcome()">
-      <span class="brand-icon" aria-hidden="true">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-          <circle cx="12" cy="11" r="2.2"/>
-          <path d="M8.5 18.5c0-2 1.6-3.3 3.5-3.3s3.5 1.3 3.5 3.3v1h-7v-1z"/>
-          <path d="M19.5 4l-3 4.5 1.6 4.2-1.3.8-2-2.7-2.4 1.5.2 1.5-1.2.5-1-2.5-2.5-.9.8-1.2 1.7.4 1.7-2.5 1.2-.8-1.2 4.2 4.6-2.9c.7-.4 1.5.1 1.5.9 0 .5-.2 1-.7 1.2z"/>
-        </svg>
-      </span>
-      <span>Splitrip</span>
-      <span class="brand-pill">PWA</span>
+    <div class="brand" id="brandHomeBtn" title="Torna alla panoramica viaggi">
+      <svg class="brand-icon" viewBox="0 0 192 192" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <defs>
+          <linearGradient id="hdrBg" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#0b132b" />
+            <stop offset="55%" stop-color="#1d4ed8" />
+            <stop offset="100%" stop-color="#0ea5e9" />
+          </linearGradient>
+          <linearGradient id="hdrCard" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#ffffff" />
+            <stop offset="100%" stop-color="#f8fafc" />
+          </linearGradient>
+          <linearGradient id="hdrCoral" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#f97316" />
+            <stop offset="100%" stop-color="#fb7185" />
+          </linearGradient>
+        </defs>
+        <rect width="192" height="192" rx="46" fill="url(#hdrBg)" />
+        <circle cx="152" cy="34" r="64" fill="#38bdf8" fill-opacity="0.16" />
+        <rect x="24" y="34" width="144" height="124" rx="24" fill="url(#hdrCard)" />
+        <line x1="96" y1="50" x2="96" y2="104" stroke="#e2e8f0" stroke-width="2.5" stroke-linecap="round" />
+        <path d="M68 64 C68 57.5 62.5 53.5 55.5 53.5 C48.5 53.5 43 57.5 43 63.5 C43 69.5 49 72.5 56.5 74.5 C64 76.5 69.5 80 69.5 87 C69.5 93.5 63.5 98 55.5 98 C47.5 98 42 93.8 41.5 88"
+              fill="none" stroke="#1d4ed8" stroke-width="6.5" stroke-linecap="round" />
+        <path d="M74 78 C84 78 90 73 102 73" fill="none" stroke="#38bdf8" stroke-width="3.5" stroke-linecap="round" stroke-dasharray="4 5" />
+        <path d="M128 50 C117.5 50 109.5 58 109.5 68.5 C109.5 82.5 128 98 128 98 C128 98 146.5 82.5 146.5 68.5 C146.5 58 138.5 50 128 50 Z"
+              fill="#0284c7" />
+        <circle cx="128" cy="68.5" r="5.5" fill="#ffffff" />
+        <line x1="40" y1="114" x2="152" y2="114" stroke="#f1f5f9" stroke-width="2" />
+        <rect x="40" y="124" width="50" height="9" rx="4.5" fill="#1d4ed8" fill-opacity="0.85" />
+        <rect x="102" y="124" width="50" height="9" rx="4.5" fill="url(#hdrCoral)" />
+      </svg>
+      <div>
+        <div class="brand-title">Splitrip</div>
+        <div class="brand-sub">Itinerari e spese condivise</div>
+      </div>
     </div>
 
-    <div class="topbar-right">
-      <button id="install-pwa-btn" class="btn btn-sm btn-teal" onclick="installPwa()">📲 Installa App</button>
-      <button id="burger-btn" class="burger-btn" aria-label="Apri menu" onclick="toggleBurgerMenu(event)">☰</button>
-    </div>
+    <button class="burger-btn" id="burgerBtn" type="button" aria-label="Apri menu di navigazione">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+        <line x1="3" y1="6" x2="21" y2="6" />
+        <line x1="3" y1="12" x2="21" y2="12" />
+        <line x1="3" y1="18" x2="21" y2="18" />
+      </svg>
+    </button>
   </header>
 
-  <!-- MENU BURGER -->
-  <nav id="burger-menu" class="burger-drawer hidden" aria-label="Menu principale">
-    <div class="drawer-section-label">Sezioni viaggio</div>
-    <button id="nav-overview" class="drawer-item" onclick="navigateTo('overview')">
-      <span>🏠 Viaggio più vicino / Attivo</span>
-      <span>→</span>
-    </button>
-    <button id="nav-plan" class="drawer-item" onclick="navigateTo('plan')">
-      <span>🧭 Pianificazione</span>
-      <span>→</span>
-    </button>
-    <button id="nav-live" class="drawer-item" onclick="navigateTo('live')">
-      <span>🗓️ Viaggio &amp; Spese</span>
-      <span>→</span>
-    </button>
-
-    <div class="drawer-divider"></div>
-    <div class="drawer-section-label">Gestione viaggi</div>
-    <button id="nav-trips" class="drawer-item" onclick="navigateTo('trips')">
-      <span>🧳 Tutti i viaggi programmati</span>
-      <span id="drawer-trips-count">0</span>
-    </button>
-    <button class="drawer-item" onclick="openNewTripFormFromMenu()">
-      <span>➕ Nuovo viaggio</span>
-      <span></span>
-    </button>
-
-    <div class="drawer-divider"></div>
-    <div class="drawer-section-label">Backup dati</div>
-    <button id="drawer-export-btn" class="drawer-item" onclick="exportCurrentTripJsonFromMenu()">
-      <span>⬇️ Esporta viaggio JSON</span>
-      <span></span>
-    </button>
-    <label class="drawer-item" style="cursor:pointer;">
-      <span>⬆️ Importa viaggio JSON</span>
-      <input type="file" id="json-import-input" accept=".json,application/json" style="display:none;" onchange="importTripJson(this)" />
-    </label>
-  </nav>
-
-  <div class="container" onclick="closeBurgerMenu()">
-    <!-- FORM CREAZIONE / MODIFICA COPERTINA VIAGGIO -->
-    <div id="new-trip-panel" class="new-trip-panel hidden" onclick="event.stopPropagation()">
-      <div style="font-size:13px; font-weight:800; text-transform:uppercase; color:#334155; margin-bottom:10px;">Nuovo viaggio con amici</div>
-      <div class="row-form">
-        <input id="nt-title" type="text" placeholder="Titolo viaggio (es. Costiera & Napoli)" style="flex:1; min-width:180px;" />
-        <label style="font-size:12px; font-weight:700; color:#475569; display:inline-flex; align-items:center; gap:5px; flex-wrap:wrap;">
-          Data inizio:
-          <input id="nt-start-date" type="date" />
-        </label>
-        <select id="nt-currency-select" onchange="onCurrencySelectChange()" style="min-width:220px; font-weight:600;"></select>
-        <input id="nt-rate" type="number" step="0.01" placeholder="1 EUR = ?" style="width:115px;" title="Valore in valuta scelta per 1 EUR" />
-      </div>
-      <div class="row-form">
-        <input id="nt-cover-url" type="text" placeholder="URL immagine copertina viaggio (opzionale)" style="flex:1; min-width:190px;" />
-        <input id="nt-cover-file" type="file" accept="image/*" title="Oppure scegli immagine dal dispositivo" />
-      </div>
-      <div class="row-form" style="margin-bottom:0;">
-        <input id="nt-members" type="text" placeholder="Amici / partecipanti separati da virgola (es. Marco, Giulia, Luca)" style="flex:1; min-width:200px;" />
-        <button class="btn btn-teal" onclick="createNewTrip()">Salva viaggio</button>
-        <button class="btn btn-ghost" onclick="closeNewTripForm()">Chiudi</button>
-      </div>
-      <div class="form-hint">L'immagine scelta comparirà sopra il nome del viaggio così lo riconosci subito tra i viaggi programmati.</div>
+  <div class="drawer-backdrop" id="drawerBackdrop"></div>
+  <aside class="drawer" id="drawer" aria-label="Menu principale">
+    <div class="drawer-header">
+      <strong>Menu Splitrip</strong>
+      <button class="btn btn-ghost btn-sm" id="closeDrawerBtn" type="button">Chiudi</button>
     </div>
+    <button class="drawer-nav-btn active" id="navTripsBtn" type="button">
+      <span>Tutti i viaggi</span>
+      <span id="drawerTripCount">0</span>
+    </button>
+    <button class="drawer-nav-btn" id="navNewTripBtn" type="button">
+      <span>+ Nuovo viaggio</span>
+      <span>→</span>
+    </button>
+    <button class="drawer-nav-btn" id="navResetDemoBtn" type="button">
+      <span>Ripristina esempio</span>
+      <span>↺</span>
+    </button>
+  </aside>
 
-    <!-- PAGINA DI BENVENUTO INIZIALE (SE NESSUN VIAGGIO È SALVATO) -->
-    <div id="welcome-state" class="welcome-card hidden">
-      <div class="welcome-badge">Benvenuto su Splitrip</div>
-      <h1 class="welcome-title">Organizza il tuo prossimo viaggio con gli amici</h1>
-      <p class="welcome-sub">Pianifica tappe con foto e Google Maps, tieni traccia di voli e preventivo, e dividi le spese in modo chiaro direttamente sul tuo dispositivo.</p>
-      <div class="welcome-features">
-        <div class="welcome-feat">
-          <strong>🧭 Pianificazione</strong>
-          Luoghi da vedere, cambio valuta, voli e stima dei costi.
+  <main class="container">
+    <!-- Benvenuto se non ci sono viaggi -->
+    <section class="welcome-box hidden" id="welcomeSection">
+      <svg class="welcome-icon" viewBox="0 0 192 192" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <defs>
+          <linearGradient id="welBg" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#0b132b" />
+            <stop offset="55%" stop-color="#1d4ed8" />
+            <stop offset="100%" stop-color="#0ea5e9" />
+          </linearGradient>
+          <linearGradient id="welCard" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#ffffff" />
+            <stop offset="100%" stop-color="#f8fafc" />
+          </linearGradient>
+          <linearGradient id="welCoral" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#f97316" />
+            <stop offset="100%" stop-color="#fb7185" />
+          </linearGradient>
+        </defs>
+        <rect width="192" height="192" rx="46" fill="url(#welBg)" />
+        <circle cx="152" cy="34" r="64" fill="#38bdf8" fill-opacity="0.16" />
+        <rect x="24" y="34" width="144" height="124" rx="24" fill="url(#welCard)" />
+        <line x1="96" y1="50" x2="96" y2="104" stroke="#e2e8f0" stroke-width="2.5" stroke-linecap="round" />
+        <path d="M68 64 C68 57.5 62.5 53.5 55.5 53.5 C48.5 53.5 43 57.5 43 63.5 C43 69.5 49 72.5 56.5 74.5 C64 76.5 69.5 80 69.5 87 C69.5 93.5 63.5 98 55.5 98 C47.5 98 42 93.8 41.5 88"
+              fill="none" stroke="#1d4ed8" stroke-width="6.5" stroke-linecap="round" />
+        <path d="M74 78 C84 78 90 73 102 73" fill="none" stroke="#38bdf8" stroke-width="3.5" stroke-linecap="round" stroke-dasharray="4 5" />
+        <path d="M128 50 C117.5 50 109.5 58 109.5 68.5 C109.5 82.5 128 98 128 98 C128 98 146.5 82.5 146.5 68.5 C146.5 58 138.5 50 128 50 Z"
+              fill="#0284c7" />
+        <circle cx="128" cy="68.5" r="5.5" fill="#ffffff" />
+        <line x1="40" y1="114" x2="152" y2="114" stroke="#f1f5f9" stroke-width="2" />
+        <rect x="40" y="124" width="50" height="9" rx="4.5" fill="#1d4ed8" fill-opacity="0.85" />
+        <rect x="102" y="124" width="50" height="9" rx="4.5" fill="url(#welCoral)" />
+      </svg>
+      <h1>Benvenuti su Splitrip</h1>
+      <p>Pianifica i viaggi con il tuo gruppo, tieni traccia delle tappe e dividi le spese in modo chiaro direttamente sul dispositivo.</p>
+      <button class="btn btn-primary" id="welcomeCreateBtn" type="button">+ Crea il tuo primo viaggio</button>
+    </section>
+
+    <!-- Griglia viaggi -->
+    <section id="tripsCatalogSection">
+      <div class="section-head">
+        <h2>I tuoi viaggi</h2>
+        <button class="btn btn-primary btn-sm" id="openNewTripBtn" type="button">+ Nuovo viaggio</button>
+      </div>
+      <div class="trips-grid" id="tripsGrid"></div>
+    </section>
+
+    <!-- Dettaglio viaggio selezionato -->
+    <section class="active-trip-panel hidden" id="activeTripSection">
+      <div class="section-head">
+        <div>
+          <h2 id="activeTripTitle">Viaggio</h2>
+          <div class="trip-card-meta" id="activeTripDates"></div>
         </div>
-        <div class="welcome-feat">
-          <strong>🗓️ Itinerario a date</strong>
-          Giorni in formato italiano con spunta tappe e link Maps.
+        <button class="btn btn-ghost btn-sm" id="deleteTripBtn" type="button">Elimina viaggio</button>
+      </div>
+
+      <div class="stats-row">
+        <div class="stat-box">
+          <div class="stat-label">Spesa totale</div>
+          <div class="stat-val" id="statTotal">€ 0,00</div>
         </div>
-        <div class="welcome-feat">
-          <strong>💳 Spese &amp; Rimborsi</strong>
-          Riparto personalizzato tra amici con calcolo finale.
+        <div class="stat-box">
+          <div class="stat-label">Quota media a persona</div>
+          <div class="stat-val" id="statPerPerson">€ 0,00</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-label">Partecipanti</div>
+          <div class="stat-val" id="statMembersCount">0</div>
         </div>
       </div>
-      <div style="display:flex; justify-content:center; gap:10px; flex-wrap:wrap;">
-        <button class="btn btn-sky" onclick="openNewTripForm()">+ Crea il tuo primo viaggio</button>
-        <label class="btn btn-ghost" style="cursor:pointer;">
-          ⬆️ Importa JSON
-          <input type="file" accept=".json,application/json" style="display:none;" onchange="importTripJson(this)" />
-        </label>
-      </div>
-    </div>
 
-    <!-- CONTENUTO QUANDO ESISTONO VIAGGI -->
-    <div id="app-body">
-      <!-- HERO DEL VIAGGIO ATTIVO (IMMAGINE SOPRA IL NOME) -->
-      <div id="active-trip-hero" class="trip-hero">
-        <div id="hero-cover-container"></div>
-        <div class="trip-hero-body">
-          <div>
-            <h1 id="banner-title" style="font-size: 20px; font-weight: 900;">-</h1>
-            <div id="banner-sub" class="trip-sub">-</div>
-          </div>
-          <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
-            <span class="local-tag" id="status-pill">💾 Salvataggio locale attivo</span>
-            <button class="btn btn-sm btn-ghost" onclick="navigateTo('trips')">Cambia viaggio</button>
-          </div>
+      <div class="two-col">
+        <!-- Partecipanti & Saldi -->
+        <div class="sub-card">
+          <h3>Partecipanti e saldi</h3>
+          <ul class="list-clean" id="membersList"></ul>
+          <form class="row-form" id="addMemberForm">
+            <input type="text" id="memberNameInput" placeholder="Nome partecipante" required />
+            <button class="btn btn-primary btn-sm" type="submit">Aggiungi</button>
+          </form>
+        </div>
+
+        <!-- Spese -->
+        <div class="sub-card">
+          <h3>Spese condivise</h3>
+          <ul class="list-clean" id="expensesList"></ul>
+          <form class="row-form" id="addExpenseForm">
+            <input type="text" id="expenseTitleInput" placeholder="Descrizione (es. Cena)" required />
+            <input type="number" id="expenseAmountInput" placeholder="Importo €" step="0.01" min="0.01" required />
+            <select id="expensePayerSelect" required></select>
+            <button class="btn btn-coral btn-sm" type="submit">Registra</button>
+          </form>
         </div>
       </div>
+    </section>
+  </main>
 
-      <!-- VISTA 0: PANORAMICA VIAGGIO ATTIVO (ACCESSO RAPIDO) -->
-      <section id="sec-overview" class="hidden">
-        <div class="grid-2">
-          <div class="card">
-            <div class="card-title">
-              <span>⚡ Accesso rapido</span>
-              <span class="tag" id="overview-date-badge">Viaggio più vicino</span>
-            </div>
-            <p style="font-size:13px; color:#475569; margin-bottom:14px;">Usa il menu <b>☰</b> in alto a destra o i pulsanti qui sotto per passare alla pianificazione o gestire l'itinerario e le spese del giorno.</p>
-            <div style="display:flex; gap:10px; flex-wrap:wrap;">
-              <button class="btn btn-sky" onclick="navigateTo('plan')">🧭 Vai a Pianificazione</button>
-              <button class="btn btn-teal" onclick="navigateTo('live')">🗓️ Vai a Viaggio &amp; Spese</button>
-              <button class="btn btn-ghost" onclick="navigateTo('trips')">🧳 Tutti i viaggi</button>
-            </div>
-          </div>
-
-          <div class="card">
-            <div class="card-title">
-              <span>🖼️ Cambia immagine viaggio</span>
-              <span class="tag tag-purple">Copertina</span>
-            </div>
-            <div class="row-form" style="margin-bottom:0;">
-              <input id="edit-cover-url" type="text" placeholder="Nuovo URL immagine..." style="flex:1; min-width:160px;" />
-              <input id="edit-cover-file" type="file" accept="image/*" />
-              <button class="btn btn-sky" onclick="updateCurrentTripCover()">Aggiorna foto</button>
-            </div>
-          </div>
+  <!-- Modale creazione viaggio -->
+  <div class="modal-backdrop" id="newTripModal">
+    <div class="modal-card">
+      <h3>Nuovo viaggio</h3>
+      <form id="newTripForm">
+        <div class="field-group">
+          <label for="tripTitleInput">Titolo del viaggio</label>
+          <input type="text" id="tripTitleInput" placeholder="Es. Weekend a Napoli" required />
         </div>
-      </section>
-
-      <!-- VISTA 1: PIANIFICAZIONE -->
-      <section id="sec-plan" class="hidden" style="display:flex; flex-direction:column; gap:16px;">
-        <div class="grid-2">
-          <div class="card">
-            <div class="card-title">
-              <span>📍 Attrazioni &amp; Punti d'Interesse</span>
-              <span class="tag" id="poi-count">0 salvati</span>
-            </div>
-            <div class="row-form">
-              <input id="poi-name" type="text" placeholder="Nome luogo..." style="flex:1; min-width:140px;" onkeydown="if(event.key==='Enter')addPoi()" />
-              <select id="poi-prio">
-                <option value="Must-see">Must-see</option>
-                <option value="Idea">Idea</option>
-              </select>
-              <button class="btn btn-sm btn-ghost" onclick="toggleBox('poi-extra')">+ Foto/Zona</button>
-              <button class="btn btn-sky" onclick="addPoi()">+ Aggiungi</button>
-            </div>
-            <div id="poi-extra" class="extra-box hidden">
-              <div class="row-form" style="margin-bottom:0;">
-                <input id="poi-zone" type="text" placeholder="Città/Zona (default: titolo viaggio)" style="width:170px;" />
-                <input id="poi-img-url" type="text" placeholder="URL foto (se vuoto cerca sul web)" style="flex:1; min-width:140px;" />
-                <input id="poi-img-file" type="file" accept="image/*" />
-              </div>
-            </div>
-            <div id="poi-list" class="list-stack"></div>
-          </div>
-
-          <div class="card" style="height:fit-content;">
-            <div class="card-title">
-              <span>💱 Cambio Valuta</span>
-              <span class="tag tag-green" id="fx-country-tag">Locale</span>
-            </div>
-            <div class="fx-box">
-              <div style="font-size:12px; color:#334155; margin-bottom:10px; display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
-                <span>Tasso: <b>1 EUR =</b></span>
-                <input id="fx-rate" type="number" step="0.01" style="width:96px; padding:5px 8px; font-weight:700;" oninput="updateFx()" />
-                <b id="fx-curr-label">-</b>
-              </div>
-              <div class="row-form" style="margin-bottom:0; align-items:center;">
-                <input id="fx-eur" type="number" value="50" oninput="calcFx()" style="width:110px; font-weight:700;" />
-                <span style="font-size:12px; font-weight:700;">EUR →</span>
-                <div id="fx-out" class="fx-result">0</div>
-              </div>
-            </div>
-          </div>
+        <div class="field-group">
+          <label for="tripStartInput">Data di partenza</label>
+          <input type="date" id="tripStartInput" required />
         </div>
-
-        <div class="card">
-          <div class="card-title">
-            <span>✈️ Tracker Voli</span>
-            <span class="tag tag-amber" id="flight-count">0 voli</span>
-          </div>
-          <div class="row-form">
-            <input id="fl-route" type="text" placeholder="Tratta (es. FCO → PEK)" style="flex:1; min-width:135px;" />
-            <input id="fl-code" type="text" placeholder="Volo" style="width:110px;" />
-            <input id="fl-time" type="text" placeholder="Orario" style="width:140px;" />
-            <input id="fl-price" type="number" step="0.01" placeholder="Prezzo €" style="width:105px;" />
-            <input id="fl-note" type="text" placeholder="Note / PNR" style="flex:1; min-width:110px;" />
-            <button class="btn btn-teal" onclick="addFlight()">+ Volo</button>
-          </div>
-          <div class="grid-2" id="flights-list"></div>
+        <div class="field-group">
+          <label for="tripEndInput">Data di rientro</label>
+          <input type="date" id="tripEndInput" required />
         </div>
-
-        <div class="card">
-          <div class="card-title">
-            <span>📋 Preventivo &amp; Stima Costi</span>
-            <span class="tag tag-purple">Hotel • Attrazioni • Voli</span>
-          </div>
-          <div class="row-form">
-            <select id="qt-cat">
-              <option value="Hotel">🏨 Hotel</option>
-              <option value="Attrazione">🎟️ Attrazione</option>
-              <option value="Volo">✈️ Volo</option>
-            </select>
-            <input id="qt-title" type="text" placeholder="Voce (es. Hotel 5 notti)" style="flex:1; min-width:150px;" />
-            <input id="qt-price" type="number" step="0.01" placeholder="Prezzo €" style="width:105px;" />
-            <input id="qt-url" type="text" placeholder="Link offerta (https://...)" style="flex:1; min-width:150px;" />
-            <button class="btn btn-sky" onclick="addQuoteItem()">+ Aggiungi</button>
-          </div>
-
-          <div id="quote-list" class="list-stack"></div>
-
-          <div class="quote-summary">
-            <div class="quote-breakdown" id="quote-breakdown"></div>
-            <div class="quote-total-box">
-              <div style="font-size:11px; color:#64748b; font-weight:700; text-transform:uppercase;">Totale stimato</div>
-              <div class="quote-total" id="quote-grand-total">0,00 €</div>
-              <div class="quote-per-person" id="quote-per-person">~ 0,00 € a persona</div>
-            </div>
-          </div>
+        <div class="field-group">
+          <label for="tripThemeSelect">Copertina della card</label>
+          <select id="tripThemeSelect">
+            <option value="coast">Costa &amp; Azzurro</option>
+            <option value="sunset">Tramonto &amp; Corallo</option>
+            <option value="alpine">Montagna &amp; Smeraldo</option>
+            <option value="night">City Break &amp; Indaco</option>
+          </select>
         </div>
-      </section>
-
-      <!-- VISTA 2: VIAGGIO ATTUALE & SPESE -->
-      <section id="sec-live" class="hidden">
-        <div class="grid-2">
-          <div class="card">
-            <div class="card-title">
-              <span>🗓️ Itinerario Giornaliero</span>
-              <span class="tag tag-green" id="stops-progress">0 / 0</span>
-            </div>
-
-            <div class="day-tabs" id="day-tabs"></div>
-            <div class="day-date-banner" id="day-date-banner">
-              <span id="day-date-label">Giorno 1</span>
-              <label style="font-size:12px; font-weight:600; color:#475569; display:inline-flex; align-items:center; gap:5px; flex-wrap:wrap;">
-                Data inizio viaggio:
-                <input id="trip-start-date-input" type="date" style="padding:5px 8px;" onchange="updateTripStartDate(this.value)" />
-              </label>
-            </div>
-
-            <div class="row-form">
-              <input id="stop-input" type="text" placeholder="Nuova tappa..." style="flex:1; min-width:140px;" onkeydown="if(event.key==='Enter')addStop()" />
-              <button class="btn btn-sm btn-ghost" onclick="toggleBox('stop-extra')">+ Foto</button>
-              <button class="btn btn-sky" onclick="addStop()">+ Tappa</button>
-            </div>
-            <div id="stop-extra" class="extra-box hidden">
-              <div class="row-form" style="margin-bottom:0;">
-                <input id="stop-img-url" type="text" placeholder="URL foto (se vuoto cerca sul web)" style="flex:1; min-width:140px;" />
-                <input id="stop-img-file" type="file" accept="image/*" />
-              </div>
-            </div>
-
-            <div id="stops-list" class="list-stack"></div>
-          </div>
-
-          <div class="card">
-            <div class="card-title">
-              <span>💳 Spese &amp; Riparto</span>
-              <span class="tag" id="exp-total">Totale: 0,00 €</span>
-            </div>
-
-            <div class="row-form">
-              <input id="exp-desc" type="text" placeholder="Descrizione spesa" style="flex:1; min-width:125px;" />
-              <input id="exp-amt" type="number" step="0.01" placeholder="Importo" style="width:96px;" />
-              <select id="exp-curr"></select>
-              <select id="exp-who"></select>
-              <button class="btn" onclick="addExpense()">+ Spesa</button>
-            </div>
-
-            <div class="split-bar" id="exp-split-bar"></div>
-            <div id="exp-list" class="list-stack"></div>
-            <div class="members-grid" id="members-summary"></div>
-
-            <div class="settlement-box">
-              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
-                <span style="font-size:11px; font-weight:800; text-transform:uppercase; color:#475569;">⚖️ Rimborsi finali</span>
-                <button class="btn btn-sm btn-ghost" onclick="copySettlement(this)">Copia riepilogo</button>
-              </div>
-              <div id="settle-list"></div>
-            </div>
-          </div>
+        <div class="row-form" style="justify-content: flex-end; margin-top: 14px;">
+          <button class="btn btn-ghost" id="cancelNewTripBtn" type="button">Annulla</button>
+          <button class="btn btn-primary" type="submit">Salva viaggio</button>
         </div>
-      </section>
-
-      <!-- VISTA 3: TUTTI I VIAGGI PROGRAMMATI (CARD CON FOTO SOPRA IL NOME) -->
-      <section id="sec-trips" class="hidden">
-        <div class="card">
-          <div class="card-title">
-            <span>🧳 Viaggi Programmati</span>
-            <button class="btn btn-sm btn-sky" onclick="openNewTripForm()">+ Nuovo viaggio</button>
-          </div>
-          <div id="trips-grid" class="trips-grid"></div>
-        </div>
-      </section>
+      </form>
     </div>
   </div>
 
   <script>
-    const STORAGE_KEY = 'splitrip_v1_storage';
+    const STORAGE_KEY = 'splitrip_data_v1';
 
-    const CURRENCY_OPTIONS = [
-      { code: 'CNY', country: 'Cina', flag: '🇨🇳', symbol: '¥', defaultRate: 7.8, decimals: 2 },
-      { code: 'JPY', country: 'Giappone', flag: '🇯🇵', symbol: '¥', defaultRate: 164.5, decimals: 0 },
-      { code: 'USD', country: 'Stati Uniti', flag: '🇺🇸', symbol: '$', defaultRate: 1.08, decimals: 2 },
-      { code: 'GBP', country: 'Regno Unito', flag: '🇬🇧', symbol: '£', defaultRate: 0.85, decimals: 2 },
-      { code: 'CHF', country: 'Svizzera', flag: '🇨🇭', symbol: 'CHF', defaultRate: 0.94, decimals: 2 },
-      { code: 'EUR', country: 'Eurozona', flag: '🇪🇺', symbol: '€', defaultRate: 1.0, decimals: 2 },
-      { code: 'CAD', country: 'Canada', flag: '🇨🇦', symbol: 'CA$', defaultRate: 1.48, decimals: 2 },
-      { code: 'AUD', country: 'Australia', flag: '🇦🇺', symbol: 'A$', defaultRate: 1.65, decimals: 2 },
-      { code: 'NZD', country: 'Nuova Zelanda', flag: '🇳🇿', symbol: 'NZ$', defaultRate: 1.82, decimals: 2 },
-      { code: 'SGD', country: 'Singapore', flag: '🇸🇬', symbol: 'S$', defaultRate: 1.45, decimals: 2 },
-      { code: 'HKD', country: 'Hong Kong', flag: '🇭🇰', symbol: 'HK$', defaultRate: 8.42, decimals: 2 },
-      { code: 'KRW', country: 'Corea del Sud', flag: '🇰🇷', symbol: '₩', defaultRate: 1480, decimals: 0 },
-      { code: 'THB', country: 'Thailandia', flag: '🇹🇭', symbol: '฿', defaultRate: 37.5, decimals: 2 },
-      { code: 'VND', country: 'Vietnam', flag: '🇻🇳', symbol: '₫', defaultRate: 27400, decimals: 0 },
-      { code: 'IDR', country: 'Indonesia', flag: '🇮🇩', symbol: 'Rp', defaultRate: 17100, decimals: 0 },
-      { code: 'MYR', country: 'Malaysia', flag: '🇲🇾', symbol: 'RM', defaultRate: 4.82, decimals: 2 },
-      { code: 'PHP', country: 'Filippine', flag: '🇵🇭', symbol: '₱', defaultRate: 63.2, decimals: 2 },
-      { code: 'INR', country: 'India', flag: '🇮🇳', symbol: '₹', defaultRate: 90.8, decimals: 2 },
-      { code: 'AED', country: 'Emirati Arabi Uniti', flag: '🇦🇪', symbol: 'AED', defaultRate: 3.97, decimals: 2 },
-      { code: 'SAR', country: 'Arabia Saudita', flag: '🇸🇦', symbol: 'SAR', defaultRate: 4.05, decimals: 2 },
-      { code: 'QAR', country: 'Qatar', flag: '🇶🇦', symbol: 'QAR', defaultRate: 3.93, decimals: 2 },
-      { code: 'TRY', country: 'Turchia', flag: '🇹🇷', symbol: '₺', defaultRate: 37.2, decimals: 2 },
-      { code: 'EGP', country: 'Egitto', flag: '🇪🇬', symbol: 'E£', defaultRate: 53.0, decimals: 2 },
-      { code: 'MAD', country: 'Marocco', flag: '🇲🇦', symbol: 'MAD', defaultRate: 10.8, decimals: 2 },
-      { code: 'ZAR', country: 'Sudafrica', flag: '🇿🇦', symbol: 'R', defaultRate: 19.6, decimals: 2 },
-      { code: 'SEK', country: 'Svezia', flag: '🇸🇪', symbol: 'kr', defaultRate: 11.4, decimals: 2 },
-      { code: 'NOK', country: 'Norvegia', flag: '🇳🇴', symbol: 'kr', defaultRate: 11.6, decimals: 2 },
-      { code: 'DKK', country: 'Danimarca', flag: '🇩🇰', symbol: 'kr', defaultRate: 7.46, decimals: 2 },
-      { code: 'PLN', country: 'Polonia', flag: '🇵🇱', symbol: 'zł', defaultRate: 4.3, decimals: 2 },
-      { code: 'CZK', country: 'Repubblica Ceca', flag: '🇨🇿', symbol: 'Kč', defaultRate: 25.2, decimals: 2 },
-      { code: 'HUF', country: 'Ungheria', flag: '🇭🇺', symbol: 'Ft', defaultRate: 405, decimals: 0 },
-      { code: 'RON', country: 'Romania', flag: '🇷🇴', symbol: 'lei', defaultRate: 4.97, decimals: 2 },
-      { code: 'ISK', country: 'Islanda', flag: '🇮🇸', symbol: 'kr', defaultRate: 149, decimals: 0 },
-      { code: 'MXN', country: 'Messico', flag: '🇲🇽', symbol: 'MX$', defaultRate: 21.8, decimals: 2 },
-      { code: 'BRL', country: 'Brasile', flag: '🇧🇷', symbol: 'R$', defaultRate: 6.2, decimals: 2 },
-      { code: 'ARS', country: 'Argentina', flag: '🇦🇷', symbol: 'AR$', defaultRate: 1080, decimals: 0 },
-      { code: 'CLP', country: 'Cile', flag: '🇨🇱', symbol: 'CL$', defaultRate: 1030, decimals: 0 },
-      { code: 'COP', country: 'Colombia', flag: '🇨🇴', symbol: 'COL$', defaultRate: 4720, decimals: 0 },
-      { code: 'PEN', country: 'Perù', flag: '🇵🇪', symbol: 'S/', defaultRate: 4.02, decimals: 2 }
-    ];
+    const COVER_STYLES = {
+      coast: {
+        label: 'Costa',
+        bg: 'linear-gradient(135deg, #0284c7, #06b6d4)'
+      },
+      sunset: {
+        label: 'Tramonto',
+        bg: 'linear-gradient(135deg, #ea580c, #ec4899)'
+      },
+      alpine: {
+        label: 'Montagna',
+        bg: 'linear-gradient(135deg, #0d9488, #2563eb)'
+      },
+      night: {
+        label: 'City Break',
+        bg: 'linear-gradient(135deg, #1e293b, #4f46e5)'
+      }
+    };
 
-    function getCurrencyMeta(code) {
-      return CURRENCY_OPTIONS.find(c => c.code === code) || {
-        code: code || 'EUR',
-        country: '',
-        flag: '🌍',
-        symbol: code || '€',
-        defaultRate: 1,
-        decimals: 2
+    function getSeedTrips() {
+      const today = new Date();
+      const addDays = (d) => {
+        const dt = new Date(today);
+        dt.setDate(dt.getDate() + d);
+        return dt.toISOString().slice(0, 10);
       };
-    }
 
-    function populateCurrencyDropdown() {
-      const sel = document.getElementById('nt-currency-select');
-      sel.innerHTML = CURRENCY_OPTIONS.map(c =>
-        `<option value="${c.code}">${c.flag} ${c.code} — ${c.country}</option>`
-      ).join('');
-      if (!sel.value) sel.value = 'CNY';
-      onCurrencySelectChange();
-    }
-
-    function onCurrencySelectChange() {
-      const code = document.getElementById('nt-currency-select').value;
-      const meta = getCurrencyMeta(code);
-      document.getElementById('nt-rate').value = meta.defaultRate;
-    }
-
-    if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('./sw.js').catch(() => {});
-      });
-    }
-
-    let deferredPrompt = null;
-
-    function updateInstallButtonVisibility() {
-      const btn = document.getElementById('install-pwa-btn');
-      if (!btn) return;
-      const isStandalone =
-        window.matchMedia('(display-mode: standalone)').matches ||
-        window.navigator.standalone === true;
-      btn.classList.toggle('hidden', isStandalone);
-    }
-
-    window.addEventListener('beforeinstallprompt', (e) => {
-      e.preventDefault();
-      deferredPrompt = e;
-      updateInstallButtonVisibility();
-    });
-
-    window.addEventListener('appinstalled', () => {
-      deferredPrompt = null;
-      updateInstallButtonVisibility();
-    });
-
-    async function installPwa() {
-      if (deferredPrompt) {
-        deferredPrompt.prompt();
-        const choice = await deferredPrompt.userChoice;
-        deferredPrompt = null;
-        if (choice && choice.outcome === 'accepted') {
-          updateInstallButtonVisibility();
+      return [
+        {
+          id: 'trip-demo-1',
+          title: 'Weekend sul Mare',
+          startDate: addDays(5),
+          endDate: addDays(8),
+          theme: 'coast',
+          members: ['Giulia', 'Marco', 'Luca'],
+          expenses: [
+            { id: 'e1', title: 'Casa vacanze', amount: 240, payer: 'Giulia' },
+            { id: 'e2', title: 'Pranzo pesce', amount: 96, payer: 'Marco' }
+          ]
         }
-        return;
-      }
-
-      const isIos = /iphone|ipad|ipod/i.test(navigator.userAgent);
-      if (isIos) {
-        alert('Su iPhone/iPad: tocca il pulsante Condividi (quadrato con freccia in alto) in Safari e seleziona "Aggiungi a schermata Home".');
-      } else {
-        alert('Per aggiungere Splitrip allo schermo: apri il menu del browser (⋮ o •••) e seleziona "Installa app" o "Aggiungi a schermata Home".');
-      }
+      ];
     }
 
-    updateInstallButtonVisibility();
+    let state = {
+      trips: [],
+      selectedTripId: null
+    };
 
-    // Trova automaticamente il viaggio più vicino alla data odierna
-    function pickClosestTripId(tripsObj) {
-      const trips = Object.values(tripsObj || {});
-      if (!trips.length) return null;
-
-      const now = new Date();
-      const todayMidnight = new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
-      const DAY_MS = 24 * 60 * 60 * 1000;
-
-      let bestId = trips[0].id;
-      let bestScore = Infinity;
-
-      trips.forEach(t => {
-        if (!t.startDate) {
-          const fallbackScore = 36500 * DAY_MS;
-          if (fallbackScore < bestScore) { bestScore = fallbackScore; bestId = t.id; }
-          return;
-        }
-        const parts = t.startDate.split('-').map(Number);
-        if (parts.length !== 3 || parts.some(isNaN)) return;
-        const tripTime = new Date(parts[0], parts[1] - 1, parts[2]).getTime();
-        const diff = tripTime - todayMidnight;
-        // Preferisci viaggi futuri o appena iniziati; se tutti sono nel passato, prendi il più recente
-        const score = diff >= -3 * DAY_MS ? diff : (Math.abs(diff) + 10000 * DAY_MS);
-        if (score < bestScore) {
-          bestScore = score;
-          bestId = t.id;
-        }
-      });
-
-      return bestId;
-    }
-
-    let db = loadDb();
-    let currentView = 'overview';
-    let lastSettlementText = '';
-
-    function loadDb() {
+    function loadState() {
       try {
         const raw = localStorage.getItem(STORAGE_KEY);
         if (raw) {
           const parsed = JSON.parse(raw);
-          if (parsed && typeof parsed === 'object' && parsed.trips) {
-            const picked = parsed.activeTripId && parsed.trips[parsed.activeTripId]
-              ? parsed.activeTripId
-              : pickClosestTripId(parsed.trips);
-            return { activeTripId: picked, trips: parsed.trips };
+          if (Array.isArray(parsed.trips)) {
+            state.trips = parsed.trips;
+            state.selectedTripId = parsed.selectedTripId || null;
           }
+        } else {
+          state.trips = getSeedTrips();
         }
-      } catch (e) {}
-      return { activeTripId: null, trips: {} };
-    }
-
-    function saveDb() {
-      try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(db));
-        const pill = document.getElementById('status-pill');
-        if (pill) {
-          pill.innerText = '✓ Salvato in locale';
-          setTimeout(() => { pill.innerText = '💾 Salvataggio locale attivo'; }, 1200);
-        }
-      } catch (e) {}
-    }
-
-    function getTrip() {
-      const ids = Object.keys(db.trips);
-      if (!ids.length) return null;
-      if (!db.activeTripId || !db.trips[db.activeTripId]) {
-        db.activeTripId = pickClosestTripId(db.trips);
+      } catch (e) {
+        state.trips = getSeedTrips();
       }
-      return db.trips[db.activeTripId];
-    }
 
-    function toggleBurgerMenu(e) {
-      if (e) e.stopPropagation();
-      document.getElementById('burger-menu').classList.toggle('hidden');
-    }
-
-    function closeBurgerMenu() {
-      document.getElementById('burger-menu').classList.add('hidden');
-    }
-
-    function navigateTo(view) {
-      closeBurgerMenu();
-      if (!getTrip() && view !== 'trips') return;
-      currentView = view;
-      renderViews();
-    }
-
-    function goHomeOrWelcome() {
-      closeBurgerMenu();
-      if (!getTrip()) return;
-      currentView = 'overview';
-      renderViews();
-    }
-
-    function renderViews() {
-      const hasTrip = Boolean(getTrip());
-      document.getElementById('welcome-state').classList.toggle('hidden', hasTrip);
-      document.getElementById('app-body').classList.toggle('hidden', !hasTrip);
-
-      ['overview', 'plan', 'live', 'trips'].forEach(v => {
-        const sec = document.getElementById('sec-' + v);
-        const nav = document.getElementById('nav-' + v);
-        if (sec) sec.classList.toggle('hidden', currentView !== v);
-        if (nav) nav.classList.toggle('active', currentView === v);
-      });
-
-      const tripsCount = Object.keys(db.trips).length;
-      document.getElementById('drawer-trips-count').innerText = String(tripsCount);
-      document.getElementById('drawer-export-btn').disabled = !hasTrip;
-      ['nav-overview', 'nav-plan', 'nav-live'].forEach(id => {
-        const el = document.getElementById(id);
-        if (el) el.disabled = !hasTrip;
-      });
-    }
-
-    function openNewTripFormFromMenu() {
-      closeBurgerMenu();
-      openNewTripForm();
-    }
-
-    function exportCurrentTripJsonFromMenu() {
-      closeBurgerMenu();
-      exportCurrentTripJson();
-    }
-
-    function toggleBox(id) {
-      document.getElementById(id).classList.toggle('hidden');
-    }
-
-    function openNewTripForm() {
-      populateCurrencyDropdown();
-      const startInp = document.getElementById('nt-start-date');
-      if (!startInp.value) {
-        const today = new Date();
-        const yyyy = today.getFullYear();
-        const mm = String(today.getMonth() + 1).padStart(2, '0');
-        const dd = String(today.getDate()).padStart(2, '0');
-        startInp.value = `${yyyy}-${mm}-${dd}`;
-      }
-      document.getElementById('new-trip-panel').classList.remove('hidden');
-      document.getElementById('nt-title').focus();
-    }
-
-    function closeNewTripForm() {
-      document.getElementById('new-trip-panel').classList.add('hidden');
-    }
-
-    function formatItalianDateFromIso(isoDate) {
-      if (!isoDate) return '';
-      const parts = isoDate.split('-').map(Number);
-      if (parts.length !== 3 || parts.some(isNaN)) return '';
-      const dt = new Date(parts[0], parts[1] - 1, parts[2]);
-      if (isNaN(dt.getTime())) return '';
-      const dd = String(dt.getDate()).padStart(2, '0');
-      const mm = String(dt.getMonth() + 1).padStart(2, '0');
-      const yyyy = dt.getFullYear();
-      return `${dd}/${mm}/${yyyy}`;
-    }
-
-    function getItalianDayDateText(startDateStr, dayNumber) {
-      if (!startDateStr) return '';
-      const parts = startDateStr.split('-').map(Number);
-      if (parts.length !== 3 || parts.some(isNaN)) return '';
-      const dt = new Date(parts[0], parts[1] - 1, parts[2] + (dayNumber - 1));
-      if (isNaN(dt.getTime())) return '';
-      const weekdays = ['Dom', 'Lun', 'Mar', 'Mer', 'Gio', 'Ven', 'Sab'];
-      const wd = weekdays[dt.getDay()];
-      const dd = String(dt.getDate()).padStart(2, '0');
-      const mm = String(dt.getMonth() + 1).padStart(2, '0');
-      const yyyy = dt.getFullYear();
-      return `${wd} ${dd}/${mm}/${yyyy}`;
-    }
-
-    function updateTripStartDate(val) {
-      const trip = getTrip();
-      if (!trip) return;
-      trip.startDate = val || '';
-      saveDb();
-      renderTripHero();
-      renderDayTabs();
-      renderStops();
-    }
-
-    async function fetchPlacePhotoFromWeb(placeName, zone) {
-      const queries = [zone ? `${placeName} ${zone}` : placeName, placeName];
-      const endpoints = ['https://en.wikipedia.org/w/api.php', 'https://it.wikipedia.org/w/api.php'];
-      for (const q of queries) {
-        for (const base of endpoints) {
-          try {
-            const url = `${base}?action=query&format=json&origin=*&generator=search&gsrsearch=${encodeURIComponent(q)}&gsrlimit=1&prop=pageimages&piprop=thumbnail&pithumbsize=240`;
-            const res = await fetch(url);
-            if (!res.ok) continue;
-            const data = await res.json();
-            const pages = data && data.query && data.query.pages;
-            if (!pages) continue;
-            for (const key of Object.keys(pages)) {
-              const thumb = pages[key] && pages[key].thumbnail && pages[key].thumbnail.source;
-              if (thumb) return thumb;
-            }
-          } catch (e) {}
-        }
-      }
-      return '';
-    }
-
-    async function refreshPoiPhoto(idx) {
-      const trip = getTrip();
-      if (!trip) return;
-      const item = trip.pois[idx];
-      if (!item) return;
-      const found = await fetchPlacePhotoFromWeb(item.name, item.zone);
-      if (found) { item.img = found; saveDb(); renderPois(); }
-    }
-
-    async function refreshStopPhoto(idx) {
-      const trip = getTrip();
-      if (!trip) return;
-      const item = (trip.daysStops[trip.currentDay] || [])[idx];
-      if (!item) return;
-      const found = await fetchPlacePhotoFromWeb(item.title, item.zone);
-      if (found) { item.img = found; saveDb(); renderStops(); }
-    }
-
-    function selectTrip(id) {
-      if (!db.trips[id]) return;
-      db.activeTripId = id;
-      currentView = 'overview';
-      saveDb();
-      renderAll();
-    }
-
-    function readImageInput(fileInput, urlInput, callback) {
-      const urlVal = urlInput ? urlInput.value.trim() : '';
-      const file = fileInput && fileInput.files && fileInput.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = function(ev) { callback(ev.target.result); };
-        reader.readAsDataURL(file);
-      } else {
-        callback(normalizeUrl(urlVal));
+      if (state.trips.length > 0 && !state.trips.some(t => t.id === state.selectedTripId)) {
+        state.selectedTripId = pickClosestTripId(state.trips);
       }
     }
 
-    function createNewTrip() {
-      const title = document.getElementById('nt-title').value.trim();
-      if (!title) return;
-      const startDate = document.getElementById('nt-start-date').value || '';
-      const code = document.getElementById('nt-currency-select').value;
-      const meta = getCurrencyMeta(code);
-      const fxRate = parseFloat(document.getElementById('nt-rate').value) || meta.defaultRate || 1;
-      const membersList = document.getElementById('nt-members').value.split(',').map(s => s.trim()).filter(Boolean);
-      const urlInp = document.getElementById('nt-cover-url');
-      const fileInp = document.getElementById('nt-cover-file');
-
-      readImageInput(fileInp, urlInp, function(coverImg) {
-        const id = 'trip_' + Date.now();
-        db.trips[id] = {
-          id,
-          title,
-          startDate,
-          coverImg,
-          currency: meta.code,
-          country: meta.country,
-          flag: meta.flag,
-          symbol: meta.symbol,
-          decimals: meta.decimals,
-          fxRate,
-          members: membersList.length ? membersList : ['Io'],
-          pois: [],
-          flights: [],
-          quotes: [],
-          currentDay: 1,
-          daysStops: { 1: [] },
-          expenses: []
-        };
-        db.activeTripId = id;
-        currentView = 'overview';
-        document.getElementById('nt-title').value = '';
-        document.getElementById('nt-members').value = '';
-        if (urlInp) urlInp.value = '';
-        if (fileInp) fileInp.value = '';
-        closeNewTripForm();
-        saveDb();
-        renderAll();
-      });
+    function saveState() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
     }
 
-    function updateCurrentTripCover() {
-      const trip = getTrip();
-      if (!trip) return;
-      const urlInp = document.getElementById('edit-cover-url');
-      const fileInp = document.getElementById('edit-cover-file');
-      readImageInput(fileInp, urlInp, function(coverImg) {
-        if (!coverImg) return;
-        trip.coverImg = coverImg;
-        if (urlInp) urlInp.value = '';
-        if (fileInp) fileInp.value = '';
-        saveDb();
-        renderTripHero();
-        renderTripsGrid();
-      });
-    }
+    // Seleziona il viaggio la cui data è più vicina a oggi
+    function pickClosestTripId(trips) {
+      if (!trips.length) return null;
+      const now = new Date().setHours(0, 0, 0, 0);
+      let best = trips[0];
+      let bestDiff = Infinity;
 
-    function deleteTripById(id, ev) {
-      if (ev) ev.stopPropagation();
-      const trip = db.trips[id];
-      if (!trip) return;
-      if (!confirm(`Eliminare "${trip.title}"?`)) return;
-      delete db.trips[id];
-      const remaining = Object.keys(db.trips);
-      db.activeTripId = remaining.length ? pickClosestTripId(db.trips) : null;
-      if (!db.activeTripId) currentView = 'overview';
-      saveDb();
-      renderAll();
-    }
-
-    function exportCurrentTripJson() {
-      const trip = getTrip();
-      if (!trip) return;
-      const blob = new Blob([JSON.stringify(trip, null, 2)], { type: 'application/json' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      const slug = trip.title.toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_|_$/g, '') || 'viaggio';
-      a.href = url;
-      a.download = `splitrip_${slug}.json`;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
-    }
-
-    function importTripJson(input) {
-      closeBurgerMenu();
-      const file = input.files && input.files[0];
-      if (!file) return;
-      const reader = new FileReader();
-      reader.onload = function(ev) {
-        try {
-          const imported = JSON.parse(ev.target.result);
-          if (!imported || typeof imported !== 'object' || !imported.title) return alert('File JSON non valido.');
-          const meta = getCurrencyMeta(imported.currency || 'EUR');
-          const newId = imported.id && !db.trips[imported.id] ? imported.id : ('trip_' + Date.now());
-          imported.id = newId;
-          imported.startDate = imported.startDate || '';
-          imported.coverImg = normalizeUrl(imported.coverImg || '');
-          imported.members = Array.isArray(imported.members) && imported.members.length ? imported.members : ['Io'];
-          imported.pois = Array.isArray(imported.pois) ? imported.pois : [];
-          imported.flights = Array.isArray(imported.flights) ? imported.flights : [];
-          imported.quotes = Array.isArray(imported.quotes) ? imported.quotes : [];
-          imported.daysStops = imported.daysStops && typeof imported.daysStops === 'object' ? imported.daysStops : { 1: [] };
-          imported.currentDay = imported.currentDay || 1;
-          imported.expenses = Array.isArray(imported.expenses) ? imported.expenses : [];
-          imported.currency = imported.currency || meta.code;
-          imported.country = imported.country || meta.country;
-          imported.flag = imported.flag || meta.flag;
-          imported.symbol = imported.symbol || meta.symbol;
-          imported.decimals = typeof imported.decimals === 'number' ? imported.decimals : meta.decimals;
-          imported.fxRate = imported.fxRate || meta.defaultRate || 1;
-          db.trips[newId] = imported;
-          db.activeTripId = newId;
-          currentView = 'overview';
-          closeNewTripForm();
-          saveDb();
-          renderAll();
-        } catch (err) {
-          alert('Errore durante l\'importazione del JSON.');
-        } finally {
-          input.value = '';
+      for (const trip of trips) {
+        const start = new Date(trip.startDate + 'T00:00:00').getTime();
+        const end = new Date(trip.endDate + 'T00:00:00').getTime();
+        const isOngoing = !isNaN(start) && !isNaN(end) && now >= start && now <= end;
+        const diff = isOngoing ? 0 : Math.abs((isNaN(start) ? now : start) - now);
+        if (diff < bestDiff) {
+          bestDiff = diff;
+          best = trip;
         }
-      };
-      reader.readAsText(file);
-    }
-
-    function fmtEur(val) {
-      return (Number(val) || 0).toFixed(2).replace('.', ',') + ' €';
-    }
-
-    function normalizeUrl(u) {
-      const s = (u || '').trim();
-      if (!s) return '';
-      if (/^https?:\/\//i.test(s) || /^data:image\//i.test(s)) return s;
-      return 'https://' + s;
-    }
-
-    function getMapsUrl(place, zone) {
-      const q = encodeURIComponent(zone ? `${place}, ${zone}` : place);
-      return `https://www.google.com/maps/search/?api=1&query=${q}`;
-    }
-
-    function renderPhotoThumb(title, imgSrc) {
-      const clean = normalizeUrl(imgSrc);
-      if (clean) {
-        return `<img class="photo-thumb" src="${clean}" alt="${title}" onerror="this.outerHTML='<div class=\\'photo-placeholder\\'>🔄 Foto</div>'" />`;
       }
-      return `<div class="photo-placeholder">🔄 Foto</div>`;
+      return best.id;
     }
 
-    function addPoi() {
-      const trip = getTrip();
-      if (!trip) return;
-      const nameInp = document.getElementById('poi-name');
-      const zoneInp = document.getElementById('poi-zone');
-      const urlInp = document.getElementById('poi-img-url');
-      const fileInp = document.getElementById('poi-img-file');
-      const name = nameInp.value.trim();
-      if (!name) return;
-      const zone = (zoneInp && zoneInp.value.trim()) || trip.title;
-      const prio = document.getElementById('poi-prio').value;
-
-      readImageInput(fileInp, urlInp, async function(imgSrc) {
-        const newIdx = trip.pois.length;
-        trip.pois.push({ name, zone, prio, img: imgSrc });
-        nameInp.value = '';
-        if (zoneInp) zoneInp.value = '';
-        if (urlInp) urlInp.value = '';
-        if (fileInp) fileInp.value = '';
-        saveDb();
-        renderPois();
-
-        if (!imgSrc) {
-          const webImg = await fetchPlacePhotoFromWeb(name, zone);
-          if (webImg && trip.pois[newIdx]) {
-            trip.pois[newIdx].img = webImg;
-            saveDb();
-            renderPois();
-          }
-        }
-      });
+    function formatEuro(val) {
+      return new Intl.NumberFormat('it-IT', {
+        style: 'currency',
+        currency: 'EUR'
+      }).format(Number(val) || 0);
     }
 
-    function sendPoiToDay(idx) {
-      const trip = getTrip();
-      if (!trip) return;
-      const poi = trip.pois[idx];
-      const day = trip.currentDay;
-      if (!trip.daysStops[day]) trip.daysStops[day] = [];
-      trip.daysStops[day].push({ title: poi.name, zone: poi.zone, done: false, img: poi.img || '' });
-      saveDb();
-      renderStops();
-      navigateTo('live');
+    function getActiveTrip() {
+      return state.trips.find(t => t.id === state.selectedTripId) || null;
     }
 
-    function renderPois() {
-      const trip = getTrip();
-      if (!trip) return;
-      document.getElementById('poi-count').innerText = trip.pois.length + ' salvati';
-      document.getElementById('poi-list').innerHTML = trip.pois.map((p, idx) => `
-        <div class="item-box">
-          <div class="item-left">
-            ${renderPhotoThumb(p.name, p.img)}
-            <div class="item-info">
-              <div class="item-title">${p.name}</div>
-              <div class="item-sub">
-                <span class="tag ${p.prio === 'Must-see' ? 'tag-amber' : ''}">${p.zone} • ${p.prio}</span>
-              </div>
-            </div>
+    function render() {
+      const hasTrips = state.trips.length > 0;
+      document.getElementById('welcomeSection').classList.toggle('hidden', hasTrips);
+      document.getElementById('tripsCatalogSection').classList.toggle('hidden', !hasTrips);
+      document.getElementById('drawerTripCount').textContent = String(state.trips.length);
+
+      const grid = document.getElementById('tripsGrid');
+      grid.innerHTML = '';
+
+      for (const trip of state.trips) {
+        const cover = COVER_STYLES[trip.theme] || COVER_STYLES.coast;
+        const total = trip.expenses.reduce((acc, e) => acc + Number(e.amount || 0), 0);
+        const card = document.createElement('article');
+        card.className = 'trip-card' + (trip.id === state.selectedTripId ? ' selected' : '');
+        card.innerHTML = `
+          <div class="trip-cover" style="background-image: ${cover.bg}">
+            <span class="trip-badge">${cover.label}</span>
           </div>
-          <div class="item-actions">
-            <button class="btn btn-sm btn-ghost" onclick="refreshPoiPhoto(${idx})" title="Cerca foto sul web">🔄</button>
-            <a class="btn btn-sm btn-map" href="${getMapsUrl(p.name, p.zone)}" target="_blank" rel="noopener noreferrer">🗺️ Maps</a>
-            <button class="btn btn-sm btn-sky" onclick="sendPoiToDay(${idx})" title="Porta nel giorno attivo">→ G${trip.currentDay}</button>
-            <button class="btn btn-sm btn-ghost" onclick="getTrip().pois.splice(${idx},1);saveDb();renderPois();">✕</button>
-          </div>
-        </div>
-      `).join('');
-    }
-
-    function updateFx() {
-      const trip = getTrip();
-      if (!trip) return;
-      const r = parseFloat(document.getElementById('fx-rate').value);
-      if (!isNaN(r) && r > 0) { trip.fxRate = r; saveDb(); }
-      calcFx();
-    }
-
-    function calcFx() {
-      const trip = getTrip();
-      if (!trip) return;
-      const eur = parseFloat(document.getElementById('fx-eur').value) || 0;
-      const converted = eur * (trip.fxRate || 1);
-      const dec = typeof trip.decimals === 'number' ? trip.decimals : 2;
-      const formatted = dec === 0
-        ? Math.round(converted).toLocaleString('it-IT')
-        : converted.toFixed(dec).replace('.', ',');
-      document.getElementById('fx-out').innerText = `${formatted} ${trip.symbol}`;
-    }
-
-    function addFlight() {
-      const trip = getTrip();
-      if (!trip) return;
-      const route = document.getElementById('fl-route').value.trim();
-      if (!route) return;
-      const code = document.getElementById('fl-code').value.trim() || 'VOLO';
-      const time = document.getElementById('fl-time').value.trim() || 'Orario da confermare';
-      const price = parseFloat(document.getElementById('fl-price').value) || 0;
-      const note = document.getElementById('fl-note').value.trim() || '';
-      trip.flights.push({ code, route, time, price, note });
-      ['fl-code', 'fl-route', 'fl-time', 'fl-price', 'fl-note'].forEach(id => document.getElementById(id).value = '');
-      saveDb();
-      renderFlights();
-      renderQuotes();
-    }
-
-    function renderFlights() {
-      const trip = getTrip();
-      if (!trip) return;
-      document.getElementById('flight-count').innerText = trip.flights.length + ' voli';
-      document.getElementById('flights-list').innerHTML = trip.flights.map((f, i) => `
-        <div class="flight-card">
-          <div class="flight-route">
-            <span>${f.route} <span class="tag">${f.code}</span></span>
-            <div class="item-actions">
-              <span class="flight-price">${fmtEur(f.price)}</span>
-              <button class="btn btn-sm btn-ghost" onclick="getTrip().flights.splice(${i},1);saveDb();renderFlights();renderQuotes();">✕</button>
-            </div>
-          </div>
-          <div class="flight-meta"><span>🕒 ${f.time}</span><span>${f.note}</span></div>
-        </div>
-      `).join('');
-    }
-
-    function addQuoteItem() {
-      const trip = getTrip();
-      if (!trip) return;
-      const cat = document.getElementById('qt-cat').value;
-      const title = document.getElementById('qt-title').value.trim();
-      const price = parseFloat(document.getElementById('qt-price').value);
-      const url = normalizeUrl(document.getElementById('qt-url').value);
-      if (!title || isNaN(price) || price < 0) return;
-      trip.quotes.push({ cat, title, price, url });
-      ['qt-title', 'qt-price', 'qt-url'].forEach(id => document.getElementById(id).value = '');
-      saveDb();
-      renderQuotes();
-    }
-
-    function renderQuotes() {
-      const trip = getTrip();
-      if (!trip) return;
-      const flightsSum = trip.flights.reduce((acc, f) => acc + (Number(f.price) || 0), 0);
-      const quoteSum = trip.quotes.reduce((acc, q) => acc + (Number(q.price) || 0), 0);
-      const hotelsSum = trip.quotes.filter(q => q.cat === 'Hotel').reduce((acc, q) => acc + q.price, 0);
-      const attrSum = trip.quotes.filter(q => q.cat === 'Attrazione').reduce((acc, q) => acc + q.price, 0);
-      const extraFlightsQuote = trip.quotes.filter(q => q.cat === 'Volo').reduce((acc, q) => acc + q.price, 0);
-
-      document.getElementById('quote-list').innerHTML = trip.quotes.map((q, i) => `
-        <div class="item-box">
-          <div class="item-info">
-            <div class="item-title"><span class="tag">${q.cat}</span> ${q.title}</div>
-          </div>
-          <div class="item-actions">
-            <b style="font-size:12px;">${fmtEur(q.price)}</b>
-            ${q.url ? `<a class="btn btn-sm btn-link" href="${q.url}" target="_blank" rel="noopener noreferrer">🔗 Link</a>` : ''}
-            <button class="btn btn-sm btn-ghost" onclick="getTrip().quotes.splice(${i},1);saveDb();renderQuotes();">✕</button>
-          </div>
-        </div>
-      `).join('');
-
-      const totalFlights = flightsSum + extraFlightsQuote;
-      const grandTotal = totalFlights + quoteSum - extraFlightsQuote;
-      const paxCount = Math.max(1, trip.members.length);
-
-      document.getElementById('quote-breakdown').innerHTML = `
-        <span>✈️ Voli: <b>${fmtEur(totalFlights)}</b></span>
-        <span>🏨 Hotel: <b>${fmtEur(hotelsSum)}</b></span>
-        <span>🎟️ Attrazioni: <b>${fmtEur(attrSum)}</b></span>
-      `;
-      document.getElementById('quote-grand-total').innerText = fmtEur(grandTotal);
-      document.getElementById('quote-per-person').innerText = `~ ${fmtEur(grandTotal / paxCount)} a persona (${paxCount} pax)`;
-    }
-
-    function renderDayTabs() {
-      const trip = getTrip();
-      if (!trip) return;
-      const days = Object.keys(trip.daysStops).map(Number).sort((a, b) => a - b);
-      if (!days.length) { trip.daysStops[1] = []; days.push(1); }
-      if (!trip.daysStops[trip.currentDay]) trip.currentDay = days[0];
-
-      document.getElementById('trip-start-date-input').value = trip.startDate || '';
-
-      document.getElementById('day-tabs').innerHTML = days.map(d => {
-        const dateStr = getItalianDayDateText(trip.startDate, d);
-        const tabLabel = dateStr ? `Giorno ${d} • ${dateStr}` : `Giorno ${d}`;
-        return `<button class="day-tab ${trip.currentDay === d ? 'active' : ''}" onclick="selectDay(${d})">${tabLabel}</button>`;
-      }).join('') + `<button class="btn btn-sm btn-ghost" onclick="addDay()">+ Giorno</button>`;
-
-      const activeDateStr = getItalianDayDateText(trip.startDate, trip.currentDay);
-      document.getElementById('day-date-label').innerText = activeDateStr
-        ? `Giorno ${trip.currentDay} — ${activeDateStr}`
-        : `Giorno ${trip.currentDay} (imposta la data inizio per vedere la data)`;
-    }
-
-    function selectDay(d) {
-      const trip = getTrip();
-      if (!trip) return;
-      trip.currentDay = d;
-      saveDb();
-      renderDayTabs();
-      renderStops();
-    }
-
-    function addDay() {
-      const trip = getTrip();
-      if (!trip) return;
-      const days = Object.keys(trip.daysStops).map(Number);
-      const next = (days.length ? Math.max(...days) : 0) + 1;
-      trip.daysStops[next] = [];
-      trip.currentDay = next;
-      saveDb();
-      renderDayTabs();
-      renderStops();
-    }
-
-    function addStop() {
-      const trip = getTrip();
-      if (!trip) return;
-      const inp = document.getElementById('stop-input');
-      const urlInp = document.getElementById('stop-img-url');
-      const fileInp = document.getElementById('stop-img-file');
-      const title = inp.value.trim();
-      if (!title) return;
-
-      readImageInput(fileInp, urlInp, async function(imgSrc) {
-        if (!trip.daysStops[trip.currentDay]) trip.daysStops[trip.currentDay] = [];
-        const newIdx = trip.daysStops[trip.currentDay].length;
-        trip.daysStops[trip.currentDay].push({ title, zone: trip.title, done: false, img: imgSrc });
-        inp.value = '';
-        if (urlInp) urlInp.value = '';
-        if (fileInp) fileInp.value = '';
-        saveDb();
-        renderStops();
-
-        if (!imgSrc) {
-          const webImg = await fetchPlacePhotoFromWeb(title, trip.title);
-          if (webImg && trip.daysStops[trip.currentDay][newIdx]) {
-            trip.daysStops[trip.currentDay][newIdx].img = webImg;
-            saveDb();
-            renderStops();
-          }
-        }
-      });
-    }
-
-    function toggleStop(idx) {
-      const trip = getTrip();
-      if (!trip) return;
-      trip.daysStops[trip.currentDay][idx].done = !trip.daysStops[trip.currentDay][idx].done;
-      saveDb();
-      renderStops();
-    }
-
-    function renderStops() {
-      const trip = getTrip();
-      if (!trip) return;
-      const list = trip.daysStops[trip.currentDay] || [];
-      const doneCnt = list.filter(s => s.done).length;
-      document.getElementById('stops-progress').innerText = `${doneCnt} / ${list.length} visitate`;
-      document.getElementById('stops-list').innerHTML = list.length ? list.map((s, i) => `
-        <div class="stop-item ${s.done ? 'done' : ''}">
-          <div class="item-left">
-            <input type="checkbox" ${s.done ? 'checked' : ''} onchange="toggleStop(${i})" style="cursor:pointer;" />
-            ${renderPhotoThumb(s.title, s.img)}
-            <div class="item-info">
-              <div class="stop-name item-title">${s.title}</div>
-              <div class="item-sub">
-                <span class="tag ${s.done ? 'tag-green' : 'tag-amber'}">${s.done ? 'Visitata' : 'Da fare'}</span>
-              </div>
-            </div>
-          </div>
-          <div class="item-actions">
-            <button class="btn btn-sm btn-ghost" onclick="refreshStopPhoto(${i})" title="Cerca foto sul web">🔄</button>
-            <a class="btn btn-sm btn-map" href="${getMapsUrl(s.title, s.zone)}" target="_blank" rel="noopener noreferrer">🗺️ Maps</a>
-            <button class="btn btn-sm btn-ghost" onclick="getTrip().daysStops[getTrip().currentDay].splice(${i},1);saveDb();renderStops();">✕</button>
-          </div>
-        </div>
-      `).join('') : '<div style="font-size:12px;color:#64748b;padding:8px;">Nessuna tappa per questo giorno.</div>';
-    }
-
-    function renderExpenseControls() {
-      const trip = getTrip();
-      if (!trip) return;
-      const meta = getCurrencyMeta(trip.currency);
-      const flag = trip.flag || meta.flag;
-      const symbol = trip.symbol || meta.symbol;
-      const currSel = document.getElementById('exp-curr');
-      currSel.innerHTML = `<option value="EUR">🇪🇺 EUR (€)</option>` +
-        (trip.currency !== 'EUR' ? `<option value="${trip.currency}">${flag} ${trip.currency} (${symbol})</option>` : '');
-      document.getElementById('exp-who').innerHTML = trip.members.map(m => `<option value="${m}">${m}</option>`).join('');
-      document.getElementById('exp-split-bar').innerHTML = `<span style="color:#475569;">Dividi tra:</span>` +
-        trip.members.map(m => `<label><input type="checkbox" class="split-chk" value="${m}" checked /> ${m}</label>`).join('');
-    }
-
-    function addExpense() {
-      const trip = getTrip();
-      if (!trip) return;
-      const desc = document.getElementById('exp-desc').value.trim();
-      const rawAmt = parseFloat(document.getElementById('exp-amt').value);
-      const curr = document.getElementById('exp-curr').value;
-      const who = document.getElementById('exp-who').value;
-      const splitWith = Array.from(document.querySelectorAll('.split-chk:checked')).map(c => c.value);
-      if (!desc || isNaN(rawAmt) || rawAmt <= 0 || !splitWith.length) return;
-      const amountEur = curr !== 'EUR' ? rawAmt / (trip.fxRate || 1) : rawAmt;
-      trip.expenses.push({ desc, amountEur, who, splitWith });
-      document.getElementById('exp-desc').value = '';
-      document.getElementById('exp-amt').value = '';
-      saveDb();
-      renderExpenses();
-    }
-
-    function renderExpenses() {
-      const trip = getTrip();
-      if (!trip) return;
-      const tot = trip.expenses.reduce((acc, e) => acc + e.amountEur, 0);
-      document.getElementById('exp-total').innerText = 'Totale: ' + fmtEur(tot);
-
-      document.getElementById('exp-list').innerHTML = trip.expenses.map((e, i) => `
-        <div class="item-box">
-          <div>
-            <div style="font-size:12px;"><b>${e.desc}</b> <span style="color:#64748b;">• ${e.who}</span></div>
-            <div style="font-size:10px;color:#64748b;">Con: ${(e.splitWith || trip.members).join(', ')}</div>
-          </div>
-          <div class="item-actions">
-            <b style="font-size:12px;">${fmtEur(e.amountEur)}</b>
-            <button class="btn btn-sm btn-ghost" onclick="getTrip().expenses.splice(${i},1);saveDb();renderExpenses();">✕</button>
-          </div>
-        </div>
-      `).join('');
-
-      const paid = {}, share = {}, bal = {};
-      trip.members.forEach(m => { paid[m] = 0; share[m] = 0; bal[m] = 0; });
-
-      trip.expenses.forEach(e => {
-        if (paid[e.who] === undefined) { paid[e.who] = 0; share[e.who] = 0; bal[e.who] = 0; }
-        paid[e.who] += e.amountEur;
-        bal[e.who] += e.amountEur;
-        const targets = (e.splitWith && e.splitWith.length) ? e.splitWith : trip.members;
-        const quota = e.amountEur / targets.length;
-        targets.forEach(p => {
-          if (paid[p] === undefined) { paid[p] = 0; share[p] = 0; bal[p] = 0; }
-          share[p] += quota;
-          bal[p] -= quota;
-        });
-      });
-
-      document.getElementById('members-summary').innerHTML = trip.members.map(m => `
-        <div class="member-stat">
-          <div style="font-weight:800;">${m}</div>
-          <div style="color:#475569;">Pagato: <b>${fmtEur(paid[m])}</b></div>
-          <div style="color:#475569;">Quota: <b>${fmtEur(share[m])}</b></div>
-        </div>
-      `).join('');
-
-      const debtors = [], creditors = [];
-      Object.keys(bal).forEach(m => {
-        const v = Math.round(bal[m] * 100) / 100;
-        if (v < -0.01) debtors.push({ name: m, amt: -v });
-        if (v > 0.01) creditors.push({ name: m, amt: v });
-      });
-
-      const linesHtml = [];
-      const linesPlain = [`${trip.title} — Riepilogo spese (${fmtEur(tot)}):`];
-      let dIdx = 0, cIdx = 0;
-      while (dIdx < debtors.length && cIdx < creditors.length) {
-        const pay = Math.min(debtors[dIdx].amt, creditors[cIdx].amt);
-        const fmt = fmtEur(pay);
-        linesHtml.push(`<div class="settle-line"><span><b>${debtors[dIdx].name}</b> → <b>${creditors[cIdx].name}</b></span><b>${fmt}</b></div>`);
-        linesPlain.push(`- ${debtors[dIdx].name} deve dare ${fmt} a ${creditors[cIdx].name}`);
-        debtors[dIdx].amt -= pay;
-        creditors[cIdx].amt -= pay;
-        if (debtors[dIdx].amt < 0.01) dIdx++;
-        if (creditors[cIdx].amt < 0.01) cIdx++;
-      }
-
-      lastSettlementText = linesPlain.length > 1 ? linesPlain.join('\n') : 'Tutte le spese sono in pari.';
-      document.getElementById('settle-list').innerHTML = linesHtml.length
-        ? linesHtml.join('')
-        : '<div class="settle-line" style="color:#64748b;">Tutte le spese sono in pari.</div>';
-    }
-
-    function copySettlement(btn) {
-      if (navigator.clipboard) navigator.clipboard.writeText(lastSettlementText).catch(() => {});
-      const prev = btn.innerText;
-      btn.innerText = '✓ Copiato';
-      setTimeout(() => { btn.innerText = prev; }, 1500);
-    }
-
-    function renderTripHero() {
-      const trip = getTrip();
-      if (!trip) return;
-      const meta = getCurrencyMeta(trip.currency);
-      const flag = trip.flag || meta.flag;
-      const country = trip.country || meta.country;
-      const dateFormatted = formatItalianDateFromIso(trip.startDate);
-      const coverEl = document.getElementById('hero-cover-container');
-      const cleanCover = normalizeUrl(trip.coverImg);
-
-      coverEl.innerHTML = cleanCover
-        ? `<img class="trip-hero-cover" src="${cleanCover}" alt="${trip.title}" onerror="this.outerHTML='<div class=\\'trip-hero-fallback\\'>✈️</div>'" />`
-        : `<div class="trip-hero-fallback">✈️</div>`;
-
-      document.getElementById('banner-title').innerText = trip.title;
-      document.getElementById('banner-sub').innerHTML =
-        `${dateFormatted ? `Partenza: <b>${dateFormatted}</b> • ` : ''}Amici: <b>${trip.members.join(', ')}</b> (${trip.members.length} pax) • Valuta: <b>${flag} ${trip.currency}${country ? ' — ' + country : ''}</b>`;
-      document.getElementById('overview-date-badge').innerText = dateFormatted ? `📅 ${dateFormatted}` : 'Viaggio attivo';
-      document.getElementById('fx-curr-label').innerText = `${flag} ${trip.currency}`;
-      document.getElementById('fx-country-tag').innerText = country ? `${flag} ${country}` : `${flag} ${trip.currency}`;
-      document.getElementById('fx-rate').value = trip.fxRate;
-    }
-
-    function renderTripsGrid() {
-      const activeTrip = getTrip();
-      const grid = document.getElementById('trips-grid');
-      const list = Object.values(db.trips);
-
-      grid.innerHTML = list.map(t => {
-        const isSel = activeTrip && t.id === activeTrip.id;
-        const dateStr = formatItalianDateFromIso(t.startDate);
-        const meta = getCurrencyMeta(t.currency);
-        const flag = t.flag || meta.flag;
-        const cleanImg = normalizeUrl(t.coverImg);
-        const visualTop = cleanImg
-          ? `<img class="trip-card-img" src="${cleanImg}" alt="${t.title}" onerror="this.outerHTML='<div class=\\'trip-card-placeholder\\'>✈️</div>'" />`
-          : `<div class="trip-card-placeholder">✈️</div>`;
-
-        return `
-          <div class="trip-card ${isSel ? 'active' : ''}" onclick="selectTrip('${t.id}')">
-            ${visualTop}
-            <div class="trip-card-content">
-              <div class="trip-card-title">${t.title}</div>
-              <div class="trip-card-meta">
-                ${dateStr ? `📅 ${dateStr} • ` : ''}${flag} ${t.currency} • 👥 ${t.members.length}
-              </div>
-              <div class="trip-card-actions">
-                <span class="tag ${isSel ? 'tag-green' : ''}">${isSel ? 'Selezionato' : 'Apri viaggio'}</span>
-                <button class="btn btn-sm btn-danger" onclick="deleteTripById('${t.id}', event)">Elimina</button>
-              </div>
+          <div class="trip-card-body">
+            <h3 class="trip-card-title">${escapeHtml(trip.title)}</h3>
+            <div class="trip-card-meta">
+              <span>${escapeHtml(trip.startDate)} → ${escapeHtml(trip.endDate)}</span>
+              <span>${formatEuro(total)}</span>
             </div>
           </div>
         `;
-      }).join('');
+        card.addEventListener('click', () => {
+          state.selectedTripId = trip.id;
+          saveState();
+          render();
+          document.getElementById('activeTripSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+        grid.appendChild(card);
+      }
+
+      const active = getActiveTrip();
+      const panel = document.getElementById('activeTripSection');
+      panel.classList.toggle('hidden', !active);
+
+      if (!active) return;
+
+      document.getElementById('activeTripTitle').textContent = active.title;
+      document.getElementById('activeTripDates').textContent = `${active.startDate} → ${active.endDate}`;
+
+      const total = active.expenses.reduce((acc, e) => acc + Number(e.amount || 0), 0);
+      const count = active.members.length;
+      const perPerson = count > 0 ? total / count : 0;
+
+      document.getElementById('statTotal').textContent = formatEuro(total);
+      document.getElementById('statPerPerson').textContent = formatEuro(perPerson);
+      document.getElementById('statMembersCount').textContent = String(count);
+
+      // Calcolo saldi netti
+      const paidMap = Object.fromEntries(active.members.map(m => [m, 0]));
+      for (const exp of active.expenses) {
+        if (paidMap[exp.payer] !== undefined) {
+          paidMap[exp.payer] += Number(exp.amount || 0);
+        }
+      }
+
+      const membersList = document.getElementById('membersList');
+      membersList.innerHTML = '';
+      const payerSelect = document.getElementById('expensePayerSelect');
+      payerSelect.innerHTML = '';
+
+      for (const member of active.members) {
+        const balance = (paidMap[member] || 0) - perPerson;
+        const sign = balance > 0.009 ? '+' : '';
+        const color = balance > 0.009 ? 'var(--accent-ok)' : (balance < -0.009 ? 'var(--accent-coral)' : 'var(--text-muted)');
+
+        const li = document.createElement('li');
+        li.className = 'list-item';
+        li.innerHTML = `
+          <span>${escapeHtml(member)}</span>
+          <strong style="color: ${color}">${sign}${formatEuro(balance)}</strong>
+        `;
+        membersList.appendChild(li);
+
+        const opt = document.createElement('option');
+        opt.value = member;
+        opt.textContent = `Pagato da ${member}`;
+        payerSelect.appendChild(opt);
+      }
+
+      const expensesList = document.getElementById('expensesList');
+      expensesList.innerHTML = '';
+      for (const exp of active.expenses) {
+        const li = document.createElement('li');
+        li.className = 'list-item';
+        li.innerHTML = `
+          <div>
+            <div><strong>${escapeHtml(exp.title)}</strong></div>
+            <div style="font-size: 0.78rem; color: var(--text-muted)">Pagato da ${escapeHtml(exp.payer)}</div>
+          </div>
+          <strong>${formatEuro(exp.amount)}</strong>
+        `;
+        expensesList.appendChild(li);
+      }
     }
 
-    function renderAll() {
-      renderViews();
-      if (!getTrip()) return;
-      renderTripHero();
-      renderTripsGrid();
-      renderPois();
-      renderFlights();
-      renderQuotes();
-      calcFx();
-      renderDayTabs();
-      renderStops();
-      renderExpenseControls();
-      renderExpenses();
+    function escapeHtml(str) {
+      return String(str)
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;');
     }
 
-    populateCurrencyDropdown();
-    renderAll();
+    // Drawer & Modale
+    const drawer = document.getElementById('drawer');
+    const drawerBackdrop = document.getElementById('drawerBackdrop');
+    const newTripModal = document.getElementById('newTripModal');
+
+    function setDrawerOpen(open) {
+      drawer.classList.toggle('open', open);
+      drawerBackdrop.classList.toggle('open', open);
+    }
+
+    function setNewTripModalOpen(open) {
+      newTripModal.classList.toggle('open', open);
+      if (open) {
+        const todayStr = new Date().toISOString().slice(0, 10);
+        if (!document.getElementById('tripStartInput').value) {
+          document.getElementById('tripStartInput').value = todayStr;
+        }
+        if (!document.getElementById('tripEndInput').value) {
+          document.getElementById('tripEndInput').value = todayStr;
+        }
+        document.getElementById('tripTitleInput').focus();
+      }
+    }
+
+    document.getElementById('burgerBtn').addEventListener('click', () => setDrawerOpen(true));
+    document.getElementById('closeDrawerBtn').addEventListener('click', () => setDrawerOpen(false));
+    drawerBackdrop.addEventListener('click', () => setDrawerOpen(false));
+
+    document.getElementById('navTripsBtn').addEventListener('click', () => {
+      setDrawerOpen(false);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    document.getElementById('navNewTripBtn').addEventListener('click', () => {
+      setDrawerOpen(false);
+      setNewTripModalOpen(true);
+    });
+
+    document.getElementById('navResetDemoBtn').addEventListener('click', () => {
+      setDrawerOpen(false);
+      state.trips = getSeedTrips();
+      state.selectedTripId = pickClosestTripId(state.trips);
+      saveState();
+      render();
+    });
+
+    document.getElementById('brandHomeBtn').addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    document.getElementById('openNewTripBtn').addEventListener('click', () => setNewTripModalOpen(true));
+    document.getElementById('welcomeCreateBtn').addEventListener('click', () => setNewTripModalOpen(true));
+    document.getElementById('cancelNewTripBtn').addEventListener('click', () => setNewTripModalOpen(false));
+
+    document.getElementById('newTripForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const title = document.getElementById('tripTitleInput').value.trim();
+      const startDate = document.getElementById('tripStartInput').value;
+      const endDate = document.getElementById('tripEndInput').value;
+      const theme = document.getElementById('tripThemeSelect').value;
+
+      if (!title || !startDate || !endDate) return;
+
+      const newTrip = {
+        id: 'trip-' + Date.now(),
+        title,
+        startDate,
+        endDate,
+        theme,
+        members: ['Tu'],
+        expenses: []
+      };
+
+      state.trips.unshift(newTrip);
+      state.selectedTripId = newTrip.id;
+      saveState();
+      render();
+      e.target.reset();
+      setNewTripModalOpen(false);
+    });
+
+    document.getElementById('deleteTripBtn').addEventListener('click', () => {
+      const active = getActiveTrip();
+      if (!active) return;
+      state.trips = state.trips.filter(t => t.id !== active.id);
+      state.selectedTripId = pickClosestTripId(state.trips);
+      saveState();
+      render();
+    });
+
+    document.getElementById('addMemberForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const active = getActiveTrip();
+      if (!active) return;
+      const input = document.getElementById('memberNameInput');
+      const name = input.value.trim();
+      if (!name || active.members.includes(name)) return;
+      active.members.push(name);
+      input.value = '';
+      saveState();
+      render();
+    });
+
+    document.getElementById('addExpenseForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const active = getActiveTrip();
+      if (!active || active.members.length === 0) return;
+
+      const titleInput = document.getElementById('expenseTitleInput');
+      const amountInput = document.getElementById('expenseAmountInput');
+      const payerSelect = document.getElementById('expensePayerSelect');
+
+      const title = titleInput.value.trim();
+      const amount = parseFloat(amountInput.value);
+      const payer = payerSelect.value;
+
+      if (!title || isNaN(amount) || amount <= 0 || !payer) return;
+
+      active.expenses.push({
+        id: 'exp-' + Date.now(),
+        title,
+        amount,
+        payer
+      });
+
+      titleInput.value = '';
+      amountInput.value = '';
+      saveState();
+      render();
+    });
+
+    loadState();
+    render();
+
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/WayLocal/sw.js').catch(() => {});
+      });
+    }
   </script>
 </body>
 </html>
