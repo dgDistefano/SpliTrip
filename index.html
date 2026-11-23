@@ -359,6 +359,11 @@
       border-color: var(--accent-cyan);
     }
 
+    .trip-card.selected {
+      border-color: var(--accent-cyan);
+      box-shadow: 0 0 0 1px var(--accent-cyan);
+    }
+
     .trip-cover {
       height: 140px;
       width: 100%;
@@ -1175,6 +1180,24 @@
       selectedTripId: null
     };
 
+    function getStartTimestamp(trip) {
+      const ts = new Date((trip?.startDate || '') + 'T00:00:00').getTime();
+      return Number.isNaN(ts) ? Number.MAX_SAFE_INTEGER : ts;
+    }
+
+    function sortTripsByDepartureProximity(trips) {
+      const todayMidnight = new Date().setHours(0, 0, 0, 0);
+      return [...trips].sort((a, b) => {
+        const startA = getStartTimestamp(a);
+        const startB = getStartTimestamp(b);
+        const distA = startA === Number.MAX_SAFE_INTEGER ? Number.MAX_SAFE_INTEGER : Math.abs(startA - todayMidnight);
+        const distB = startB === Number.MAX_SAFE_INTEGER ? Number.MAX_SAFE_INTEGER : Math.abs(startB - todayMidnight);
+        if (distA !== distB) return distA - distB;
+        if (startA !== startB) return startA - startB;
+        return String(a.title || '').localeCompare(String(b.title || ''), 'it');
+      });
+    }
+
     function applyAppTheme(themeName) {
       const safeTheme = ALLOWED_APP_THEMES.includes(themeName) ? themeName : 'dark';
       state.appTheme = safeTheme;
@@ -1218,14 +1241,14 @@
           state.appTheme = ALLOWED_APP_THEMES.includes(parsed.appTheme) ? parsed.appTheme : 'dark';
           state.view = parsed.view === 'detail' ? 'detail' : 'catalog';
           if (Array.isArray(parsed.trips)) {
-            state.trips = parsed.trips.map(normalizeTrip);
+            state.trips = sortTripsByDepartureProximity(parsed.trips.map(normalizeTrip));
             state.selectedTripId = parsed.selectedTripId || null;
           }
         } else {
-          state.trips = getSeedTrips();
+          state.trips = sortTripsByDepartureProximity(getSeedTrips());
         }
       } catch (e) {
-        state.trips = getSeedTrips();
+        state.trips = sortTripsByDepartureProximity(getSeedTrips());
       }
 
       if (state.trips.length > 0 && !state.trips.some(t => t.id === state.selectedTripId)) {
@@ -1240,6 +1263,7 @@
     }
 
     function saveState() {
+      state.trips = sortTripsByDepartureProximity(state.trips);
       try {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
       } catch (e) {
@@ -1248,22 +1272,8 @@
     }
 
     function pickClosestTripId(trips) {
-      if (!trips.length) return null;
-      const now = new Date().setHours(0, 0, 0, 0);
-      let best = trips[0];
-      let bestDiff = Infinity;
-
-      for (const trip of trips) {
-        const start = new Date(trip.startDate + 'T00:00:00').getTime();
-        const end = new Date(trip.endDate + 'T00:00:00').getTime();
-        const isOngoing = !isNaN(start) && !isNaN(end) && now >= start && now <= end;
-        const diff = isOngoing ? 0 : Math.abs((isNaN(start) ? now : start) - now);
-        if (diff < bestDiff) {
-          bestDiff = diff;
-          best = trip;
-        }
-      }
-      return best.id;
+      const sorted = sortTripsByDepartureProximity(trips);
+      return sorted.length ? sorted[0].id : null;
     }
 
     function formatMoney(val, currency = 'EUR') {
@@ -1333,19 +1343,22 @@
     }
 
     function render() {
-      const hasTrips = state.trips.length > 0;
+      const orderedTrips = sortTripsByDepartureProximity(state.trips);
+      state.trips = orderedTrips;
+
+      const hasTrips = orderedTrips.length > 0;
       const active = getActiveTrip();
       const showDetail = hasTrips && state.view === 'detail' && !!active;
 
       document.getElementById('welcomeSection').classList.toggle('hidden', hasTrips);
       document.getElementById('tripsCatalogSection').classList.toggle('hidden', !hasTrips || showDetail);
       document.getElementById('activeTripSection').classList.toggle('hidden', !showDetail);
-      document.getElementById('drawerTripCount').textContent = String(state.trips.length);
+      document.getElementById('drawerTripCount').textContent = String(orderedTrips.length);
 
       const grid = document.getElementById('tripsGrid');
       grid.innerHTML = '';
 
-      for (const trip of state.trips) {
+      for (const trip of orderedTrips) {
         const cover = COVER_STYLES[trip.theme] || COVER_STYLES.coast;
         const cMeta = getCurrencyMeta(trip.currency);
         const total = trip.expenses.reduce((acc, e) => acc + Number(e.amount || 0), 0);
@@ -1696,7 +1709,7 @@
         const parsed = JSON.parse(text);
         if (parsed.appTheme) applyAppTheme(parsed.appTheme);
         if (Array.isArray(parsed.trips)) {
-          state.trips = parsed.trips.map(normalizeTrip);
+          state.trips = sortTripsByDepartureProximity(parsed.trips.map(normalizeTrip));
           state.selectedTripId = parsed.selectedTripId || pickClosestTripId(state.trips);
           state.view = parsed.view === 'detail' && getActiveTrip() ? 'detail' : 'catalog';
           saveState();
@@ -1710,7 +1723,7 @@
 
     document.getElementById('navResetDemoBtn').addEventListener('click', () => {
       setDrawerOpen(false);
-      state.trips = getSeedTrips();
+      state.trips = sortTripsByDepartureProximity(getSeedTrips());
       state.selectedTripId = pickClosestTripId(state.trips);
       state.view = 'catalog';
       saveState();
