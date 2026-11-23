@@ -373,6 +373,7 @@
       display: flex;
       align-items: flex-end;
       justify-content: space-between;
+      gap: 8px;
       padding: 10px 12px;
     }
 
@@ -467,7 +468,7 @@
 
     .stats-row {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(165px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(175px, 1fr));
       gap: 12px;
       margin: 16px 0 22px;
     }
@@ -485,7 +486,7 @@
     }
 
     .stat-val {
-      font-size: 1.15rem;
+      font-size: 1.08rem;
       font-weight: 700;
       margin-top: 2px;
     }
@@ -553,9 +554,11 @@
     }
 
     input[type="text"],
+    input[type="search"],
     input[type="date"],
-    input[type="number"] {
-      flex: 1 1 130px;
+    input[type="number"],
+    select {
+      flex: 1 1 150px;
       min-width: 0;
     }
 
@@ -613,7 +616,7 @@
 
     .modal-card {
       width: 100%;
-      max-width: 470px;
+      max-width: 510px;
       max-height: 90dvh;
       overflow-y: auto;
       background: var(--bg-surface);
@@ -778,7 +781,7 @@
         <rect x="102" y="124" width="50" height="9" rx="4.5" fill="url(#welCoral)" />
       </svg>
       <h1>Benvenuti su Splitrip</h1>
-      <p>Pianifica i viaggi con il tuo gruppo, segna le tappe, carica una foto di copertina e dividi le spese nella valuta che preferisci.</p>
+      <p>Pianifica i viaggi con il tuo gruppo, segna le tappe, carica una foto di copertina e dividi le spese nella valuta del paese che visiti.</p>
       <button class="btn btn-primary" id="welcomeCreateBtn" type="button">+ Crea il tuo primo viaggio</button>
     </section>
 
@@ -812,19 +815,19 @@
       <div class="stats-row">
         <div class="stat-box">
           <div class="stat-label">Spesa totale</div>
-          <div class="stat-val" id="statTotal">€ 0,00</div>
+          <div class="stat-val" id="statTotal">0,00 €</div>
         </div>
         <div class="stat-box">
           <div class="stat-label">Quota media a persona</div>
-          <div class="stat-val" id="statPerPerson">€ 0,00</div>
+          <div class="stat-val" id="statPerPerson">0,00 €</div>
         </div>
         <div class="stat-box">
           <div class="stat-label">Partecipanti</div>
           <div class="stat-val" id="statMembersCount">0</div>
         </div>
         <div class="stat-box">
-          <div class="stat-label">Valuta viaggio</div>
-          <div class="stat-val" id="statCurrency">EUR</div>
+          <div class="stat-label">Valuta e paese</div>
+          <div class="stat-val" id="statCurrency">🇮🇹 EUR — Area Euro / Italia</div>
         </div>
       </div>
 
@@ -888,14 +891,9 @@
           <input type="date" id="tripEndInput" required />
         </div>
         <div class="field-group">
-          <label for="tripCurrencySelect">Valuta</label>
-          <select id="tripCurrencySelect">
-            <option value="EUR">EUR (€)</option>
-            <option value="USD">USD ($)</option>
-            <option value="GBP">GBP (£)</option>
-            <option value="CHF">CHF</option>
-            <option value="JPY">JPY (¥)</option>
-          </select>
+          <label for="tripCurrencySelect">Valuta, paese e bandiera</label>
+          <input type="search" id="currencyFilterInput" placeholder="Filtra per paese, bandiera o codice (es. Giappone, JPY, CHF)..." autocomplete="off" />
+          <select id="tripCurrencySelect" required></select>
         </div>
         <div class="field-group">
           <label for="tripThemeSelect">Sfondo / tema copertina</label>
@@ -923,6 +921,206 @@
   <script>
     const STORAGE_KEY = 'splitrip_data_v2';
     const ALLOWED_APP_THEMES = ['dark', 'light', 'ocean', 'sunset', 'forest'];
+
+    // Catalogo completo valute attive ISO 4217 con bandiera, codice, simbolo e paese/territorio
+    const CURRENCIES = [
+      { code: 'EUR', flag: '🇮🇹', symbol: '€', country: 'Area Euro / Italia' },
+      { code: 'USD', flag: '🇺🇸', symbol: '$', country: 'Stati Uniti d\'America' },
+      { code: 'GBP', flag: '🇬🇧', symbol: '£', country: 'Regno Unito' },
+      { code: 'CHF', flag: '🇨🇭', symbol: 'CHF', country: 'Svizzera / Liechtenstein' },
+      { code: 'JPY', flag: '🇯🇵', symbol: '¥', country: 'Giappone' },
+      { code: 'AED', flag: '🇦🇪', symbol: 'AED', country: 'Emirati Arabi Uniti' },
+      { code: 'AFN', flag: '🇦🇫', symbol: '؋', country: 'Afghanistan' },
+      { code: 'ALL', flag: '🇦🇱', symbol: 'L', country: 'Albania' },
+      { code: 'AMD', flag: '🇦🇲', symbol: '֏', country: 'Armenia' },
+      { code: 'AOA', flag: '🇦🇴', symbol: 'Kz', country: 'Angola' },
+      { code: 'ARS', flag: '🇦🇷', symbol: '$', country: 'Argentina' },
+      { code: 'AUD', flag: '🇦🇺', symbol: 'A$', country: 'Australia' },
+      { code: 'AWG', flag: '🇦🇼', symbol: 'ƒ', country: 'Aruba' },
+      { code: 'AZN', flag: '🇦🇿', symbol: '₼', country: 'Azerbaigian' },
+      { code: 'BAM', flag: '🇧🇦', symbol: 'KM', country: 'Bosnia ed Erzegovina' },
+      { code: 'BBD', flag: '🇧🇧', symbol: 'Bds$', country: 'Barbados' },
+      { code: 'BDT', flag: '🇧🇩', symbol: '৳', country: 'Bangladesh' },
+      { code: 'BHD', flag: '🇧🇭', symbol: '.د.ب', country: 'Bahrein' },
+      { code: 'BIF', flag: '🇧🇮', symbol: 'FBu', country: 'Burundi' },
+      { code: 'BMD', flag: '🇧🇲', symbol: '$', country: 'Bermuda' },
+      { code: 'BND', flag: '🇧🇳', symbol: 'B$', country: 'Brunei' },
+      { code: 'BOB', flag: '🇧🇴', symbol: 'Bs.', country: 'Bolivia' },
+      { code: 'BRL', flag: '🇧🇷', symbol: 'R$', country: 'Brasile' },
+      { code: 'BSD', flag: '🇧🇸', symbol: '$', country: 'Bahamas' },
+      { code: 'BTN', flag: '🇧🇹', symbol: 'Nu.', country: 'Bhutan' },
+      { code: 'BWP', flag: '🇧🇼', symbol: 'P', country: 'Botswana' },
+      { code: 'BYN', flag: '🇧🇾', symbol: 'Br', country: 'Bielorussia' },
+      { code: 'BZD', flag: '🇧🇿', symbol: 'BZ$', country: 'Belize' },
+      { code: 'CAD', flag: '🇨🇦', symbol: 'CA$', country: 'Canada' },
+      { code: 'CDF', flag: '🇨🇩', symbol: 'FC', country: 'Repubblica Democratica del Congo' },
+      { code: 'CLP', flag: '🇨🇱', symbol: '$', country: 'Cile' },
+      { code: 'CNY', flag: '🇨🇳', symbol: '¥', country: 'Cina' },
+      { code: 'COP', flag: '🇨🇴', symbol: '$', country: 'Colombia' },
+      { code: 'CRC', flag: '🇨🇷', symbol: '₡', country: 'Costa Rica' },
+      { code: 'CUP', flag: '🇨🇺', symbol: '$', country: 'Cuba' },
+      { code: 'CVE', flag: '🇨🇻', symbol: 'Esc', country: 'Capo Verde' },
+      { code: 'CZK', flag: '🇨🇿', symbol: 'Kč', country: 'Repubblica Ceca' },
+      { code: 'DJF', flag: '🇩🇯', symbol: 'Fdj', country: 'Gibuti' },
+      { code: 'DKK', flag: '🇩🇰', symbol: 'kr', country: 'Danimarca / Groenlandia / Fær Øer' },
+      { code: 'DOP', flag: '🇩🇴', symbol: 'RD$', country: 'Repubblica Dominicana' },
+      { code: 'DZD', flag: '🇩🇿', symbol: 'د.ج', country: 'Algeria' },
+      { code: 'EGP', flag: '🇪🇬', symbol: 'E£', country: 'Egitto' },
+      { code: 'ERN', flag: '🇪🇷', symbol: 'Nfk', country: 'Eritrea' },
+      { code: 'ETB', flag: '🇪🇹', symbol: 'Br', country: 'Etiopia' },
+      { code: 'FJD', flag: '🇫🇯', symbol: 'FJ$', country: 'Figi' },
+      { code: 'FKP', flag: '🇫🇰', symbol: '£', country: 'Isole Falkland' },
+      { code: 'GEL', flag: '🇬🇪', symbol: '₾', country: 'Georgia' },
+      { code: 'GHS', flag: '🇬🇭', symbol: 'GH₵', country: 'Ghana' },
+      { code: 'GIP', flag: '🇬🇮', symbol: '£', country: 'Gibilterra' },
+      { code: 'GMD', flag: '🇬🇲', symbol: 'D', country: 'Gambia' },
+      { code: 'GNF', flag: '🇬🇳', symbol: 'FG', country: 'Guinea' },
+      { code: 'GTQ', flag: '🇬🇹', symbol: 'Q', country: 'Guatemala' },
+      { code: 'GYD', flag: '🇬🇾', symbol: 'G$', country: 'Guyana' },
+      { code: 'HKD', flag: '🇭🇰', symbol: 'HK$', country: 'Hong Kong' },
+      { code: 'HNL', flag: '🇭🇳', symbol: 'L', country: 'Honduras' },
+      { code: 'HTG', flag: '🇭🇹', symbol: 'G', country: 'Haiti' },
+      { code: 'HUF', flag: '🇭🇺', symbol: 'Ft', country: 'Ungheria' },
+      { code: 'IDR', flag: '🇮🇩', symbol: 'Rp', country: 'Indonesia' },
+      { code: 'ILS', flag: '🇮🇱', symbol: '₪', country: 'Israele' },
+      { code: 'INR', flag: '🇮🇳', symbol: '₹', country: 'India' },
+      { code: 'IQD', flag: '🇮🇶', symbol: 'ع.د', country: 'Iraq' },
+      { code: 'IRR', flag: '🇮🇷', symbol: '﷼', country: 'Iran' },
+      { code: 'ISK', flag: '🇮🇸', symbol: 'kr', country: 'Islanda' },
+      { code: 'JMD', flag: '🇯🇲', symbol: 'J$', country: 'Giamaica' },
+      { code: 'JOD', flag: '🇯🇴', symbol: 'JD', country: 'Giordania' },
+      { code: 'KES', flag: '🇰🇪', symbol: 'KSh', country: 'Kenya' },
+      { code: 'KGS', flag: '🇰🇬', symbol: 'сом', country: 'Kirghizistan' },
+      { code: 'KHR', flag: '🇰🇭', symbol: '៛', country: 'Cambogia' },
+      { code: 'KMF', flag: '🇰🇲', symbol: 'CF', country: 'Comore' },
+      { code: 'KPW', flag: '🇰🇵', symbol: '₩', country: 'Corea del Nord' },
+      { code: 'KRW', flag: '🇰🇷', symbol: '₩', country: 'Corea del Sud' },
+      { code: 'KWD', flag: '🇰🇼', symbol: 'KD', country: 'Kuwait' },
+      { code: 'KYD', flag: '🇰🇾', symbol: 'CI$', country: 'Isole Cayman' },
+      { code: 'KZT', flag: '🇰🇿', symbol: '₸', country: 'Kazakistan' },
+      { code: 'LAK', flag: '🇱🇦', symbol: '₭', country: 'Laos' },
+      { code: 'LBP', flag: '🇱🇧', symbol: 'ل.ل', country: 'Libano' },
+      { code: 'LKR', flag: '🇱🇰', symbol: 'Rs', country: 'Sri Lanka' },
+      { code: 'LRD', flag: '🇱🇷', symbol: 'L$', country: 'Liberia' },
+      { code: 'LSL', flag: '🇱🇸', symbol: 'L', country: 'Lesotho' },
+      { code: 'LYD', flag: '🇱🇾', symbol: 'LD', country: 'Libia' },
+      { code: 'MAD', flag: '🇲🇦', symbol: 'MAD', country: 'Marocco' },
+      { code: 'MDL', flag: '🇲🇩', symbol: 'L', country: 'Moldavia' },
+      { code: 'MGA', flag: '🇲🇬', symbol: 'Ar', country: 'Madagascar' },
+      { code: 'MKD', flag: '🇲🇰', symbol: 'ден', country: 'Macedonia del Nord' },
+      { code: 'MMK', flag: '🇲🇲', symbol: 'K', country: 'Myanmar' },
+      { code: 'MNT', flag: '🇲🇳', symbol: '₮', country: 'Mongolia' },
+      { code: 'MOP', flag: '🇲🇴', symbol: 'MOP$', country: 'Macao' },
+      { code: 'MRU', flag: '🇲🇷', symbol: 'UM', country: 'Mauritania' },
+      { code: 'MUR', flag: '🇲🇺', symbol: '₨', country: 'Mauritius' },
+      { code: 'MVR', flag: '🇲🇻', symbol: 'Rf', country: 'Maldive' },
+      { code: 'MWK', flag: '🇲🇼', symbol: 'MK', country: 'Malawi' },
+      { code: 'MXN', flag: '🇲🇽', symbol: 'MX$', country: 'Messico' },
+      { code: 'MYR', flag: '🇲🇾', symbol: 'RM', country: 'Malaysia' },
+      { code: 'MZN', flag: '🇲🇿', symbol: 'MT', country: 'Mozambico' },
+      { code: 'NAD', flag: '🇳🇦', symbol: 'N$', country: 'Namibia' },
+      { code: 'NGN', flag: '🇳🇬', symbol: '₦', country: 'Nigeria' },
+      { code: 'NIO', flag: '🇳🇮', symbol: 'C$', country: 'Nicaragua' },
+      { code: 'NOK', flag: '🇳🇴', symbol: 'kr', country: 'Norvegia' },
+      { code: 'NPR', flag: '🇳🇵', symbol: '₨', country: 'Nepal' },
+      { code: 'NZD', flag: '🇳🇿', symbol: 'NZ$', country: 'Nuova Zelanda / Isole Cook' },
+      { code: 'OMR', flag: '🇴🇲', symbol: '﷼', country: 'Oman' },
+      { code: 'PAB', flag: '🇵🇦', symbol: 'B/.', country: 'Panama' },
+      { code: 'PEN', flag: '🇵🇪', symbol: 'S/', country: 'Perù' },
+      { code: 'PGK', flag: '🇵🇬', symbol: 'K', country: 'Papua Nuova Guinea' },
+      { code: 'PHP', flag: '🇵🇭', symbol: '₱', country: 'Filippine' },
+      { code: 'PKR', flag: '🇵🇰', symbol: '₨', country: 'Pakistan' },
+      { code: 'PLN', flag: '🇵🇱', symbol: 'zł', country: 'Polonia' },
+      { code: 'PYG', flag: '🇵🇾', symbol: '₲', country: 'Paraguay' },
+      { code: 'QAR', flag: '🇶🇦', symbol: '﷼', country: 'Qatar' },
+      { code: 'RON', flag: '🇷🇴', symbol: 'lei', country: 'Romania' },
+      { code: 'RSD', flag: '🇷🇸', symbol: 'дин.', country: 'Serbia' },
+      { code: 'RUB', flag: '🇷🇺', symbol: '₽', country: 'Russia' },
+      { code: 'RWF', flag: '🇷🇼', symbol: 'FRw', country: 'Ruanda' },
+      { code: 'SAR', flag: '🇸🇦', symbol: '﷼', country: 'Arabia Saudita' },
+      { code: 'SBD', flag: '🇸🇧', symbol: 'SI$', country: 'Isole Salomone' },
+      { code: 'SCR', flag: '🇸🇨', symbol: '₨', country: 'Seychelles' },
+      { code: 'SDG', flag: '🇸🇩', symbol: 'ج.س.', country: 'Sudan' },
+      { code: 'SEK', flag: '🇸🇪', symbol: 'kr', country: 'Svezia' },
+      { code: 'SGD', flag: '🇸🇬', symbol: 'S$', country: 'Singapore' },
+      { code: 'SHP', flag: '🇸🇭', symbol: '£', country: 'Sant\'Elena' },
+      { code: 'SLE', flag: '🇸🇱', symbol: 'Le', country: 'Sierra Leone' },
+      { code: 'SOS', flag: '🇸🇴', symbol: 'S', country: 'Somalia' },
+      { code: 'SRD', flag: '🇸🇷', symbol: '$', country: 'Suriname' },
+      { code: 'SSP', flag: '🇸🇸', symbol: '£', country: 'Sudan del Sud' },
+      { code: 'STN', flag: '🇸🇹', symbol: 'Db', country: 'São Tomé e Príncipe' },
+      { code: 'SYP', flag: '🇸🇾', symbol: '£', country: 'Siria' },
+      { code: 'SZL', flag: '🇸🇿', symbol: 'E', country: 'Eswatini' },
+      { code: 'THB', flag: '🇹🇭', symbol: '฿', country: 'Thailandia' },
+      { code: 'TJS', flag: '🇹🇯', symbol: 'SM', country: 'Tagikistan' },
+      { code: 'TMT', flag: '🇹🇲', symbol: 'T', country: 'Turkmenistan' },
+      { code: 'TND', flag: '🇹🇳', symbol: 'د.ت', country: 'Tunisia' },
+      { code: 'TOP', flag: '🇹🇴', symbol: 'T$', country: 'Tonga' },
+      { code: 'TRY', flag: '🇹🇷', symbol: '₺', country: 'Turchia' },
+      { code: 'TTD', flag: '🇹🇹', symbol: 'TT$', country: 'Trinidad e Tobago' },
+      { code: 'TWD', flag: '🇹🇼', symbol: 'NT$', country: 'Taiwan' },
+      { code: 'TZS', flag: '🇹🇿', symbol: 'TSh', country: 'Tanzania' },
+      { code: 'UAH', flag: '🇺🇦', symbol: '₴', country: 'Ucraina' },
+      { code: 'UGX', flag: '🇺🇬', symbol: 'USh', country: 'Uganda' },
+      { code: 'UYU', flag: '🇺🇾', symbol: '$U', country: 'Uruguay' },
+      { code: 'UZS', flag: '🇺🇿', symbol: 'soʻm', country: 'Uzbekistan' },
+      { code: 'VES', flag: '🇻🇪', symbol: 'Bs.S', country: 'Venezuela' },
+      { code: 'VND', flag: '🇻🇳', symbol: '₫', country: 'Vietnam' },
+      { code: 'VUV', flag: '🇻🇺', symbol: 'VT', country: 'Vanuatu' },
+      { code: 'WST', flag: '🇼🇸', symbol: 'WS$', country: 'Samoa' },
+      { code: 'XAF', flag: '🇨🇲', symbol: 'FCFA', country: 'Africa Centrale (CEMAC)' },
+      { code: 'XCD', flag: '🇦🇬', symbol: 'EC$', country: 'Caraibi Orientali (OECS)' },
+      { code: 'XCG', flag: '🇨🇼', symbol: 'Cg', country: 'Curaçao / Sint Maarten' },
+      { code: 'XOF', flag: '🇸🇳', symbol: 'CFA', country: 'Africa Occidentale (UEMOA)' },
+      { code: 'XPF', flag: '🇵🇫', symbol: 'CFP', country: 'Polinesia Francese / Nuova Caledonia' },
+      { code: 'YER', flag: '🇾🇪', symbol: '﷼', country: 'Yemen' },
+      { code: 'ZAR', flag: '🇿🇦', symbol: 'R', country: 'Sudafrica' },
+      { code: 'ZMW', flag: '🇿🇲', symbol: 'ZK', country: 'Zambia' },
+      { code: 'ZWG', flag: '🇿🇼', symbol: 'ZiG', country: 'Zimbabwe' }
+    ];
+
+    const CURRENCY_MAP = Object.fromEntries(CURRENCIES.map(c => [c.code, c]));
+
+    function getCurrencyMeta(code) {
+      return CURRENCY_MAP[code] || {
+        code: code || 'EUR',
+        flag: '🌍',
+        symbol: code || 'EUR',
+        country: 'Valuta internazionale'
+      };
+    }
+
+    function populateCurrencySelect(filterText = '', selectedCode = null) {
+      const sel = document.getElementById('tripCurrencySelect');
+      if (!sel) return;
+      const currentVal = selectedCode || sel.value || 'EUR';
+      const q = String(filterText || '').trim().toLowerCase();
+
+      const filtered = CURRENCIES.filter(c => {
+        if (!q) return true;
+        return (
+          c.code.toLowerCase().includes(q) ||
+          c.country.toLowerCase().includes(q) ||
+          c.symbol.toLowerCase().includes(q) ||
+          c.flag.includes(q)
+        );
+      });
+
+      const listToRender = filtered.length > 0 ? filtered : CURRENCIES;
+      sel.innerHTML = '';
+      for (const c of listToRender) {
+        const opt = document.createElement('option');
+        opt.value = c.code;
+        opt.textContent = `${c.flag} ${c.code} (${c.symbol}) — ${c.country}`;
+        sel.appendChild(opt);
+      }
+
+      if ([...sel.options].some(o => o.value === currentVal)) {
+        sel.value = currentVal;
+      } else if (sel.options.length > 0) {
+        sel.value = sel.options[0].value;
+      }
+    }
 
     const COVER_STYLES = {
       coast: { label: 'Costa', bg: 'linear-gradient(135deg, #0284c7, #06b6d4)' },
@@ -989,12 +1187,13 @@
     }
 
     function normalizeTrip(t) {
+      const validCode = CURRENCY_MAP[t.currency] ? t.currency : (t.currency || 'EUR');
       return {
         id: t.id || ('trip-' + Date.now() + '-' + Math.random().toString(36).slice(2, 6)),
         title: t.title || 'Viaggio senza titolo',
         startDate: t.startDate || new Date().toISOString().slice(0, 10),
         endDate: t.endDate || new Date().toISOString().slice(0, 10),
-        currency: t.currency || 'EUR',
+        currency: validCode,
         theme: t.theme || 'coast',
         photo: typeof t.photo === 'string' && t.photo.startsWith('data:image/') ? t.photo : null,
         members: Array.isArray(t.members) && t.members.length ? t.members : ['Tu'],
@@ -1055,13 +1254,15 @@
     }
 
     function formatMoney(val, currency = 'EUR') {
+      const meta = getCurrencyMeta(currency);
+      const num = Number(val) || 0;
       try {
         return new Intl.NumberFormat('it-IT', {
           style: 'currency',
-          currency
-        }).format(Number(val) || 0);
+          currency: meta.code
+        }).format(num);
       } catch (e) {
-        return `${currency} ${(Number(val) || 0).toFixed(2)}`;
+        return `${num.toFixed(2)} ${meta.symbol}`;
       }
     }
 
@@ -1114,19 +1315,23 @@
 
       for (const trip of state.trips) {
         const cover = COVER_STYLES[trip.theme] || COVER_STYLES.coast;
+        const cMeta = getCurrencyMeta(trip.currency);
         const total = trip.expenses.reduce((acc, e) => acc + Number(e.amount || 0), 0);
         const card = document.createElement('article');
         card.className = 'trip-card' + (trip.id === state.selectedTripId ? ' selected' : '');
         card.innerHTML = `
           <div class="trip-cover" style="background-image: ${getCoverCss(trip)}">
             <span class="trip-badge">${trip.photo ? 'Foto' : cover.label}</span>
-            <span class="trip-badge">${escapeHtml(trip.currency)}</span>
+            <span class="trip-badge">${cMeta.flag} ${escapeHtml(cMeta.code)}</span>
           </div>
           <div class="trip-card-body">
             <h3 class="trip-card-title">${escapeHtml(trip.title)}</h3>
             <div class="trip-card-meta">
               <span>${escapeHtml(trip.startDate)} → ${escapeHtml(trip.endDate)}</span>
-              <strong>${formatMoney(total, trip.currency)}</strong>
+              <strong>${formatMoney(total, cMeta.code)}</strong>
+            </div>
+            <div class="trip-card-meta" style="font-size: 0.78rem;">
+              <span>${cMeta.flag} ${escapeHtml(cMeta.country)}</span>
             </div>
           </div>
         `;
@@ -1144,10 +1349,11 @@
       panel.classList.toggle('hidden', !active);
       if (!active) return;
 
-      const cur = active.currency || 'EUR';
+      const cMeta = getCurrencyMeta(active.currency);
+      const cur = cMeta.code;
       document.getElementById('activeTripCover').style.backgroundImage = getCoverCss(active);
       document.getElementById('activeTripTitle').textContent = active.title;
-      document.getElementById('activeTripMeta').textContent = `${active.startDate} → ${active.endDate} • ${active.members.length} partecipanti`;
+      document.getElementById('activeTripMeta').textContent = `${active.startDate} → ${active.endDate} • ${cMeta.flag} ${cMeta.country} • ${active.members.length} partecipanti`;
 
       const total = active.expenses.reduce((acc, e) => acc + Number(e.amount || 0), 0);
       const count = active.members.length;
@@ -1156,7 +1362,7 @@
       document.getElementById('statTotal').textContent = formatMoney(total, cur);
       document.getElementById('statPerPerson').textContent = formatMoney(perPerson, cur);
       document.getElementById('statMembersCount').textContent = String(count);
-      document.getElementById('statCurrency').textContent = cur;
+      document.getElementById('statCurrency').textContent = `${cMeta.flag} ${cur} — ${cMeta.country}`;
 
       const paidMap = Object.fromEntries(active.members.map(m => [m, 0]));
       for (const exp of active.expenses) {
@@ -1329,17 +1535,21 @@
     }
 
     function openTripModal(tripToEdit = null) {
+      document.getElementById('currencyFilterInput').value = '';
       const todayStr = new Date().toISOString().slice(0, 10);
       if (tripToEdit) {
+        const targetCurrency = getCurrencyMeta(tripToEdit.currency).code;
+        populateCurrencySelect('', targetCurrency);
         document.getElementById('tripModalTitle').textContent = 'Modifica viaggio';
         document.getElementById('editingTripId').value = tripToEdit.id;
         document.getElementById('tripTitleInput').value = tripToEdit.title;
         document.getElementById('tripStartInput').value = tripToEdit.startDate;
         document.getElementById('tripEndInput').value = tripToEdit.endDate;
-        document.getElementById('tripCurrencySelect').value = tripToEdit.currency || 'EUR';
+        document.getElementById('tripCurrencySelect').value = targetCurrency;
         document.getElementById('tripThemeSelect').value = tripToEdit.theme || 'coast';
         draftPhotoDataUrl = tripToEdit.photo || null;
       } else {
+        populateCurrencySelect('', 'EUR');
         document.getElementById('tripModalTitle').textContent = 'Nuovo viaggio';
         document.getElementById('editingTripId').value = '';
         document.getElementById('tripTitleInput').value = '';
@@ -1358,6 +1568,10 @@
     function closeTripModal() {
       tripModal.classList.remove('open');
     }
+
+    document.getElementById('currencyFilterInput').addEventListener('input', (e) => {
+      populateCurrencySelect(e.target.value, document.getElementById('tripCurrencySelect').value);
+    });
 
     document.getElementById('appThemeSelect').addEventListener('change', (e) => {
       applyAppTheme(e.target.value);
@@ -1572,6 +1786,7 @@
       render();
     });
 
+    populateCurrencySelect('', 'EUR');
     loadState();
     render();
 
