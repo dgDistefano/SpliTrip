@@ -1,4 +1,4 @@
-const CACHE_NAME = 'splitrip-pwa-v1';
+const CACHE_NAME = 'splitrip-pwa-v4';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
@@ -29,18 +29,38 @@ self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
 
   const url = new URL(event.request.url);
-  if (url.origin === self.location.origin) {
+  if (url.origin !== self.location.origin) return;
+
+  const isHtmlRequest =
+    event.request.mode === 'navigate' ||
+    url.pathname.endsWith('/') ||
+    url.pathname.endsWith('/index.html');
+
+  if (isHtmlRequest) {
     event.respondWith(
-      caches.match(event.request).then((cached) => {
-        return (
-          cached ||
-          fetch(event.request).then((response) => {
+      fetch(event.request)
+        .then((response) => {
+          if (response && response.ok) {
             const copy = response.clone();
             caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy));
-            return response;
-          })
-        );
-      })
+          }
+          return response;
+        })
+        .catch(() => caches.match(event.request).then((cached) => cached || caches.match('./index.html')))
     );
+    return;
   }
+
+  event.respondWith(
+    caches.match(event.request).then((cached) => {
+      const networkFetch = fetch(event.request).then((response) => {
+        if (response && response.ok) {
+          const copy = response.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy));
+        }
+        return response;
+      });
+      return cached || networkFetch;
+    })
+  );
 });
