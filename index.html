@@ -1,0 +1,1009 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0f172a" />
+  <meta name="description" content="WayLocal: pianificazione viaggi, foto luoghi, voli, preventivo, itinerario con Google Maps e spese." />
+  <link rel="manifest" href="./manifest.json" />
+  <title>WayLocal — Viaggi, Itinerari & Spese</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    body { background: #e2e8f0; color: #0f172a; line-height: 1.45; }
+
+    .topbar { background: #0f172a; color: #fff; padding: 12px 18px; position: sticky; top: 0; z-index: 50; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.18); }
+    .brand { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 15px; }
+    .brand-pill { font-size: 11px; background: rgba(56, 189, 248, 0.2); color: #7dd3fc; padding: 3px 9px; border-radius: 999px; font-weight: 700; }
+
+    .mode-switch { display: flex; background: #1e293b; padding: 4px; border-radius: 10px; gap: 4px; }
+    .mode-btn { border: none; padding: 8px 14px; border-radius: 7px; font-size: 12px; font-weight: 700; cursor: pointer; background: transparent; color: #cbd5e1; transition: 0.15s; }
+    .mode-btn.active { background: #0284c7; color: #fff; }
+
+    .container { max-width: 1140px; margin: 0 auto; padding: 18px 14px 64px; }
+    .hidden { display: none !important; }
+
+    .trip-bar { background: #fff; border: 1px solid #cbd5e1; border-radius: 14px; padding: 11px 14px; margin-bottom: 14px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
+    .trip-bar-left, .trip-bar-right { display: flex; align-items: center; gap: 7px; flex-wrap: wrap; }
+    .trip-label { font-size: 11px; font-weight: 800; text-transform: uppercase; color: #475569; }
+
+    .new-trip-panel { background: #f8fafc; border: 1px solid #94a3b8; border-radius: 14px; padding: 14px; margin-bottom: 14px; }
+
+    .trip-banner { background: linear-gradient(135deg, #0369a1, #0f766e); color: #fff; border-radius: 16px; padding: 18px 20px; margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+    .trip-sub { font-size: 12px; color: #ccfbf1; margin-top: 3px; }
+    .banner-actions { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+    .local-tag { background: rgba(255,255,255,0.16); border: 1px solid rgba(255,255,255,0.25); padding: 5px 11px; border-radius: 999px; font-size: 11px; font-weight: 600; }
+
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    @media (max-width: 880px) { .grid-2 { grid-template-columns: 1fr; } }
+
+    .card { background: #fff; border: 1px solid #cbd5e1; border-radius: 14px; padding: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
+    .card-title { font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.04em; color: #475569; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; }
+
+    .row-form { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; align-items: center; }
+    .extra-box { background: #f1f5f9; border: 1px dashed #cbd5e1; border-radius: 10px; padding: 9px 10px; margin-bottom: 12px; }
+    input, select { padding: 8px 10px; border: 1px solid #cbd5e1; border-radius: 9px; font-size: 12px; background: #f8fafc; color: #0f172a; outline: none; }
+    input:focus, select:focus { border-color: #0284c7; background: #fff; }
+    input[type="file"] { padding: 5px 7px; font-size: 11px; max-width: 170px; background: #fff; }
+
+    .btn { border: none; padding: 8px 12px; border-radius: 9px; font-size: 12px; font-weight: 700; cursor: pointer; background: #0f172a; color: #fff; transition: 0.12s; text-decoration: none; display: inline-flex; align-items: center; gap: 4px; }
+    .btn:hover { background: #1e293b; }
+    .btn-sky { background: #0284c7; }
+    .btn-sky:hover { background: #0369a1; }
+    .btn-teal { background: #0d9488; }
+    .btn-teal:hover { background: #0f766e; }
+    .btn-indigo { background: #4f46e5; }
+    .btn-indigo:hover { background: #4338ca; }
+    .btn-map { background: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe; }
+    .btn-map:hover { background: #dbeafe; }
+    .btn-link { background: #f0fdf4; color: #15803d; border: 1px solid #bbf7d0; }
+    .btn-link:hover { background: #dcfce7; }
+    .btn-sm { padding: 5px 8px; font-size: 11px; border-radius: 7px; }
+    .btn-ghost { background: #f1f5f9; color: #334155; border: 1px solid #e2e8f0; }
+    .btn-ghost:hover { background: #e2e8f0; }
+    .btn-danger { background: #fef2f2; color: #b91c1c; border: 1px solid #fecaca; }
+    .btn-danger:hover { background: #fee2e2; }
+
+    .list-stack { display: flex; flex-direction: column; gap: 8px; }
+    .item-box { border: 1px solid #e2e8f0; background: #f8fafc; border-radius: 11px; padding: 9px 11px; display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+    .item-left { display: flex; align-items: center; gap: 10px; min-width: 0; flex: 1; }
+    .photo-thumb { width: 54px; height: 54px; border-radius: 9px; object-fit: cover; flex-shrink: 0; border: 1px solid #cbd5e1; background: #e2e8f0; }
+    .photo-placeholder { width: 54px; height: 54px; border-radius: 9px; flex-shrink: 0; border: 1px dashed #94a3b8; background: #f1f5f9; color: #64748b; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; text-align: center; padding: 2px; }
+    .item-info { min-width: 0; }
+    .item-title { font-size: 12px; font-weight: 700; color: #0f172a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .item-sub { font-size: 11px; color: #64748b; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; margin-top: 2px; }
+    .item-actions { display: flex; gap: 5px; align-items: center; flex-shrink: 0; flex-wrap: wrap; }
+
+    .tag { font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 999px; background: #e0f2fe; color: #0369a1; }
+    .tag-amber { background: #fef3c7; color: #92400e; }
+    .tag-green { background: #dcfce7; color: #166534; }
+    .tag-purple { background: #f3e8ff; color: #6b21a8; }
+
+    .flight-card { border: 1px solid #cbd5e1; border-radius: 12px; padding: 12px; background: #f8fafc; }
+    .flight-route { font-size: 13px; font-weight: 800; display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+    .flight-price { font-size: 12px; font-weight: 800; color: #0f766e; background: #ccfbf1; padding: 2px 8px; border-radius: 8px; }
+    .flight-meta { font-size: 11px; color: #475569; margin-top: 6px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 6px; }
+
+    .fx-box { background: #f0f9ff; border: 1px solid #bae6fd; border-radius: 12px; padding: 14px; }
+    .fx-result { font-size: 20px; font-weight: 800; color: #0369a1; }
+
+    .quote-summary { background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 12px; padding: 14px; margin-top: 12px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+    .quote-breakdown { display: flex; gap: 14px; flex-wrap: wrap; font-size: 12px; color: #334155; }
+    .quote-total-box { text-align: right; }
+    .quote-total { font-size: 20px; font-weight: 900; color: #0f172a; }
+    .quote-per-person { font-size: 11px; color: #0369a1; font-weight: 700; }
+
+    .day-tabs { display: flex; gap: 6px; margin-bottom: 12px; flex-wrap: wrap; align-items: center; }
+    .day-tab { padding: 6px 12px; border-radius: 8px; border: 1px solid #cbd5e1; background: #fff; font-size: 12px; font-weight: 700; cursor: pointer; }
+    .day-tab.active { background: #0f172a; color: #fff; border-color: #0f172a; }
+
+    .stop-item { border: 1px solid #e2e8f0; border-radius: 11px; padding: 9px 11px; display: flex; justify-content: space-between; align-items: center; gap: 10px; background: #fff; }
+    .stop-item.done { background: #f0fdf4; border-color: #bbf7d0; }
+    .stop-item.done .stop-name { text-decoration: line-through; color: #64748b; }
+
+    .split-bar { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; background: #f8fafc; border: 1px solid #e2e8f0; padding: 8px 10px; border-radius: 9px; margin-bottom: 12px; font-size: 11px; }
+    .split-bar label { display: inline-flex; align-items: center; gap: 4px; cursor: pointer; font-weight: 600; }
+
+    .members-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(135px, 1fr)); gap: 8px; margin-top: 10px; }
+    .member-stat { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; padding: 8px 10px; font-size: 11px; }
+
+    .settlement-box { background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 12px; padding: 12px; margin-top: 12px; }
+    .settle-line { font-size: 12px; padding: 6px 8px; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: space-between; }
+    .settle-line:last-child { border-bottom: none; }
+  </style>
+</head>
+<body>
+
+  <header class="topbar">
+    <div class="brand">
+      <span>🧭 WayLocal</span>
+      <span class="brand-pill">PWA + GitHub Pages</span>
+    </div>
+    <div class="mode-switch">
+      <button id="tab-plan" class="mode-btn active" onclick="switchMode('plan')">1. Pianificazione</button>
+      <button id="tab-live" class="mode-btn" onclick="switchMode('live')">2. Viaggio & Spese</button>
+    </div>
+  </header>
+
+  <div class="container">
+    <!-- BARRA MULTI-VIAGGIO & JSON -->
+    <div class="trip-bar">
+      <div class="trip-bar-left">
+        <span class="trip-label">🧳 Viaggio:</span>
+        <select id="trip-selector" onchange="selectTrip(this.value)" style="min-width:190px; font-weight:700;"></select>
+        <button class="btn btn-sm btn-sky" onclick="toggleNewTripForm()">+ Nuovo</button>
+        <button class="btn btn-sm btn-danger" onclick="deleteCurrentTrip()">Elimina</button>
+      </div>
+      <div class="trip-bar-right">
+        <button id="install-pwa-btn" class="btn btn-sm btn-teal hidden" onclick="installPwa()">📲 Installa App</button>
+        <button class="btn btn-sm btn-indigo" onclick="exportCurrentTripJson()">⬇️ Esporta JSON</button>
+        <label class="btn btn-sm btn-ghost" style="cursor:pointer;">
+          ⬆️ Importa JSON
+          <input type="file" id="json-import-input" accept=".json,application/json" style="display:none;" onchange="importTripJson(this)" />
+        </label>
+      </div>
+    </div>
+
+    <!-- NUOVO VIAGGIO -->
+    <div id="new-trip-panel" class="new-trip-panel hidden">
+      <div style="font-size:12px; font-weight:800; text-transform:uppercase; color:#334155; margin-bottom:10px;">Nuovo viaggio</div>
+      <div class="row-form" style="margin-bottom:0;">
+        <input id="nt-title" type="text" placeholder="Titolo (es. Weekend a Lisbona)" style="flex:1; min-width:170px;" />
+        <input id="nt-currency" type="text" value="EUR" placeholder="Valuta" style="width:78px;" />
+        <input id="nt-symbol" type="text" value="€" placeholder="Simbolo" style="width:65px;" />
+        <input id="nt-rate" type="number" step="0.01" value="1" placeholder="1 EUR = ?" style="width:90px;" />
+        <input id="nt-members" type="text" value="Marco, Giulia, Luca" placeholder="Partecipanti (separati da virgola)" style="flex:1; min-width:170px;" />
+        <button class="btn btn-teal" onclick="createNewTrip()">Crea</button>
+        <button class="btn btn-ghost" onclick="toggleNewTripForm()">Chiudi</button>
+      </div>
+    </div>
+
+    <!-- BANNER -->
+    <div class="trip-banner">
+      <div>
+        <h1 id="banner-title" style="font-size: 18px; font-weight: 800;">-</h1>
+        <div id="banner-sub" class="trip-sub">-</div>
+      </div>
+      <div class="banner-actions">
+        <span class="local-tag" id="status-pill">💾 Salvataggio locale attivo</span>
+        <button class="btn btn-sm btn-ghost" onclick="resetDemoData()">Ripristina demo</button>
+      </div>
+    </div>
+
+    <!-- SEZIONE 1: PIANIFICAZIONE -->
+    <section id="sec-plan" style="display:flex; flex-direction:column; gap:16px;">
+      <div class="grid-2">
+        <!-- Attrazioni Quick-Add -->
+        <div class="card">
+          <div class="card-title">
+            <span>📍 Attrazioni & Punti d'Interesse</span>
+            <span class="tag" id="poi-count">0 salvati</span>
+          </div>
+          <div class="row-form">
+            <input id="poi-name" type="text" placeholder="Nome luogo (es. Colosseo)..." style="flex:1; min-width:140px;" onkeydown="if(event.key==='Enter')addPoi()" />
+            <select id="poi-prio">
+              <option value="Must-see">Must-see</option>
+              <option value="Idea">Idea</option>
+            </select>
+            <button class="btn btn-sm btn-ghost" onclick="toggleBox('poi-extra')">+ Foto/Zona</button>
+            <button class="btn btn-sky" onclick="addPoi()">+ Aggiungi</button>
+          </div>
+          <div id="poi-extra" class="extra-box hidden">
+            <div class="row-form" style="margin-bottom:0;">
+              <input id="poi-zone" type="text" placeholder="Città/Zona (default: titolo viaggio)" style="width:155px;" />
+              <input id="poi-img-url" type="text" placeholder="URL foto (se vuoto cerca sul web)" style="flex:1; min-width:140px;" />
+              <input id="poi-img-file" type="file" accept="image/*" />
+            </div>
+          </div>
+          <div id="poi-list" class="list-stack"></div>
+        </div>
+
+        <!-- Cambio Valuta -->
+        <div class="card" style="height:fit-content;">
+          <div class="card-title">
+            <span>💱 Cambio Valuta</span>
+            <span class="tag tag-green">Istantaneo</span>
+          </div>
+          <div class="fx-box">
+            <div style="font-size:12px; color:#334155; margin-bottom:10px;">
+              Tasso: <b>1 EUR = <input id="fx-rate" type="number" step="0.01" style="width:82px; padding:4px 7px; font-weight:700;" oninput="updateFx()" /> <span id="fx-curr-label">JPY</span></b>
+            </div>
+            <div class="row-form" style="margin-bottom:0; align-items:center;">
+              <input id="fx-eur" type="number" value="50" oninput="calcFx()" style="width:105px; font-weight:700;" />
+              <span style="font-size:12px; font-weight:700;">EUR →</span>
+              <div id="fx-out" class="fx-result">0</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Voli -->
+      <div class="card">
+        <div class="card-title">
+          <span>✈️ Tracker Voli</span>
+          <span class="tag tag-amber" id="flight-count">0 voli</span>
+        </div>
+        <div class="row-form">
+          <input id="fl-route" type="text" placeholder="Tratta (es. MXP → HND)" style="flex:1; min-width:135px;" />
+          <input id="fl-code" type="text" placeholder="Volo (NH 206)" style="width:105px;" />
+          <input id="fl-time" type="text" placeholder="Orario" style="width:130px;" />
+          <input id="fl-price" type="number" step="0.01" placeholder="Prezzo €" style="width:95px;" />
+          <input id="fl-note" type="text" placeholder="Note / PNR" style="flex:1; min-width:110px;" />
+          <button class="btn btn-teal" onclick="addFlight()">+ Volo</button>
+        </div>
+        <div class="grid-2" id="flights-list"></div>
+      </div>
+
+      <!-- Preventivo -->
+      <div class="card">
+        <div class="card-title">
+          <span>📋 Preventivo & Stima Costi</span>
+          <span class="tag tag-purple">Hotel • Attrazioni • Voli</span>
+        </div>
+        <div class="row-form">
+          <select id="qt-cat">
+            <option value="Hotel">🏨 Hotel</option>
+            <option value="Attrazione">🎟️ Attrazione</option>
+            <option value="Volo">✈️ Volo</option>
+          </select>
+          <input id="qt-title" type="text" placeholder="Voce (es. Hotel 5 notti)" style="flex:1; min-width:150px;" />
+          <input id="qt-price" type="number" step="0.01" placeholder="Prezzo €" style="width:95px;" />
+          <input id="qt-url" type="text" placeholder="Link offerta (https://...)" style="flex:1; min-width:150px;" />
+          <button class="btn btn-sky" onclick="addQuoteItem()">+ Aggiungi</button>
+        </div>
+
+        <div id="quote-list" class="list-stack"></div>
+
+        <div class="quote-summary">
+          <div class="quote-breakdown" id="quote-breakdown"></div>
+          <div class="quote-total-box">
+            <div style="font-size:11px; color:#64748b; font-weight:700; text-transform:uppercase;">Totale stimato</div>
+            <div class="quote-total" id="quote-grand-total">0,00 €</div>
+            <div class="quote-per-person" id="quote-per-person">~ 0,00 € a persona</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SEZIONE 2: VIAGGIO ATTUALE & SPESE -->
+    <section id="sec-live" class="hidden">
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">
+            <span>🗓️ Itinerario Giornaliero</span>
+            <span class="tag tag-green" id="stops-progress">0 / 0</span>
+          </div>
+
+          <div class="day-tabs" id="day-tabs"></div>
+
+          <div class="row-form">
+            <input id="stop-input" type="text" placeholder="Nuova tappa..." style="flex:1; min-width:140px;" onkeydown="if(event.key==='Enter')addStop()" />
+            <button class="btn btn-sm btn-ghost" onclick="toggleBox('stop-extra')">+ Foto</button>
+            <button class="btn btn-sky" onclick="addStop()">+ Tappa</button>
+          </div>
+          <div id="stop-extra" class="extra-box hidden">
+            <div class="row-form" style="margin-bottom:0;">
+              <input id="stop-img-url" type="text" placeholder="URL foto (se vuoto cerca sul web)" style="flex:1; min-width:140px;" />
+              <input id="stop-img-file" type="file" accept="image/*" />
+            </div>
+          </div>
+
+          <div id="stops-list" class="list-stack"></div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">
+            <span>💳 Spese & Riparto</span>
+            <span class="tag" id="exp-total">Totale: 0,00 €</span>
+          </div>
+
+          <div class="row-form">
+            <input id="exp-desc" type="text" placeholder="Descrizione (es. Cena)" style="flex:1; min-width:125px;" />
+            <input id="exp-amt" type="number" step="0.01" placeholder="Importo" style="width:82px;" />
+            <select id="exp-curr"></select>
+            <select id="exp-who"></select>
+            <button class="btn" onclick="addExpense()">+ Spesa</button>
+          </div>
+
+          <div class="split-bar" id="exp-split-bar"></div>
+          <div id="exp-list" class="list-stack"></div>
+          <div class="members-grid" id="members-summary"></div>
+
+          <div class="settlement-box">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+              <span style="font-size:11px; font-weight:800; text-transform:uppercase; color:#475569;">⚖️ Rimborsi finali</span>
+              <button class="btn btn-sm btn-ghost" onclick="copySettlement(this)">Copia riepilogo</button>
+            </div>
+            <div id="settle-list"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    const STORAGE_KEY = 'waylocal_v7_pwa';
+
+    // Registrazione Service Worker per PWA
+    if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js').catch(() => {});
+      });
+    }
+
+    // Prompt installazione PWA su browser supportati
+    let deferredPrompt = null;
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      const btn = document.getElementById('install-pwa-btn');
+      if (btn) btn.classList.remove('hidden');
+    });
+
+    async function installPwa() {
+      if (!deferredPrompt) return;
+      deferredPrompt.prompt();
+      await deferredPrompt.userChoice;
+      deferredPrompt = null;
+      document.getElementById('install-pwa-btn').classList.add('hidden');
+    }
+
+    function makeDefaultDb() {
+      return {
+        activeTripId: 'trip_tokyo_2026',
+        trips: {
+          trip_tokyo_2026: {
+            id: 'trip_tokyo_2026',
+            title: 'Tokyo & Kyoto • Autunno',
+            currency: 'JPY',
+            symbol: '¥',
+            fxRate: 164.5,
+            members: ['Marco', 'Giulia', 'Luca'],
+            pois: [
+              { name: 'Senso-ji', zone: 'Tokyo', prio: 'Must-see', img: '' },
+              { name: 'Arashiyama Bamboo Grove', zone: 'Kyoto', prio: 'Must-see', img: '' },
+              { name: 'Shibuya Sky', zone: 'Tokyo', prio: 'Idea', img: '' }
+            ],
+            flights: [
+              { code: 'AZ 792', route: 'FCO → HND', time: '14:20 - 10:15 (+1)', price: 740, note: 'Confermato' },
+              { code: 'JL 041', route: 'HND → FCO', time: '11:05 - 17:40', price: 710, note: 'Posti 24A-C' }
+            ],
+            quotes: [
+              { cat: 'Hotel', title: 'Hotel Shinjuku (5 notti)', price: 1150, url: 'https://www.booking.com' },
+              { cat: 'Attrazione', title: 'Shibuya Sky + teamLab', price: 320, url: 'https://www.klook.com' }
+            ],
+            currentDay: 1,
+            daysStops: {
+              1: [
+                { title: 'Omoide Yokocho', zone: 'Tokyo', done: true, img: '' },
+                { title: 'Shibuya Sky', zone: 'Tokyo', done: false, img: '' }
+              ]
+            },
+            expenses: [
+              { desc: 'Biglietti treno', amountEur: 90, who: 'Marco', splitWith: ['Marco', 'Giulia', 'Luca'] },
+              { desc: 'Cena Izakaya', amountEur: 60, who: 'Giulia', splitWith: ['Marco', 'Giulia', 'Luca'] }
+            ]
+          }
+        }
+      };
+    }
+
+    let db = loadDb();
+    let lastSettlementText = '';
+
+    function loadDb() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          if (parsed && parsed.trips && Object.keys(parsed.trips).length) return parsed;
+        }
+      } catch (e) {}
+      return makeDefaultDb();
+    }
+
+    function saveDb() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(db));
+        const pill = document.getElementById('status-pill');
+        if (pill) {
+          pill.innerText = '✓ Salvato in locale';
+          setTimeout(() => { pill.innerText = '💾 Salvataggio locale attivo'; }, 1200);
+        }
+      } catch (e) {}
+    }
+
+    function getTrip() {
+      return db.trips[db.activeTripId] || Object.values(db.trips)[0];
+    }
+
+    function toggleBox(id) {
+      document.getElementById(id).classList.toggle('hidden');
+    }
+
+    function resetDemoData() {
+      if (!confirm('Ripristinare i dati di esempio?')) return;
+      db = makeDefaultDb();
+      saveDb();
+      renderAll();
+      autoFetchMissingWebPhotos();
+    }
+
+    async function fetchPlacePhotoFromWeb(placeName, zone) {
+      const queries = [zone ? `${placeName} ${zone}` : placeName, placeName];
+      const endpoints = ['https://en.wikipedia.org/w/api.php', 'https://it.wikipedia.org/w/api.php'];
+      for (const q of queries) {
+        for (const base of endpoints) {
+          try {
+            const url = `${base}?action=query&format=json&origin=*&generator=search&gsrsearch=${encodeURIComponent(q)}&gsrlimit=1&prop=pageimages&piprop=thumbnail&pithumbsize=240`;
+            const res = await fetch(url);
+            if (!res.ok) continue;
+            const data = await res.json();
+            const pages = data && data.query && data.query.pages;
+            if (!pages) continue;
+            for (const key of Object.keys(pages)) {
+              const thumb = pages[key] && pages[key].thumbnail && pages[key].thumbnail.source;
+              if (thumb) return thumb;
+            }
+          } catch (e) {}
+        }
+      }
+      return '';
+    }
+
+    async function autoFetchMissingWebPhotos() {
+      const trip = getTrip();
+      let changed = false;
+      for (let i = 0; i < trip.pois.length; i++) {
+        if (!trip.pois[i].img) {
+          const found = await fetchPlacePhotoFromWeb(trip.pois[i].name, trip.pois[i].zone);
+          if (found) { trip.pois[i].img = found; changed = true; }
+        }
+      }
+      for (const day of Object.keys(trip.daysStops)) {
+        const stops = trip.daysStops[day] || [];
+        for (let j = 0; j < stops.length; j++) {
+          if (!stops[j].img) {
+            const found = await fetchPlacePhotoFromWeb(stops[j].title, stops[j].zone);
+            if (found) { stops[j].img = found; changed = true; }
+          }
+        }
+      }
+      if (changed) { saveDb(); renderPois(); renderStops(); }
+    }
+
+    async function refreshPoiPhoto(idx) {
+      const trip = getTrip();
+      const item = trip.pois[idx];
+      if (!item) return;
+      const found = await fetchPlacePhotoFromWeb(item.name, item.zone);
+      if (found) { item.img = found; saveDb(); renderPois(); }
+    }
+
+    async function refreshStopPhoto(idx) {
+      const trip = getTrip();
+      const item = (trip.daysStops[trip.currentDay] || [])[idx];
+      if (!item) return;
+      const found = await fetchPlacePhotoFromWeb(item.title, item.zone);
+      if (found) { item.img = found; saveDb(); renderStops(); }
+    }
+
+    function selectTrip(id) {
+      if (!db.trips[id]) return;
+      db.activeTripId = id;
+      saveDb();
+      renderAll();
+      autoFetchMissingWebPhotos();
+    }
+
+    function toggleNewTripForm() {
+      document.getElementById('new-trip-panel').classList.toggle('hidden');
+    }
+
+    function createNewTrip() {
+      const title = document.getElementById('nt-title').value.trim();
+      if (!title) return;
+      const currency = (document.getElementById('nt-currency').value.trim() || 'EUR').toUpperCase();
+      const symbol = document.getElementById('nt-symbol').value.trim() || '€';
+      const fxRate = parseFloat(document.getElementById('nt-rate').value) || 1;
+      const membersList = document.getElementById('nt-members').value.split(',').map(s => s.trim()).filter(Boolean);
+      const id = 'trip_' + Date.now();
+      db.trips[id] = {
+        id, title, currency, symbol, fxRate,
+        members: membersList.length ? membersList : ['Io', 'Compagno 1'],
+        pois: [], flights: [], quotes: [], currentDay: 1,
+        daysStops: { 1: [] }, expenses: []
+      };
+      db.activeTripId = id;
+      document.getElementById('nt-title').value = '';
+      document.getElementById('new-trip-panel').classList.add('hidden');
+      saveDb();
+      renderAll();
+    }
+
+    function deleteCurrentTrip() {
+      const ids = Object.keys(db.trips);
+      if (ids.length <= 1) return alert('Deve restare almeno un viaggio attivo.');
+      const trip = getTrip();
+      if (!confirm(`Eliminare "${trip.title}"?`)) return;
+      delete db.trips[trip.id];
+      db.activeTripId = Object.keys(db.trips)[0];
+      saveDb();
+      renderAll();
+    }
+
+    function exportCurrentTripJson() {
+      const trip = getTrip();
+      const blob = new Blob([JSON.stringify(trip, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      const slug = trip.title.toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_|_$/g, '') || 'viaggio';
+      a.href = url;
+      a.download = `waylocal_${slug}.json`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
+    function importTripJson(input) {
+      const file = input.files && input.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(ev) {
+        try {
+          const imported = JSON.parse(ev.target.result);
+          if (!imported || typeof imported !== 'object' || !imported.title) return alert('File JSON non valido.');
+          const newId = imported.id && !db.trips[imported.id] ? imported.id : ('trip_' + Date.now());
+          imported.id = newId;
+          imported.members = Array.isArray(imported.members) && imported.members.length ? imported.members : ['Marco', 'Giulia'];
+          imported.pois = Array.isArray(imported.pois) ? imported.pois : [];
+          imported.flights = Array.isArray(imported.flights) ? imported.flights : [];
+          imported.quotes = Array.isArray(imported.quotes) ? imported.quotes : [];
+          imported.daysStops = imported.daysStops && typeof imported.daysStops === 'object' ? imported.daysStops : { 1: [] };
+          imported.currentDay = imported.currentDay || 1;
+          imported.expenses = Array.isArray(imported.expenses) ? imported.expenses : [];
+          imported.currency = imported.currency || 'EUR';
+          imported.symbol = imported.symbol || '€';
+          imported.fxRate = imported.fxRate || 1;
+          db.trips[newId] = imported;
+          db.activeTripId = newId;
+          saveDb();
+          renderAll();
+        } catch (err) {
+          alert('Errore durante l\'importazione del JSON.');
+        } finally {
+          input.value = '';
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    function switchMode(mode) {
+      document.getElementById('sec-plan').classList.toggle('hidden', mode !== 'plan');
+      document.getElementById('sec-live').classList.toggle('hidden', mode !== 'live');
+      document.getElementById('tab-plan').classList.toggle('active', mode === 'plan');
+      document.getElementById('tab-live').classList.toggle('active', mode === 'live');
+    }
+
+    function fmtEur(val) {
+      return (Number(val) || 0).toFixed(2).replace('.', ',') + ' €';
+    }
+
+    function normalizeUrl(u) {
+      const s = (u || '').trim();
+      if (!s) return '';
+      if (/^https?:\/\//i.test(s) || /^data:image\//i.test(s)) return s;
+      return 'https://' + s;
+    }
+
+    function getMapsUrl(place, zone) {
+      const q = encodeURIComponent(zone ? `${place}, ${zone}` : place);
+      return `https://www.google.com/maps/search/?api=1&query=${q}`;
+    }
+
+    function renderPhotoThumb(title, imgSrc) {
+      const clean = normalizeUrl(imgSrc);
+      if (clean) {
+        return `<img class="photo-thumb" src="${clean}" alt="${title}" onerror="this.outerHTML='<div class=\\'photo-placeholder\\'>🔄 Foto</div>'" />`;
+      }
+      return `<div class="photo-placeholder">🔄 Foto</div>`;
+    }
+
+    function readImageInput(fileInput, urlInput, callback) {
+      const urlVal = urlInput ? urlInput.value.trim() : '';
+      const file = fileInput && fileInput.files && fileInput.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(ev) { callback(ev.target.result); };
+        reader.readAsDataURL(file);
+      } else {
+        callback(urlVal);
+      }
+    }
+
+    function addPoi() {
+      const trip = getTrip();
+      const nameInp = document.getElementById('poi-name');
+      const zoneInp = document.getElementById('poi-zone');
+      const urlInp = document.getElementById('poi-img-url');
+      const fileInp = document.getElementById('poi-img-file');
+      const name = nameInp.value.trim();
+      if (!name) return;
+      const zone = (zoneInp && zoneInp.value.trim()) || trip.title;
+      const prio = document.getElementById('poi-prio').value;
+
+      readImageInput(fileInp, urlInp, async function(imgSrc) {
+        const newIdx = trip.pois.length;
+        trip.pois.push({ name, zone, prio, img: imgSrc });
+        nameInp.value = '';
+        if (zoneInp) zoneInp.value = '';
+        if (urlInp) urlInp.value = '';
+        if (fileInp) fileInp.value = '';
+        saveDb();
+        renderPois();
+
+        if (!imgSrc) {
+          const webImg = await fetchPlacePhotoFromWeb(name, zone);
+          if (webImg && trip.pois[newIdx]) {
+            trip.pois[newIdx].img = webImg;
+            saveDb();
+            renderPois();
+          }
+        }
+      });
+    }
+
+    function sendPoiToDay(idx) {
+      const trip = getTrip();
+      const poi = trip.pois[idx];
+      const day = trip.currentDay;
+      if (!trip.daysStops[day]) trip.daysStops[day] = [];
+      trip.daysStops[day].push({ title: poi.name, zone: poi.zone, done: false, img: poi.img || '' });
+      saveDb();
+      renderStops();
+      switchMode('live');
+    }
+
+    function renderPois() {
+      const trip = getTrip();
+      document.getElementById('poi-count').innerText = trip.pois.length + ' salvati';
+      document.getElementById('poi-list').innerHTML = trip.pois.map((p, idx) => `
+        <div class="item-box">
+          <div class="item-left">
+            ${renderPhotoThumb(p.name, p.img)}
+            <div class="item-info">
+              <div class="item-title">${p.name}</div>
+              <div class="item-sub">
+                <span class="tag ${p.prio === 'Must-see' ? 'tag-amber' : ''}">${p.zone} • ${p.prio}</span>
+              </div>
+            </div>
+          </div>
+          <div class="item-actions">
+            <button class="btn btn-sm btn-ghost" onclick="refreshPoiPhoto(${idx})" title="Cerca foto sul web">🔄</button>
+            <a class="btn btn-sm btn-map" href="${getMapsUrl(p.name, p.zone)}" target="_blank" rel="noopener noreferrer">🗺️ Maps</a>
+            <button class="btn btn-sm btn-sky" onclick="sendPoiToDay(${idx})" title="Porta nel giorno attivo">→ G${trip.currentDay}</button>
+            <button class="btn btn-sm btn-ghost" onclick="getTrip().pois.splice(${idx},1);saveDb();renderPois();">✕</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function updateFx() {
+      const trip = getTrip();
+      const r = parseFloat(document.getElementById('fx-rate').value);
+      if (!isNaN(r) && r > 0) { trip.fxRate = r; saveDb(); }
+      calcFx();
+    }
+
+    function calcFx() {
+      const trip = getTrip();
+      const eur = parseFloat(document.getElementById('fx-eur').value) || 0;
+      const converted = eur * (trip.fxRate || 1);
+      const formatted = trip.currency === 'JPY'
+        ? Math.round(converted).toLocaleString('it-IT')
+        : converted.toFixed(2).replace('.', ',');
+      document.getElementById('fx-out').innerText = `${formatted} ${trip.symbol}`;
+    }
+
+    function addFlight() {
+      const trip = getTrip();
+      const route = document.getElementById('fl-route').value.trim();
+      if (!route) return;
+      const code = document.getElementById('fl-code').value.trim() || 'VOLO';
+      const time = document.getElementById('fl-time').value.trim() || 'Orario da confermare';
+      const price = parseFloat(document.getElementById('fl-price').value) || 0;
+      const note = document.getElementById('fl-note').value.trim() || '';
+      trip.flights.push({ code, route, time, price, note });
+      ['fl-code', 'fl-route', 'fl-time', 'fl-price', 'fl-note'].forEach(id => document.getElementById(id).value = '');
+      saveDb();
+      renderFlights();
+      renderQuotes();
+    }
+
+    function renderFlights() {
+      const trip = getTrip();
+      document.getElementById('flight-count').innerText = trip.flights.length + ' voli';
+      document.getElementById('flights-list').innerHTML = trip.flights.map((f, i) => `
+        <div class="flight-card">
+          <div class="flight-route">
+            <span>${f.route} <span class="tag">${f.code}</span></span>
+            <div class="item-actions">
+              <span class="flight-price">${fmtEur(f.price)}</span>
+              <button class="btn btn-sm btn-ghost" onclick="getTrip().flights.splice(${i},1);saveDb();renderFlights();renderQuotes();">✕</button>
+            </div>
+          </div>
+          <div class="flight-meta"><span>🕒 ${f.time}</span><span>${f.note}</span></div>
+        </div>
+      `).join('');
+    }
+
+    function addQuoteItem() {
+      const trip = getTrip();
+      const cat = document.getElementById('qt-cat').value;
+      const title = document.getElementById('qt-title').value.trim();
+      const price = parseFloat(document.getElementById('qt-price').value);
+      const url = normalizeUrl(document.getElementById('qt-url').value);
+      if (!title || isNaN(price) || price < 0) return;
+      trip.quotes.push({ cat, title, price, url });
+      ['qt-title', 'qt-price', 'qt-url'].forEach(id => document.getElementById(id).value = '');
+      saveDb();
+      renderQuotes();
+    }
+
+    function renderQuotes() {
+      const trip = getTrip();
+      const flightsSum = trip.flights.reduce((acc, f) => acc + (Number(f.price) || 0), 0);
+      const quoteSum = trip.quotes.reduce((acc, q) => acc + (Number(q.price) || 0), 0);
+      const hotelsSum = trip.quotes.filter(q => q.cat === 'Hotel').reduce((acc, q) => acc + q.price, 0);
+      const attrSum = trip.quotes.filter(q => q.cat === 'Attrazione').reduce((acc, q) => acc + q.price, 0);
+      const extraFlightsQuote = trip.quotes.filter(q => q.cat === 'Volo').reduce((acc, q) => acc + q.price, 0);
+
+      document.getElementById('quote-list').innerHTML = trip.quotes.map((q, i) => `
+        <div class="item-box">
+          <div class="item-info">
+            <div class="item-title"><span class="tag">${q.cat}</span> ${q.title}</div>
+          </div>
+          <div class="item-actions">
+            <b style="font-size:12px;">${fmtEur(q.price)}</b>
+            ${q.url ? `<a class="btn btn-sm btn-link" href="${q.url}" target="_blank" rel="noopener noreferrer">🔗 Link</a>` : ''}
+            <button class="btn btn-sm btn-ghost" onclick="getTrip().quotes.splice(${i},1);saveDb();renderQuotes();">✕</button>
+          </div>
+        </div>
+      `).join('');
+
+      const totalFlights = flightsSum + extraFlightsQuote;
+      const grandTotal = totalFlights + quoteSum - extraFlightsQuote;
+      const paxCount = Math.max(1, trip.members.length);
+
+      document.getElementById('quote-breakdown').innerHTML = `
+        <span>✈️ Voli: <b>${fmtEur(totalFlights)}</b></span>
+        <span>🏨 Hotel: <b>${fmtEur(hotelsSum)}</b></span>
+        <span>🎟️ Attrazioni: <b>${fmtEur(attrSum)}</b></span>
+      `;
+      document.getElementById('quote-grand-total').innerText = fmtEur(grandTotal);
+      document.getElementById('quote-per-person').innerText = `~ ${fmtEur(grandTotal / paxCount)} a persona (${paxCount} pax)`;
+    }
+
+    function renderDayTabs() {
+      const trip = getTrip();
+      const days = Object.keys(trip.daysStops).map(Number).sort((a, b) => a - b);
+      if (!days.length) { trip.daysStops[1] = []; days.push(1); }
+      if (!trip.daysStops[trip.currentDay]) trip.currentDay = days[0];
+      document.getElementById('day-tabs').innerHTML = days.map(d => `
+        <button class="day-tab ${trip.currentDay === d ? 'active' : ''}" onclick="selectDay(${d})">Giorno ${d}</button>
+      `).join('') + `<button class="btn btn-sm btn-ghost" onclick="addDay()">+ Giorno</button>`;
+    }
+
+    function selectDay(d) {
+      const trip = getTrip();
+      trip.currentDay = d;
+      saveDb();
+      renderDayTabs();
+      renderStops();
+    }
+
+    function addDay() {
+      const trip = getTrip();
+      const days = Object.keys(trip.daysStops).map(Number);
+      const next = (days.length ? Math.max(...days) : 0) + 1;
+      trip.daysStops[next] = [];
+      trip.currentDay = next;
+      saveDb();
+      renderDayTabs();
+      renderStops();
+    }
+
+    function addStop() {
+      const trip = getTrip();
+      const inp = document.getElementById('stop-input');
+      const urlInp = document.getElementById('stop-img-url');
+      const fileInp = document.getElementById('stop-img-file');
+      const title = inp.value.trim();
+      if (!title) return;
+
+      readImageInput(fileInp, urlInp, async function(imgSrc) {
+        if (!trip.daysStops[trip.currentDay]) trip.daysStops[trip.currentDay] = [];
+        const newIdx = trip.daysStops[trip.currentDay].length;
+        trip.daysStops[trip.currentDay].push({ title, zone: trip.title, done: false, img: imgSrc });
+        inp.value = '';
+        if (urlInp) urlInp.value = '';
+        if (fileInp) fileInp.value = '';
+        saveDb();
+        renderStops();
+
+        if (!imgSrc) {
+          const webImg = await fetchPlacePhotoFromWeb(title, trip.title);
+          if (webImg && trip.daysStops[trip.currentDay][newIdx]) {
+            trip.daysStops[trip.currentDay][newIdx].img = webImg;
+            saveDb();
+            renderStops();
+          }
+        }
+      });
+    }
+
+    function toggleStop(idx) {
+      const trip = getTrip();
+      trip.daysStops[trip.currentDay][idx].done = !trip.daysStops[trip.currentDay][idx].done;
+      saveDb();
+      renderStops();
+    }
+
+    function renderStops() {
+      const trip = getTrip();
+      const list = trip.daysStops[trip.currentDay] || [];
+      const doneCnt = list.filter(s => s.done).length;
+      document.getElementById('stops-progress').innerText = `${doneCnt} / ${list.length} visitate`;
+      document.getElementById('stops-list').innerHTML = list.length ? list.map((s, i) => `
+        <div class="stop-item ${s.done ? 'done' : ''}">
+          <div class="item-left">
+            <input type="checkbox" ${s.done ? 'checked' : ''} onchange="toggleStop(${i})" style="cursor:pointer;" />
+            ${renderPhotoThumb(s.title, s.img)}
+            <div class="item-info">
+              <div class="stop-name item-title">${s.title}</div>
+              <div class="item-sub">
+                <span class="tag ${s.done ? 'tag-green' : 'tag-amber'}">${s.done ? 'Visitata' : 'Da fare'}</span>
+              </div>
+            </div>
+          </div>
+          <div class="item-actions">
+            <button class="btn btn-sm btn-ghost" onclick="refreshStopPhoto(${i})" title="Cerca foto sul web">🔄</button>
+            <a class="btn btn-sm btn-map" href="${getMapsUrl(s.title, s.zone)}" target="_blank" rel="noopener noreferrer">🗺️ Maps</a>
+            <button class="btn btn-sm btn-ghost" onclick="getTrip().daysStops[getTrip().currentDay].splice(${i},1);saveDb();renderStops();">✕</button>
+          </div>
+        </div>
+      `).join('') : '<div style="font-size:12px;color:#64748b;padding:8px;">Nessuna tappa per questo giorno.</div>';
+    }
+
+    function renderExpenseControls() {
+      const trip = getTrip();
+      const currSel = document.getElementById('exp-curr');
+      currSel.innerHTML = `<option value="EUR">EUR (€)</option>` +
+        (trip.currency !== 'EUR' ? `<option value="${trip.currency}">${trip.currency} (${trip.symbol})</option>` : '');
+      document.getElementById('exp-who').innerHTML = trip.members.map(m => `<option value="${m}">${m}</option>`).join('');
+      document.getElementById('exp-split-bar').innerHTML = `<span style="color:#475569;">Dividi tra:</span>` +
+        trip.members.map(m => `<label><input type="checkbox" class="split-chk" value="${m}" checked /> ${m}</label>`).join('');
+    }
+
+    function addExpense() {
+      const trip = getTrip();
+      const desc = document.getElementById('exp-desc').value.trim();
+      const rawAmt = parseFloat(document.getElementById('exp-amt').value);
+      const curr = document.getElementById('exp-curr').value;
+      const who = document.getElementById('exp-who').value;
+      const splitWith = Array.from(document.querySelectorAll('.split-chk:checked')).map(c => c.value);
+      if (!desc || isNaN(rawAmt) || rawAmt <= 0 || !splitWith.length) return;
+      const amountEur = curr !== 'EUR' ? rawAmt / (trip.fxRate || 1) : rawAmt;
+      trip.expenses.push({ desc, amountEur, who, splitWith });
+      document.getElementById('exp-desc').value = '';
+      document.getElementById('exp-amt').value = '';
+      saveDb();
+      renderExpenses();
+    }
+
+    function renderExpenses() {
+      const trip = getTrip();
+      const tot = trip.expenses.reduce((acc, e) => acc + e.amountEur, 0);
+      document.getElementById('exp-total').innerText = 'Totale: ' + fmtEur(tot);
+
+      document.getElementById('exp-list').innerHTML = trip.expenses.map((e, i) => `
+        <div class="item-box">
+          <div>
+            <div style="font-size:12px;"><b>${e.desc}</b> <span style="color:#64748b;">• ${e.who}</span></div>
+            <div style="font-size:10px;color:#64748b;">Con: ${(e.splitWith || trip.members).join(', ')}</div>
+          </div>
+          <div class="item-actions">
+            <b style="font-size:12px;">${fmtEur(e.amountEur)}</b>
+            <button class="btn btn-sm btn-ghost" onclick="getTrip().expenses.splice(${i},1);saveDb();renderExpenses();">✕</button>
+          </div>
+        </div>
+      `).join('');
+
+      const paid = {}, share = {}, bal = {};
+      trip.members.forEach(m => { paid[m] = 0; share[m] = 0; bal[m] = 0; });
+
+      trip.expenses.forEach(e => {
+        if (paid[e.who] === undefined) { paid[e.who] = 0; share[e.who] = 0; bal[e.who] = 0; }
+        paid[e.who] += e.amountEur;
+        bal[e.who] += e.amountEur;
+        const targets = (e.splitWith && e.splitWith.length) ? e.splitWith : trip.members;
+        const quota = e.amountEur / targets.length;
+        targets.forEach(p => {
+          if (paid[p] === undefined) { paid[p] = 0; share[p] = 0; bal[p] = 0; }
+          share[p] += quota;
+          bal[p] -= quota;
+        });
+      });
+
+      document.getElementById('members-summary').innerHTML = trip.members.map(m => `
+        <div class="member-stat">
+          <div style="font-weight:800;">${m}</div>
+          <div style="color:#475569;">Pagato: <b>${fmtEur(paid[m])}</b></div>
+          <div style="color:#475569;">Quota: <b>${fmtEur(share[m])}</b></div>
+        </div>
+      `).join('');
+
+      const debtors = [], creditors = [];
+      Object.keys(bal).forEach(m => {
+        const v = Math.round(bal[m] * 100) / 100;
+        if (v < -0.01) debtors.push({ name: m, amt: -v });
+        if (v > 0.01) creditors.push({ name: m, amt: v });
+      });
+
+      const linesHtml = [];
+      const linesPlain = [`${trip.title} — Riepilogo spese (${fmtEur(tot)}):`];
+      let dIdx = 0, cIdx = 0;
+      while (dIdx < debtors.length && cIdx < creditors.length) {
+        const pay = Math.min(debtors[dIdx].amt, creditors[cIdx].amt);
+        const fmt = fmtEur(pay);
+        linesHtml.push(`<div class="settle-line"><span><b>${debtors[dIdx].name}</b> → <b>${creditors[cIdx].name}</b></span><b>${fmt}</b></div>`);
+        linesPlain.push(`- ${debtors[dIdx].name} deve dare ${fmt} a ${creditors[cIdx].name}`);
+        debtors[dIdx].amt -= pay;
+        creditors[cIdx].amt -= pay;
+        if (debtors[dIdx].amt < 0.01) dIdx++;
+        if (creditors[cIdx].amt < 0.01) cIdx++;
+      }
+
+      lastSettlementText = linesPlain.length > 1 ? linesPlain.join('\n') : 'Tutte le spese sono in pari.';
+      document.getElementById('settle-list').innerHTML = linesHtml.length
+        ? linesHtml.join('')
+        : '<div class="settle-line" style="color:#64748b;">Tutte le spese sono in pari.</div>';
+    }
+
+    function copySettlement(btn) {
+      if (navigator.clipboard) navigator.clipboard.writeText(lastSettlementText).catch(() => {});
+      const prev = btn.innerText;
+      btn.innerText = '✓ Copiato';
+      setTimeout(() => { btn.innerText = prev; }, 1500);
+    }
+
+    function renderTripSelector() {
+      const sel = document.getElementById('trip-selector');
+      const trip = getTrip();
+      sel.innerHTML = Object.values(db.trips).map(t =>
+        `<option value="${t.id}" ${t.id === trip.id ? 'selected' : ''}>${t.title}</option>`
+      ).join('');
+      document.getElementById('banner-title').innerText = trip.title;
+      document.getElementById('banner-sub').innerHTML =
+        `Partecipanti: <b>${trip.members.join(', ')}</b> (${trip.members.length} pax) • Valuta: <b>${trip.currency} (${trip.symbol})</b>`;
+      document.getElementById('fx-curr-label').innerText = trip.currency;
+      document.getElementById('fx-rate').value = trip.fxRate;
+    }
+
+    function renderAll() {
+      renderTripSelector();
+      renderPois();
+      renderFlights();
+      renderQuotes();
+      calcFx();
+      renderDayTabs();
+      renderStops();
+      renderExpenseControls();
+      renderExpenses();
+    }
+
+    renderAll();
+    autoFetchMissingWebPhotos();
+  </script>
+</body>
+</html>
