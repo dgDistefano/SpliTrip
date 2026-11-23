@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="it">
+<html lang="it" data-app-theme="dark">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
@@ -22,11 +22,15 @@
   />
 
   <style>
-    :root {
+    :root,
+    html[data-app-theme="dark"] {
       --bg-app: #090e1a;
+      --bg-topbar: rgba(9, 14, 26, 0.84);
       --bg-surface: #111827;
       --bg-card: #162033;
       --bg-card-hover: #1c2840;
+      --bg-item: rgba(9, 14, 26, 0.45);
+      --bg-glow: rgba(14, 165, 233, 0.14);
       --border: rgba(148, 163, 184, 0.16);
       --text-main: #f8fafc;
       --text-muted: #94a3b8;
@@ -34,6 +38,77 @@
       --accent-cyan: #0ea5e9;
       --accent-coral: #f97316;
       --accent-ok: #10b981;
+    }
+
+    html[data-app-theme="light"] {
+      --bg-app: #f1f5f9;
+      --bg-topbar: rgba(255, 255, 255, 0.88);
+      --bg-surface: #ffffff;
+      --bg-card: #f8fafc;
+      --bg-card-hover: #eef2ff;
+      --bg-item: #f1f5f9;
+      --bg-glow: rgba(37, 99, 235, 0.08);
+      --border: rgba(15, 23, 42, 0.12);
+      --text-main: #0f172a;
+      --text-muted: #475569;
+      --accent-blue: #1d4ed8;
+      --accent-cyan: #0284c7;
+      --accent-coral: #ea580c;
+      --accent-ok: #059669;
+    }
+
+    html[data-app-theme="ocean"] {
+      --bg-app: #071923;
+      --bg-topbar: rgba(7, 25, 35, 0.86);
+      --bg-surface: #0c2432;
+      --bg-card: #123142;
+      --bg-card-hover: #173e54;
+      --bg-item: rgba(7, 25, 35, 0.5);
+      --bg-glow: rgba(6, 182, 212, 0.16);
+      --border: rgba(125, 211, 252, 0.18);
+      --text-main: #f0f9ff;
+      --text-muted: #93c5fd;
+      --accent-blue: #0284c7;
+      --accent-cyan: #06b6d4;
+      --accent-coral: #f97316;
+      --accent-ok: #2dd4bf;
+    }
+
+    html[data-app-theme="sunset"] {
+      --bg-app: #170d18;
+      --bg-topbar: rgba(23, 13, 24, 0.86);
+      --bg-surface: #241425;
+      --bg-card: #301b31;
+      --bg-card-hover: #3d223e;
+      --bg-item: rgba(23, 13, 24, 0.5);
+      --bg-glow: rgba(251, 113, 133, 0.15);
+      --border: rgba(251, 182, 206, 0.16);
+      --text-main: #fff1f2;
+      --text-muted: #f5b8c9;
+      --accent-blue: #db2777;
+      --accent-cyan: #f97316;
+      --accent-coral: #fb7185;
+      --accent-ok: #34d399;
+    }
+
+    html[data-app-theme="forest"] {
+      --bg-app: #081712;
+      --bg-topbar: rgba(8, 23, 18, 0.86);
+      --bg-surface: #0f241c;
+      --bg-card: #153126;
+      --bg-card-hover: #1c4032;
+      --bg-item: rgba(8, 23, 18, 0.5);
+      --bg-glow: rgba(16, 185, 129, 0.15);
+      --border: rgba(110, 231, 183, 0.16);
+      --text-main: #ecfdf5;
+      --text-muted: #86efac;
+      --accent-blue: #059669;
+      --accent-cyan: #10b981;
+      --accent-coral: #f97316;
+      --accent-ok: #4ade80;
+    }
+
+    :root {
       --radius-xl: 20px;
       --radius-lg: 14px;
       --radius-md: 10px;
@@ -51,10 +126,11 @@
     body {
       margin: 0;
       min-height: 100dvh;
-      background: radial-gradient(circle at top right, rgba(14, 165, 233, 0.14), transparent 45%), var(--bg-app);
+      background: radial-gradient(circle at top right, var(--bg-glow), transparent 45%), var(--bg-app);
       color: var(--text-main);
       font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif;
       line-height: 1.45;
+      transition: background-color 0.2s ease, color 0.2s ease;
     }
 
     label,
@@ -88,7 +164,7 @@
       justify-content: space-between;
       gap: 12px;
       padding: 12px 18px;
-      background: rgba(9, 14, 26, 0.84);
+      background: var(--bg-topbar);
       backdrop-filter: blur(14px);
       border-bottom: 1px solid var(--border);
     }
@@ -161,6 +237,7 @@
       display: flex;
       flex-direction: column;
       gap: 10px;
+      overflow-y: auto;
       transform: translateX(100%);
       transition: transform 0.24s cubic-bezier(0.22, 1, 0.36, 1);
     }
@@ -175,6 +252,11 @@
       justify-content: space-between;
       padding-bottom: 12px;
       border-bottom: 1px solid var(--border);
+    }
+
+    .drawer-section {
+      padding-top: 8px;
+      border-top: 1px solid var(--border);
     }
 
     .drawer-nav-btn {
@@ -274,12 +356,12 @@
     .trip-card:hover {
       transform: translateY(-3px);
       background: var(--bg-card-hover);
-      border-color: rgba(56, 189, 248, 0.42);
+      border-color: var(--accent-cyan);
     }
 
     .trip-card.selected {
       border-color: var(--accent-cyan);
-      box-shadow: 0 0 0 1px rgba(14, 165, 233, 0.45);
+      box-shadow: 0 0 0 1px var(--accent-cyan);
     }
 
     .trip-cover {
@@ -342,6 +424,47 @@
       padding: 20px;
     }
 
+    .active-trip-cover {
+      height: 168px;
+      width: 100%;
+      border-radius: var(--radius-lg);
+      background-size: cover;
+      background-position: center;
+      position: relative;
+      overflow: hidden;
+      margin: 14px 0 18px;
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+      padding: 14px 16px;
+    }
+
+    .active-trip-cover::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(9, 14, 26, 0.84), rgba(9, 14, 26, 0.2) 65%, transparent);
+    }
+
+    .active-trip-cover-content,
+    .active-trip-cover-actions {
+      position: relative;
+      z-index: 1;
+    }
+
+    .active-trip-cover h3 {
+      margin: 0 0 2px;
+      font-size: 1.2rem;
+      color: #ffffff;
+    }
+
+    .active-trip-cover .trip-card-meta {
+      color: #e2e8f0;
+    }
+
     .stats-row {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(165px, 1fr));
@@ -402,8 +525,8 @@
       gap: 10px;
       padding: 9px 11px;
       border-radius: var(--radius-md);
-      background: rgba(9, 14, 26, 0.45);
-      border: 1px solid rgba(148, 163, 184, 0.1);
+      background: var(--bg-item);
+      border: 1px solid var(--border);
       font-size: 0.92rem;
     }
 
@@ -607,6 +730,19 @@
       <span>Ripristina esempio</span>
       <span>↺</span>
     </button>
+
+    <div class="drawer-section">
+      <div class="field-group" style="margin-bottom: 0; margin-top: 6px;">
+        <label for="appThemeSelect">Tema dell'applicazione</label>
+        <select id="appThemeSelect">
+          <option value="dark">Scuro (Blu &amp; Corallo)</option>
+          <option value="light">Chiaro (Ghiaccio &amp; Blu)</option>
+          <option value="ocean">Oceano (Abisso &amp; Ciano)</option>
+          <option value="sunset">Tramonto (Rosa &amp; Arancio)</option>
+          <option value="forest">Foresta (Bosco &amp; Smeraldo)</option>
+        </select>
+      </div>
+    </div>
   </aside>
 
   <main class="container">
@@ -656,13 +792,20 @@
 
     <section class="active-trip-panel hidden" id="activeTripSection">
       <div class="section-head">
-        <div>
-          <h2 id="activeTripTitle">Viaggio</h2>
-          <div class="trip-card-meta" id="activeTripMeta"></div>
-        </div>
+        <h2>Dettaglio viaggio</h2>
         <div class="actions-inline">
           <button class="btn btn-ghost btn-sm" id="editTripBtn" type="button">Modifica viaggio / foto / valuta</button>
           <button class="btn btn-ghost btn-sm" id="deleteTripBtn" type="button">Elimina</button>
+        </div>
+      </div>
+
+      <div class="active-trip-cover" id="activeTripCover">
+        <div class="active-trip-cover-content">
+          <h3 id="activeTripTitle">Viaggio</h3>
+          <div class="trip-card-meta" id="activeTripMeta"></div>
+        </div>
+        <div class="active-trip-cover-actions">
+          <button class="btn btn-ghost btn-sm" id="quickChangePhotoBtn" type="button" style="background: rgba(9, 14, 26, 0.68); color: #ffffff; border-color: rgba(255,255,255,0.22);">Cambia foto</button>
         </div>
       </div>
 
@@ -779,6 +922,7 @@
 
   <script>
     const STORAGE_KEY = 'splitrip_data_v2';
+    const ALLOWED_APP_THEMES = ['dark', 'light', 'ocean', 'sunset', 'forest'];
 
     const COVER_STYLES = {
       coast: { label: 'Costa', bg: 'linear-gradient(135deg, #0284c7, #06b6d4)' },
@@ -820,9 +964,29 @@
     }
 
     let state = {
+      appTheme: 'dark',
       trips: [],
       selectedTripId: null
     };
+
+    function applyAppTheme(themeName) {
+      const safeTheme = ALLOWED_APP_THEMES.includes(themeName) ? themeName : 'dark';
+      state.appTheme = safeTheme;
+      document.documentElement.setAttribute('data-app-theme', safeTheme);
+      const select = document.getElementById('appThemeSelect');
+      if (select && select.value !== safeTheme) {
+        select.value = safeTheme;
+      }
+      const metaTheme = document.querySelector('meta[name="theme-color"]');
+      const themeColors = {
+        dark: '#1d4ed8',
+        light: '#f8fafc',
+        ocean: '#0284c7',
+        sunset: '#db2777',
+        forest: '#059669'
+      };
+      if (metaTheme) metaTheme.setAttribute('content', themeColors[safeTheme] || '#1d4ed8');
+    }
 
     function normalizeTrip(t) {
       return {
@@ -844,6 +1008,7 @@
         const raw = localStorage.getItem(STORAGE_KEY) || localStorage.getItem('splitrip_data_v1');
         if (raw) {
           const parsed = JSON.parse(raw);
+          state.appTheme = ALLOWED_APP_THEMES.includes(parsed.appTheme) ? parsed.appTheme : 'dark';
           if (Array.isArray(parsed.trips)) {
             state.trips = parsed.trips.map(normalizeTrip);
             state.selectedTripId = parsed.selectedTripId || null;
@@ -858,6 +1023,8 @@
       if (state.trips.length > 0 && !state.trips.some(t => t.id === state.selectedTripId)) {
         state.selectedTripId = pickClosestTripId(state.trips);
       }
+
+      applyAppTheme(state.appTheme);
     }
 
     function saveState() {
@@ -978,6 +1145,7 @@
       if (!active) return;
 
       const cur = active.currency || 'EUR';
+      document.getElementById('activeTripCover').style.backgroundImage = getCoverCss(active);
       document.getElementById('activeTripTitle').textContent = active.title;
       document.getElementById('activeTripMeta').textContent = `${active.startDate} → ${active.endDate} • ${active.members.length} partecipanti`;
 
@@ -1191,6 +1359,11 @@
       tripModal.classList.remove('open');
     }
 
+    document.getElementById('appThemeSelect').addEventListener('change', (e) => {
+      applyAppTheme(e.target.value);
+      saveState();
+    });
+
     document.getElementById('burgerBtn').addEventListener('click', () => setDrawerOpen(true));
     document.getElementById('closeDrawerBtn').addEventListener('click', () => setDrawerOpen(false));
     drawerBackdrop.addEventListener('click', () => setDrawerOpen(false));
@@ -1227,6 +1400,7 @@
       try {
         const text = await file.text();
         const parsed = JSON.parse(text);
+        if (parsed.appTheme) applyAppTheme(parsed.appTheme);
         if (Array.isArray(parsed.trips)) {
           state.trips = parsed.trips.map(normalizeTrip);
           state.selectedTripId = parsed.selectedTripId || pickClosestTripId(state.trips);
@@ -1257,12 +1431,13 @@
       const active = getActiveTrip();
       if (active) openTripModal(active);
     });
+    document.getElementById('quickChangePhotoBtn').addEventListener('click', () => {
+      const active = getActiveTrip();
+      if (active) openTripModal(active);
+    });
     document.getElementById('cancelTripModalBtn').addEventListener('click', closeTripModal);
 
-    document.getElementById('tripThemeSelect').addEventListener('change', () => {
-      // Se l'utente cambia esplicitamente il tema senza aver appena caricato una foto, aggiorna l'anteprima
-      updateCoverPreview();
-    });
+    document.getElementById('tripThemeSelect').addEventListener('change', updateCoverPreview);
 
     document.getElementById('clearPhotoBtn').addEventListener('click', () => {
       draftPhotoDataUrl = null;
