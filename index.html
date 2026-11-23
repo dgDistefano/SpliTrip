@@ -359,17 +359,11 @@
       border-color: var(--accent-cyan);
     }
 
-    .trip-card.selected {
-      border-color: var(--accent-cyan);
-      box-shadow: 0 0 0 1px var(--accent-cyan);
-    }
-
     .trip-cover {
-      height: 132px;
+      height: 140px;
       width: 100%;
-      background-size: cover;
-      background-position: center;
       position: relative;
+      overflow: hidden;
       display: flex;
       align-items: flex-end;
       justify-content: space-between;
@@ -377,22 +371,33 @@
       padding: 10px 12px;
     }
 
-    .trip-cover::after {
-      content: "";
+    .trip-cover-img {
       position: absolute;
       inset: 0;
-      background: linear-gradient(to top, rgba(9, 14, 26, 0.78), transparent 62%);
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      z-index: 0;
+    }
+
+    .trip-cover-scrim {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(9, 14, 26, 0.78), rgba(9, 14, 26, 0.08) 65%, transparent);
+      z-index: 1;
+      pointer-events: none;
     }
 
     .trip-badge {
       position: relative;
-      z-index: 1;
+      z-index: 2;
       font-size: 0.75rem;
       font-weight: 600;
       padding: 4px 9px;
       border-radius: 999px;
-      background: rgba(9, 14, 26, 0.75);
-      border: 1px solid rgba(255, 255, 255, 0.16);
+      background: rgba(9, 14, 26, 0.78);
+      border: 1px solid rgba(255, 255, 255, 0.18);
       color: #e2e8f0;
     }
 
@@ -426,7 +431,7 @@
     }
 
     .active-trip-cover {
-      height: 168px;
+      height: 176px;
       width: 100%;
       border-radius: var(--radius-lg);
       background-size: cover;
@@ -660,7 +665,7 @@
 </head>
 <body>
   <header class="topbar">
-    <div class="brand" id="brandHomeBtn" title="Torna in alto">
+    <div class="brand" id="brandHomeBtn" title="Torna all'elenco viaggi">
       <svg class="brand-icon" viewBox="0 0 192 192" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
         <defs>
           <linearGradient id="hdrBg" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -795,7 +800,10 @@
 
     <section class="active-trip-panel hidden" id="activeTripSection">
       <div class="section-head">
-        <h2>Dettaglio viaggio</h2>
+        <div class="actions-inline" style="align-items: center;">
+          <button class="btn btn-ghost btn-sm" id="backToCatalogBtn" type="button">← Tutti i viaggi</button>
+          <h2 style="margin: 0;">Dettaglio viaggio</h2>
+        </div>
         <div class="actions-inline">
           <button class="btn btn-ghost btn-sm" id="editTripBtn" type="button">Modifica viaggio / foto / valuta</button>
           <button class="btn btn-ghost btn-sm" id="deleteTripBtn" type="button">Elimina</button>
@@ -922,7 +930,6 @@
     const STORAGE_KEY = 'splitrip_data_v2';
     const ALLOWED_APP_THEMES = ['dark', 'light', 'ocean', 'sunset', 'forest'];
 
-    // Catalogo completo valute attive ISO 4217 con bandiera, codice, simbolo e paese/territorio
     const CURRENCIES = [
       { code: 'EUR', flag: '🇮🇹', symbol: '€', country: 'Area Euro / Italia' },
       { code: 'USD', flag: '🇺🇸', symbol: '$', country: 'Stati Uniti d\'America' },
@@ -1163,6 +1170,7 @@
 
     let state = {
       appTheme: 'dark',
+      view: 'catalog', // 'catalog' | 'detail'
       trips: [],
       selectedTripId: null
     };
@@ -1208,6 +1216,7 @@
         if (raw) {
           const parsed = JSON.parse(raw);
           state.appTheme = ALLOWED_APP_THEMES.includes(parsed.appTheme) ? parsed.appTheme : 'dark';
+          state.view = parsed.view === 'detail' ? 'detail' : 'catalog';
           if (Array.isArray(parsed.trips)) {
             state.trips = parsed.trips.map(normalizeTrip);
             state.selectedTripId = parsed.selectedTripId || null;
@@ -1221,6 +1230,10 @@
 
       if (state.trips.length > 0 && !state.trips.some(t => t.id === state.selectedTripId)) {
         state.selectedTripId = pickClosestTripId(state.trips);
+      }
+
+      if (!state.trips.length || !getActiveTrip()) {
+        state.view = 'catalog';
       }
 
       applyAppTheme(state.appTheme);
@@ -1304,10 +1317,29 @@
       return state.trips.find(t => t.id === state.selectedTripId) || null;
     }
 
+    function openTripDetail(tripId) {
+      state.selectedTripId = tripId;
+      state.view = 'detail';
+      saveState();
+      render();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function openCatalogView() {
+      state.view = 'catalog';
+      saveState();
+      render();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
     function render() {
       const hasTrips = state.trips.length > 0;
+      const active = getActiveTrip();
+      const showDetail = hasTrips && state.view === 'detail' && !!active;
+
       document.getElementById('welcomeSection').classList.toggle('hidden', hasTrips);
-      document.getElementById('tripsCatalogSection').classList.toggle('hidden', !hasTrips);
+      document.getElementById('tripsCatalogSection').classList.toggle('hidden', !hasTrips || showDetail);
+      document.getElementById('activeTripSection').classList.toggle('hidden', !showDetail);
       document.getElementById('drawerTripCount').textContent = String(state.trips.length);
 
       const grid = document.getElementById('tripsGrid');
@@ -1317,37 +1349,58 @@
         const cover = COVER_STYLES[trip.theme] || COVER_STYLES.coast;
         const cMeta = getCurrencyMeta(trip.currency);
         const total = trip.expenses.reduce((acc, e) => acc + Number(e.amount || 0), 0);
+        const hasPhoto = typeof trip.photo === 'string' && trip.photo.startsWith('data:image/');
+
         const card = document.createElement('article');
         card.className = 'trip-card' + (trip.id === state.selectedTripId ? ' selected' : '');
-        card.innerHTML = `
-          <div class="trip-cover" style="background-image: ${getCoverCss(trip)}">
-            <span class="trip-badge">${trip.photo ? 'Foto' : cover.label}</span>
-            <span class="trip-badge">${cMeta.flag} ${escapeHtml(cMeta.code)}</span>
+
+        const coverDiv = document.createElement('div');
+        coverDiv.className = 'trip-cover';
+        coverDiv.style.background = cover.bg;
+
+        if (hasPhoto) {
+          const img = document.createElement('img');
+          img.className = 'trip-cover-img';
+          img.src = trip.photo;
+          img.alt = trip.title;
+          coverDiv.appendChild(img);
+        }
+
+        const scrim = document.createElement('div');
+        scrim.className = 'trip-cover-scrim';
+        coverDiv.appendChild(scrim);
+
+        const badgeLeft = document.createElement('span');
+        badgeLeft.className = 'trip-badge';
+        badgeLeft.textContent = hasPhoto ? 'Foto' : cover.label;
+
+        const badgeRight = document.createElement('span');
+        badgeRight.className = 'trip-badge';
+        badgeRight.textContent = `${cMeta.flag} ${cMeta.code}`;
+
+        coverDiv.appendChild(badgeLeft);
+        coverDiv.appendChild(badgeRight);
+
+        const bodyDiv = document.createElement('div');
+        bodyDiv.className = 'trip-card-body';
+        bodyDiv.innerHTML = `
+          <h3 class="trip-card-title">${escapeHtml(trip.title)}</h3>
+          <div class="trip-card-meta">
+            <span>${escapeHtml(trip.startDate)} → ${escapeHtml(trip.endDate)}</span>
+            <strong>${formatMoney(total, cMeta.code)}</strong>
           </div>
-          <div class="trip-card-body">
-            <h3 class="trip-card-title">${escapeHtml(trip.title)}</h3>
-            <div class="trip-card-meta">
-              <span>${escapeHtml(trip.startDate)} → ${escapeHtml(trip.endDate)}</span>
-              <strong>${formatMoney(total, cMeta.code)}</strong>
-            </div>
-            <div class="trip-card-meta" style="font-size: 0.78rem;">
-              <span>${cMeta.flag} ${escapeHtml(cMeta.country)}</span>
-            </div>
+          <div class="trip-card-meta" style="font-size: 0.78rem;">
+            <span>${cMeta.flag} ${escapeHtml(cMeta.country)}</span>
           </div>
         `;
-        card.addEventListener('click', () => {
-          state.selectedTripId = trip.id;
-          saveState();
-          render();
-          document.getElementById('activeTripSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
-        });
+
+        card.appendChild(coverDiv);
+        card.appendChild(bodyDiv);
+        card.addEventListener('click', () => openTripDetail(trip.id));
         grid.appendChild(card);
       }
 
-      const active = getActiveTrip();
-      const panel = document.getElementById('activeTripSection');
-      panel.classList.toggle('hidden', !active);
-      if (!active) return;
+      if (!showDetail || !active) return;
 
       const cMeta = getCurrencyMeta(active.currency);
       const cur = cMeta.code;
@@ -1493,6 +1546,20 @@
       return escapeHtml(str).replaceAll("'", '&#39;');
     }
 
+    function syncReturnDateFromStart(forceAlignIfEarlier = true) {
+      const startInput = document.getElementById('tripStartInput');
+      const endInput = document.getElementById('tripEndInput');
+      if (!startInput || !endInput) return;
+
+      const startVal = startInput.value;
+      if (!startVal) return;
+
+      endInput.min = startVal;
+      if (forceAlignIfEarlier && (!endInput.value || endInput.value < startVal)) {
+        endInput.value = startVal;
+      }
+    }
+
     function updateCoverPreview() {
       const theme = document.getElementById('tripThemeSelect').value;
       const box = document.getElementById('coverPreviewBox');
@@ -1545,6 +1612,7 @@
         document.getElementById('tripTitleInput').value = tripToEdit.title;
         document.getElementById('tripStartInput').value = tripToEdit.startDate;
         document.getElementById('tripEndInput').value = tripToEdit.endDate;
+        syncReturnDateFromStart(true);
         document.getElementById('tripCurrencySelect').value = targetCurrency;
         document.getElementById('tripThemeSelect').value = tripToEdit.theme || 'coast';
         draftPhotoDataUrl = tripToEdit.photo || null;
@@ -1555,6 +1623,7 @@
         document.getElementById('tripTitleInput').value = '';
         document.getElementById('tripStartInput').value = todayStr;
         document.getElementById('tripEndInput').value = todayStr;
+        syncReturnDateFromStart(true);
         document.getElementById('tripCurrencySelect').value = 'EUR';
         document.getElementById('tripThemeSelect').value = 'coast';
         draftPhotoDataUrl = null;
@@ -1568,6 +1637,13 @@
     function closeTripModal() {
       tripModal.classList.remove('open');
     }
+
+    document.getElementById('tripStartInput').addEventListener('change', () => {
+      syncReturnDateFromStart(true);
+    });
+    document.getElementById('tripStartInput').addEventListener('input', () => {
+      syncReturnDateFromStart(true);
+    });
 
     document.getElementById('currencyFilterInput').addEventListener('input', (e) => {
       populateCurrencySelect(e.target.value, document.getElementById('tripCurrencySelect').value);
@@ -1584,7 +1660,11 @@
 
     document.getElementById('navTripsBtn').addEventListener('click', () => {
       setDrawerOpen(false);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      openCatalogView();
+    });
+
+    document.getElementById('backToCatalogBtn').addEventListener('click', () => {
+      openCatalogView();
     });
 
     document.getElementById('navNewTripBtn').addEventListener('click', () => {
@@ -1618,6 +1698,7 @@
         if (Array.isArray(parsed.trips)) {
           state.trips = parsed.trips.map(normalizeTrip);
           state.selectedTripId = parsed.selectedTripId || pickClosestTripId(state.trips);
+          state.view = parsed.view === 'detail' && getActiveTrip() ? 'detail' : 'catalog';
           saveState();
           render();
         }
@@ -1631,12 +1712,13 @@
       setDrawerOpen(false);
       state.trips = getSeedTrips();
       state.selectedTripId = pickClosestTripId(state.trips);
+      state.view = 'catalog';
       saveState();
       render();
     });
 
     document.getElementById('brandHomeBtn').addEventListener('click', () => {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      openCatalogView();
     });
 
     document.getElementById('openNewTripBtn').addEventListener('click', () => openTripModal(null));
@@ -1675,11 +1757,12 @@
       const editId = document.getElementById('editingTripId').value;
       const title = document.getElementById('tripTitleInput').value.trim();
       const startDate = document.getElementById('tripStartInput').value;
-      const endDate = document.getElementById('tripEndInput').value;
+      let endDate = document.getElementById('tripEndInput').value;
       const currency = document.getElementById('tripCurrencySelect').value;
       const theme = document.getElementById('tripThemeSelect').value;
 
       if (!title || !startDate || !endDate) return;
+      if (endDate < startDate) endDate = startDate;
 
       if (editId) {
         const existing = state.trips.find(t => t.id === editId);
@@ -1691,6 +1774,7 @@
           existing.theme = theme;
           existing.photo = draftPhotoDataUrl;
           state.selectedTripId = existing.id;
+          state.view = 'detail';
         }
       } else {
         const newTrip = normalizeTrip({
@@ -1707,6 +1791,7 @@
         });
         state.trips.unshift(newTrip);
         state.selectedTripId = newTrip.id;
+        state.view = 'detail';
       }
 
       saveState();
@@ -1719,6 +1804,7 @@
       if (!active) return;
       state.trips = state.trips.filter(t => t.id !== active.id);
       state.selectedTripId = pickClosestTripId(state.trips);
+      state.view = 'catalog';
       saveState();
       render();
     });
