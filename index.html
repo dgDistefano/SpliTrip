@@ -10,7 +10,7 @@
   <title>Splitrip — Viaggi, Itinerari & Spese</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-    body { background: #e2e8f0; color: #0f172a; line-height: 1.45; }
+    body { background: #e2e8f0; color: #0f172a; line-height: 1.45; overflow-x: hidden; }
 
     .topbar { background: #0f172a; color: #fff; padding: 12px 18px; position: sticky; top: 0; z-index: 50; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.18); }
     .brand { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 16px; letter-spacing: -0.01em; }
@@ -45,9 +45,10 @@
 
     .row-form { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; align-items: center; }
     .extra-box { background: #f1f5f9; border: 1px dashed #cbd5e1; border-radius: 10px; padding: 9px 10px; margin-bottom: 12px; }
-    input, select { padding: 8px 10px; border: 1px solid #cbd5e1; border-radius: 9px; font-size: 12px; background: #f8fafc; color: #0f172a; outline: none; }
+    /* font-size: 16px evita lo zoom automatico del browser su smartphone quando si tocca un campo */
+    input, select { padding: 8px 10px; border: 1px solid #cbd5e1; border-radius: 9px; font-size: 16px; line-height: 1.25; background: #f8fafc; color: #0f172a; outline: none; max-width: 100%; }
     input:focus, select:focus { border-color: #0284c7; background: #fff; }
-    input[type="file"] { padding: 5px 7px; font-size: 11px; max-width: 170px; background: #fff; }
+    input[type="file"] { padding: 5px 7px; font-size: 12px; max-width: 190px; background: #fff; }
 
     .btn { border: none; padding: 8px 12px; border-radius: 9px; font-size: 12px; font-weight: 700; cursor: pointer; background: #0f172a; color: #fff; transition: 0.12s; text-decoration: none; display: inline-flex; align-items: center; gap: 4px; }
     .btn:hover { background: #1e293b; }
@@ -157,13 +158,13 @@
     <div id="new-trip-panel" class="new-trip-panel hidden">
       <div style="font-size:12px; font-weight:800; text-transform:uppercase; color:#334155; margin-bottom:10px;">Crea viaggio</div>
       <div class="row-form">
-        <input id="nt-title" type="text" placeholder="Titolo viaggio (es. Tokyo & Kyoto)" style="flex:1; min-width:170px;" />
-        <label style="font-size:11px; font-weight:700; color:#475569; display:inline-flex; align-items:center; gap:5px;">
+        <input id="nt-title" type="text" placeholder="Titolo viaggio (es. Pechino & Shanghai)" style="flex:1; min-width:170px;" />
+        <label style="font-size:12px; font-weight:700; color:#475569; display:inline-flex; align-items:center; gap:5px; flex-wrap:wrap;">
           Data inizio:
           <input id="nt-start-date" type="date" />
         </label>
-        <select id="nt-currency-select" onchange="onCurrencySelectChange()" style="min-width:210px; font-weight:600;"></select>
-        <input id="nt-rate" type="number" step="0.01" placeholder="1 EUR = ?" style="width:105px;" title="Valore in valuta scelta per 1 EUR" />
+        <select id="nt-currency-select" onchange="onCurrencySelectChange()" style="min-width:220px; font-weight:600;"></select>
+        <input id="nt-rate" type="number" step="0.01" placeholder="1 EUR = ?" style="width:115px;" title="Valore in valuta scelta per 1 EUR" />
       </div>
       <div class="row-form" style="margin-bottom:0;">
         <input id="nt-members" type="text" placeholder="Partecipanti separati da virgola (es. Marco, Giulia, Luca)" style="flex:1; min-width:200px;" />
@@ -215,7 +216,7 @@
             </div>
             <div id="poi-extra" class="extra-box hidden">
               <div class="row-form" style="margin-bottom:0;">
-                <input id="poi-zone" type="text" placeholder="Città/Zona (default: titolo viaggio)" style="width:155px;" />
+                <input id="poi-zone" type="text" placeholder="Città/Zona (default: titolo viaggio)" style="width:170px;" />
                 <input id="poi-img-url" type="text" placeholder="URL foto (se vuoto cerca sul web)" style="flex:1; min-width:140px;" />
                 <input id="poi-img-file" type="file" accept="image/*" />
               </div>
@@ -229,11 +230,13 @@
               <span class="tag tag-green" id="fx-country-tag">Locale</span>
             </div>
             <div class="fx-box">
-              <div style="font-size:12px; color:#334155; margin-bottom:10px;">
-                Tasso: <b>1 EUR = <input id="fx-rate" type="number" step="0.01" style="width:86px; padding:4px 7px; font-weight:700;" oninput="updateFx()" /> <span id="fx-curr-label">-</span></b>
+              <div style="font-size:12px; color:#334155; margin-bottom:10px; display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
+                <span>Tasso: <b>1 EUR =</b></span>
+                <input id="fx-rate" type="number" step="0.01" style="width:96px; padding:5px 8px; font-weight:700;" oninput="updateFx()" />
+                <b id="fx-curr-label">-</b>
               </div>
               <div class="row-form" style="margin-bottom:0; align-items:center;">
-                <input id="fx-eur" type="number" value="50" oninput="calcFx()" style="width:105px; font-weight:700;" />
+                <input id="fx-eur" type="number" value="50" oninput="calcFx()" style="width:110px; font-weight:700;" />
                 <span style="font-size:12px; font-weight:700;">EUR →</span>
                 <div id="fx-out" class="fx-result">0</div>
               </div>
@@ -247,10 +250,10 @@
             <span class="tag tag-amber" id="flight-count">0 voli</span>
           </div>
           <div class="row-form">
-            <input id="fl-route" type="text" placeholder="Tratta (es. FCO → HND)" style="flex:1; min-width:135px;" />
-            <input id="fl-code" type="text" placeholder="Volo" style="width:105px;" />
-            <input id="fl-time" type="text" placeholder="Orario" style="width:130px;" />
-            <input id="fl-price" type="number" step="0.01" placeholder="Prezzo €" style="width:95px;" />
+            <input id="fl-route" type="text" placeholder="Tratta (es. FCO → PEK)" style="flex:1; min-width:135px;" />
+            <input id="fl-code" type="text" placeholder="Volo" style="width:110px;" />
+            <input id="fl-time" type="text" placeholder="Orario" style="width:140px;" />
+            <input id="fl-price" type="number" step="0.01" placeholder="Prezzo €" style="width:105px;" />
             <input id="fl-note" type="text" placeholder="Note / PNR" style="flex:1; min-width:110px;" />
             <button class="btn btn-teal" onclick="addFlight()">+ Volo</button>
           </div>
@@ -269,7 +272,7 @@
               <option value="Volo">✈️ Volo</option>
             </select>
             <input id="qt-title" type="text" placeholder="Voce (es. Hotel 5 notti)" style="flex:1; min-width:150px;" />
-            <input id="qt-price" type="number" step="0.01" placeholder="Prezzo €" style="width:95px;" />
+            <input id="qt-price" type="number" step="0.01" placeholder="Prezzo €" style="width:105px;" />
             <input id="qt-url" type="text" placeholder="Link offerta (https://...)" style="flex:1; min-width:150px;" />
             <button class="btn btn-sky" onclick="addQuoteItem()">+ Aggiungi</button>
           </div>
@@ -299,9 +302,9 @@
             <div class="day-tabs" id="day-tabs"></div>
             <div class="day-date-banner" id="day-date-banner">
               <span id="day-date-label">Giorno 1</span>
-              <label style="font-size:11px; font-weight:600; color:#475569; display:inline-flex; align-items:center; gap:5px;">
+              <label style="font-size:12px; font-weight:600; color:#475569; display:inline-flex; align-items:center; gap:5px; flex-wrap:wrap;">
                 Data inizio viaggio:
-                <input id="trip-start-date-input" type="date" style="padding:4px 7px; font-size:11px;" onchange="updateTripStartDate(this.value)" />
+                <input id="trip-start-date-input" type="date" style="padding:5px 8px;" onchange="updateTripStartDate(this.value)" />
               </label>
             </div>
 
@@ -328,7 +331,7 @@
 
             <div class="row-form">
               <input id="exp-desc" type="text" placeholder="Descrizione spesa" style="flex:1; min-width:125px;" />
-              <input id="exp-amt" type="number" step="0.01" placeholder="Importo" style="width:82px;" />
+              <input id="exp-amt" type="number" step="0.01" placeholder="Importo" style="width:96px;" />
               <select id="exp-curr"></select>
               <select id="exp-who"></select>
               <button class="btn" onclick="addExpense()">+ Spesa</button>
@@ -355,6 +358,7 @@
     const STORAGE_KEY = 'splitrip_v1_storage';
 
     const CURRENCY_OPTIONS = [
+      { code: 'CNY', country: 'Cina', flag: '🇨🇳', symbol: '¥', defaultRate: 7.8, decimals: 2 },
       { code: 'JPY', country: 'Giappone', flag: '🇯🇵', symbol: '¥', defaultRate: 164.5, decimals: 0 },
       { code: 'USD', country: 'Stati Uniti', flag: '🇺🇸', symbol: '$', defaultRate: 1.08, decimals: 2 },
       { code: 'GBP', country: 'Regno Unito', flag: '🇬🇧', symbol: '£', defaultRate: 0.85, decimals: 2 },
@@ -362,19 +366,37 @@
       { code: 'EUR', country: 'Eurozona', flag: '🇪🇺', symbol: '€', defaultRate: 1.0, decimals: 2 },
       { code: 'CAD', country: 'Canada', flag: '🇨🇦', symbol: 'CA$', defaultRate: 1.48, decimals: 2 },
       { code: 'AUD', country: 'Australia', flag: '🇦🇺', symbol: 'A$', defaultRate: 1.65, decimals: 2 },
+      { code: 'NZD', country: 'Nuova Zelanda', flag: '🇳🇿', symbol: 'NZ$', defaultRate: 1.82, decimals: 2 },
+      { code: 'SGD', country: 'Singapore', flag: '🇸🇬', symbol: 'S$', defaultRate: 1.45, decimals: 2 },
+      { code: 'HKD', country: 'Hong Kong', flag: '🇭🇰', symbol: 'HK$', defaultRate: 8.42, decimals: 2 },
+      { code: 'KRW', country: 'Corea del Sud', flag: '🇰🇷', symbol: '₩', defaultRate: 1480, decimals: 0 },
+      { code: 'THB', country: 'Thailandia', flag: '🇹🇭', symbol: '฿', defaultRate: 37.5, decimals: 2 },
+      { code: 'VND', country: 'Vietnam', flag: '🇻🇳', symbol: '₫', defaultRate: 27400, decimals: 0 },
+      { code: 'IDR', country: 'Indonesia', flag: '🇮🇩', symbol: 'Rp', defaultRate: 17100, decimals: 0 },
+      { code: 'MYR', country: 'Malaysia', flag: '🇲🇾', symbol: 'RM', defaultRate: 4.82, decimals: 2 },
+      { code: 'PHP', country: 'Filippine', flag: '🇵🇭', symbol: '₱', defaultRate: 63.2, decimals: 2 },
+      { code: 'INR', country: 'India', flag: '🇮🇳', symbol: '₹', defaultRate: 90.8, decimals: 2 },
+      { code: 'AED', country: 'Emirati Arabi Uniti', flag: '🇦🇪', symbol: 'AED', defaultRate: 3.97, decimals: 2 },
+      { code: 'SAR', country: 'Arabia Saudita', flag: '🇸🇦', symbol: 'SAR', defaultRate: 4.05, decimals: 2 },
+      { code: 'QAR', country: 'Qatar', flag: '🇶🇦', symbol: 'QAR', defaultRate: 3.93, decimals: 2 },
+      { code: 'TRY', country: 'Turchia', flag: '🇹🇷', symbol: '₺', defaultRate: 37.2, decimals: 2 },
+      { code: 'EGP', country: 'Egitto', flag: '🇪🇬', symbol: 'E£', defaultRate: 53.0, decimals: 2 },
+      { code: 'MAD', country: 'Marocco', flag: '🇲🇦', symbol: 'MAD', defaultRate: 10.8, decimals: 2 },
+      { code: 'ZAR', country: 'Sudafrica', flag: '🇿🇦', symbol: 'R', defaultRate: 19.6, decimals: 2 },
       { code: 'SEK', country: 'Svezia', flag: '🇸🇪', symbol: 'kr', defaultRate: 11.4, decimals: 2 },
       { code: 'NOK', country: 'Norvegia', flag: '🇳🇴', symbol: 'kr', defaultRate: 11.6, decimals: 2 },
       { code: 'DKK', country: 'Danimarca', flag: '🇩🇰', symbol: 'kr', defaultRate: 7.46, decimals: 2 },
       { code: 'PLN', country: 'Polonia', flag: '🇵🇱', symbol: 'zł', defaultRate: 4.3, decimals: 2 },
       { code: 'CZK', country: 'Repubblica Ceca', flag: '🇨🇿', symbol: 'Kč', defaultRate: 25.2, decimals: 2 },
       { code: 'HUF', country: 'Ungheria', flag: '🇭🇺', symbol: 'Ft', defaultRate: 405, decimals: 0 },
-      { code: 'TRY', country: 'Turchia', flag: '🇹🇷', symbol: '₺', defaultRate: 37.2, decimals: 2 },
-      { code: 'AED', country: 'Emirati Arabi Uniti', flag: '🇦🇪', symbol: 'AED', defaultRate: 3.97, decimals: 2 },
-      { code: 'THB', country: 'Thailandia', flag: '🇹🇭', symbol: '฿', defaultRate: 37.5, decimals: 2 },
-      { code: 'KRW', country: 'Corea del Sud', flag: '🇰🇷', symbol: '₩', defaultRate: 1480, decimals: 0 },
+      { code: 'RON', country: 'Romania', flag: '🇷🇴', symbol: 'lei', defaultRate: 4.97, decimals: 2 },
+      { code: 'ISK', country: 'Islanda', flag: '🇮🇸', symbol: 'kr', defaultRate: 149, decimals: 0 },
       { code: 'MXN', country: 'Messico', flag: '🇲🇽', symbol: 'MX$', defaultRate: 21.8, decimals: 2 },
       { code: 'BRL', country: 'Brasile', flag: '🇧🇷', symbol: 'R$', defaultRate: 6.2, decimals: 2 },
-      { code: 'MAD', country: 'Marocco', flag: '🇲🇦', symbol: 'MAD', defaultRate: 10.8, decimals: 2 }
+      { code: 'ARS', country: 'Argentina', flag: '🇦🇷', symbol: 'AR$', defaultRate: 1080, decimals: 0 },
+      { code: 'CLP', country: 'Cile', flag: '🇨🇱', symbol: 'CL$', defaultRate: 1030, decimals: 0 },
+      { code: 'COP', country: 'Colombia', flag: '🇨🇴', symbol: 'COL$', defaultRate: 4720, decimals: 0 },
+      { code: 'PEN', country: 'Perù', flag: '🇵🇪', symbol: 'S/', defaultRate: 4.02, decimals: 2 }
     ];
 
     function getCurrencyMeta(code) {
@@ -393,7 +415,7 @@
       sel.innerHTML = CURRENCY_OPTIONS.map(c =>
         `<option value="${c.code}">${c.flag} ${c.code} — ${c.country}</option>`
       ).join('');
-      sel.value = 'JPY';
+      if (!sel.value) sel.value = 'CNY';
       onCurrencySelectChange();
     }
 
@@ -483,7 +505,6 @@
       document.getElementById('new-trip-panel').classList.add('hidden');
     }
 
-    // Formattazione data italiana per giorno N (1-based)
     function getItalianDayDateText(startDateStr, dayNumber) {
       if (!startDateStr) return '';
       const parts = startDateStr.split('-').map(Number);
