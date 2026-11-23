@@ -1,6 +1,6 @@
 {
-  "name": "WayLocal — Pianificazione & Spese Viaggio",
-  "short_name": "WayLocal",
+  "name": "Splitrip — Viaggi, Itinerari & Spese",
+  "short_name": "Splitrip",
   "description": "Pianifica viaggi, attrazioni con foto, voli, preventivo, itinerario con Google Maps e riparto spese in locale.",
   "start_url": "./index.html",
   "scope": "./",
@@ -11,13 +11,13 @@
   "lang": "it-IT",
   "icons": [
     {
-      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect width='192' height='192' rx='40' fill='%230f172a'/%3E%3Ccircle cx='96' cy='96' r='56' fill='%230284c7'/%3E%3Cpolygon points='96,54 114,96 96,138 78,96' fill='%23ffffff'/%3E%3C/svg%3E",
+      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect width='192' height='192' rx='44' fill='%230f172a'/%3E%3Ccircle cx='96' cy='96' r='58' fill='%230284c7' fill-opacity='0.22'/%3E%3Cpath d='M138 56L114 94l12 36-11 6-18-24-22 14 2 14-9 4-8-22-22-8 7-9 14 2 14-22 11-6-10 35 38-24c6-4 14 0 14 7 0 4-2 8-5 10z' fill='%23ffffff'/%3E%3C/svg%3E",
       "sizes": "192x192",
       "type": "image/svg+xml",
       "purpose": "any"
     },
     {
-      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='104' fill='%230f172a'/%3E%3Ccircle cx='256' cy='256' r='148' fill='%230284c7'/%3E%3Cpolygon points='256,142 304,256 256,370 208,256' fill='%23ffffff'/%3E%3C/svg%3E",
+      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='116' fill='%230f172a'/%3E%3Ccircle cx='256' cy='256' r='154' fill='%230284c7' fill-opacity='0.22'/%3E%3Cpath d='M368 149L304 250l32 96-29 16-48-64-59 37 5 37-24 11-21-59-59-21 19-24 37 5 37-59 29-16-27 93 101-64c16-10 37 0 37 19 0 11-5 21-13 27z' fill='%23ffffff'/%3E%3C/svg%3E",
       "sizes": "512x512",
       "type": "image/svg+xml",
       "purpose": "any maskable"
