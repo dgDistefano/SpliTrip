@@ -53,7 +53,6 @@
       line-height: 1.45;
     }
 
-    /* Header con menu burger */
     .topbar {
       position: sticky;
       top: 0;
@@ -105,18 +104,8 @@
       display: grid;
       place-items: center;
       cursor: pointer;
-      transition: background 0.15s ease, transform 0.12s ease;
     }
 
-    .burger-btn:hover {
-      background: var(--bg-card);
-    }
-
-    .burger-btn:active {
-      transform: scale(0.96);
-    }
-
-    /* Drawer / Menu laterale */
     .drawer-backdrop {
       position: fixed;
       inset: 0;
@@ -145,7 +134,7 @@
       padding: 20px;
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 10px;
       transform: translateX(100%);
       transition: transform 0.24s cubic-bezier(0.22, 1, 0.36, 1);
     }
@@ -165,12 +154,12 @@
     .drawer-nav-btn {
       width: 100%;
       text-align: left;
-      padding: 12px 14px;
+      padding: 11px 13px;
       border-radius: var(--radius-md);
       border: 1px solid transparent;
       background: transparent;
       color: var(--text-main);
-      font-size: 0.95rem;
+      font-size: 0.92rem;
       font-weight: 500;
       cursor: pointer;
       display: flex;
@@ -178,20 +167,17 @@
       justify-content: space-between;
     }
 
-    .drawer-nav-btn:hover,
-    .drawer-nav-btn.active {
+    .drawer-nav-btn:hover {
       background: var(--bg-card);
       border-color: var(--border);
     }
 
-    /* Container principale */
     .container {
-      max-width: 1040px;
+      max-width: 1080px;
       margin: 0 auto;
-      padding: 22px 18px 64px;
+      padding: 22px 18px 68px;
     }
 
-    /* Schermata di benvenuto */
     .welcome-box {
       background: linear-gradient(145deg, rgba(29, 78, 216, 0.22), rgba(14, 165, 233, 0.08));
       border: 1px solid var(--border);
@@ -213,17 +199,14 @@
     .welcome-box h1 {
       margin: 0 0 8px;
       font-size: 1.65rem;
-      letter-spacing: -0.02em;
     }
 
     .welcome-box p {
       margin: 0 auto 20px;
-      max-width: 520px;
+      max-width: 540px;
       color: var(--text-muted);
-      font-size: 0.96rem;
     }
 
-    /* Sezioni & Intestazioni */
     .section-head {
       display: flex;
       align-items: center;
@@ -235,14 +218,18 @@
 
     .section-head h2 {
       margin: 0;
-      font-size: 1.2rem;
-      letter-spacing: -0.015em;
+      font-size: 1.22rem;
     }
 
-    /* Griglia card viaggi */
+    .actions-inline {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
     .trips-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(275px, 1fr));
       gap: 18px;
       margin-bottom: 28px;
     }
@@ -269,15 +256,15 @@
       box-shadow: 0 0 0 1px rgba(14, 165, 233, 0.45);
     }
 
-    /* Copertina sopra il titolo */
     .trip-cover {
-      height: 124px;
+      height: 132px;
       width: 100%;
       background-size: cover;
       background-position: center;
       position: relative;
       display: flex;
       align-items: flex-end;
+      justify-content: space-between;
       padding: 10px 12px;
     }
 
@@ -285,7 +272,7 @@
       content: "";
       position: absolute;
       inset: 0;
-      background: linear-gradient(to top, rgba(9, 14, 26, 0.72), transparent 60%);
+      background: linear-gradient(to top, rgba(9, 14, 26, 0.78), transparent 62%);
     }
 
     .trip-badge {
@@ -295,7 +282,7 @@
       font-weight: 600;
       padding: 4px 9px;
       border-radius: 999px;
-      background: rgba(9, 14, 26, 0.72);
+      background: rgba(9, 14, 26, 0.75);
       border: 1px solid rgba(255, 255, 255, 0.16);
       color: #e2e8f0;
     }
@@ -318,10 +305,10 @@
       color: var(--text-muted);
       display: flex;
       justify-content: space-between;
+      flex-wrap: wrap;
       gap: 8px;
     }
 
-    /* Pannello viaggio attivo */
     .active-trip-panel {
       background: var(--bg-surface);
       border: 1px solid var(--border);
@@ -331,7 +318,7 @@
 
     .stats-row {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(165px, 1fr));
       gap: 12px;
       margin: 16px 0 22px;
     }
@@ -354,10 +341,11 @@
       margin-top: 2px;
     }
 
-    .two-col {
+    .grid-2 {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 20px;
+      grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
+      gap: 18px;
+      margin-bottom: 18px;
     }
 
     .sub-card {
@@ -374,7 +362,7 @@
 
     .list-clean {
       list-style: none;
-      margin: 0 0 14px;
+      margin: 0 0 12px;
       padding: 0;
       display: flex;
       flex-direction: column;
@@ -428,15 +416,10 @@
       cursor: pointer;
       color: var(--text-main);
       background: var(--bg-card-hover);
-      transition: opacity 0.15s ease, transform 0.1s ease;
     }
 
     .btn:hover {
       opacity: 0.92;
-    }
-
-    .btn:active {
-      transform: scale(0.98);
     }
 
     .btn-primary {
@@ -460,7 +443,6 @@
       font-size: 0.78rem;
     }
 
-    /* Modale nuovo viaggio */
     .modal-backdrop {
       position: fixed;
       inset: 0;
@@ -479,7 +461,9 @@
 
     .modal-card {
       width: 100%;
-      max-width: 440px;
+      max-width: 470px;
+      max-height: 90dvh;
+      overflow-y: auto;
       background: var(--bg-surface);
       border: 1px solid var(--border);
       border-radius: var(--radius-xl);
@@ -498,11 +482,21 @@
       display: flex;
       flex-direction: column;
       gap: 5px;
+      margin-bottom: 10px;
     }
 
     .field-group label {
       font-size: 0.8rem;
       color: var(--text-muted);
+    }
+
+    .cover-preview-box {
+      height: 110px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border);
+      background-size: cover;
+      background-position: center;
+      margin-top: 6px;
     }
 
     .hidden {
@@ -512,7 +506,7 @@
 </head>
 <body>
   <header class="topbar">
-    <div class="brand" id="brandHomeBtn" title="Torna alla panoramica viaggi">
+    <div class="brand" id="brandHomeBtn" title="Torna in alto">
       <svg class="brand-icon" viewBox="0 0 192 192" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
         <defs>
           <linearGradient id="hdrBg" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -564,7 +558,7 @@
       <strong>Menu Splitrip</strong>
       <button class="btn btn-ghost btn-sm" id="closeDrawerBtn" type="button">Chiudi</button>
     </div>
-    <button class="drawer-nav-btn active" id="navTripsBtn" type="button">
+    <button class="drawer-nav-btn" id="navTripsBtn" type="button">
       <span>Tutti i viaggi</span>
       <span id="drawerTripCount">0</span>
     </button>
@@ -572,6 +566,15 @@
       <span>+ Nuovo viaggio</span>
       <span>→</span>
     </button>
+    <button class="drawer-nav-btn" id="navExportBtn" type="button">
+      <span>Esporta backup JSON</span>
+      <span>↓</span>
+    </button>
+    <button class="drawer-nav-btn" id="navImportBtn" type="button">
+      <span>Importa backup JSON</span>
+      <span>↑</span>
+    </button>
+    <input type="file" id="importJsonInput" accept="application/json" class="hidden" />
     <button class="drawer-nav-btn" id="navResetDemoBtn" type="button">
       <span>Ripristina esempio</span>
       <span>↺</span>
@@ -579,7 +582,6 @@
   </aside>
 
   <main class="container">
-    <!-- Benvenuto se non ci sono viaggi -->
     <section class="welcome-box hidden" id="welcomeSection">
       <svg class="welcome-icon" viewBox="0 0 192 192" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
         <defs>
@@ -612,11 +614,10 @@
         <rect x="102" y="124" width="50" height="9" rx="4.5" fill="url(#welCoral)" />
       </svg>
       <h1>Benvenuti su Splitrip</h1>
-      <p>Pianifica i viaggi con il tuo gruppo, tieni traccia delle tappe e dividi le spese in modo chiaro direttamente sul dispositivo.</p>
+      <p>Pianifica i viaggi con il tuo gruppo, segna le tappe, carica una foto di copertina e dividi le spese nella valuta che preferisci.</p>
       <button class="btn btn-primary" id="welcomeCreateBtn" type="button">+ Crea il tuo primo viaggio</button>
     </section>
 
-    <!-- Griglia viaggi -->
     <section id="tripsCatalogSection">
       <div class="section-head">
         <h2>I tuoi viaggi</h2>
@@ -625,14 +626,16 @@
       <div class="trips-grid" id="tripsGrid"></div>
     </section>
 
-    <!-- Dettaglio viaggio selezionato -->
     <section class="active-trip-panel hidden" id="activeTripSection">
       <div class="section-head">
         <div>
           <h2 id="activeTripTitle">Viaggio</h2>
-          <div class="trip-card-meta" id="activeTripDates"></div>
+          <div class="trip-card-meta" id="activeTripMeta"></div>
         </div>
-        <button class="btn btn-ghost btn-sm" id="deleteTripBtn" type="button">Elimina viaggio</button>
+        <div class="actions-inline">
+          <button class="btn btn-ghost btn-sm" id="editTripBtn" type="button">Modifica viaggio / foto / valuta</button>
+          <button class="btn btn-ghost btn-sm" id="deleteTripBtn" type="button">Elimina</button>
+        </div>
       </div>
 
       <div class="stats-row">
@@ -648,12 +651,15 @@
           <div class="stat-label">Partecipanti</div>
           <div class="stat-val" id="statMembersCount">0</div>
         </div>
+        <div class="stat-box">
+          <div class="stat-label">Valuta viaggio</div>
+          <div class="stat-val" id="statCurrency">EUR</div>
+        </div>
       </div>
 
-      <div class="two-col">
-        <!-- Partecipanti & Saldi -->
+      <div class="grid-2">
         <div class="sub-card">
-          <h3>Partecipanti e saldi</h3>
+          <h3>Partecipanti e saldi netti</h3>
           <ul class="list-clean" id="membersList"></ul>
           <form class="row-form" id="addMemberForm">
             <input type="text" id="memberNameInput" placeholder="Nome partecipante" required />
@@ -661,26 +667,43 @@
           </form>
         </div>
 
-        <!-- Spese -->
+        <div class="sub-card">
+          <h3>Rimborsi consigliati</h3>
+          <ul class="list-clean" id="settlementsList"></ul>
+        </div>
+      </div>
+
+      <div class="grid-2">
         <div class="sub-card">
           <h3>Spese condivise</h3>
           <ul class="list-clean" id="expensesList"></ul>
           <form class="row-form" id="addExpenseForm">
             <input type="text" id="expenseTitleInput" placeholder="Descrizione (es. Cena)" required />
-            <input type="number" id="expenseAmountInput" placeholder="Importo €" step="0.01" min="0.01" required />
+            <input type="number" id="expenseAmountInput" placeholder="Importo" step="0.01" min="0.01" required />
             <select id="expensePayerSelect" required></select>
             <button class="btn btn-coral btn-sm" type="submit">Registra</button>
+          </form>
+        </div>
+
+        <div class="sub-card">
+          <h3>Tappe e note itinerario</h3>
+          <ul class="list-clean" id="stopsList"></ul>
+          <form class="row-form" id="addStopForm">
+            <input type="text" id="stopTitleInput" placeholder="Tappa o attività (es. Traghetto)" required />
+            <input type="text" id="stopNoteInput" placeholder="Nota / orario (opzionale)" />
+            <button class="btn btn-primary btn-sm" type="submit">Aggiungi tappa</button>
           </form>
         </div>
       </div>
     </section>
   </main>
 
-  <!-- Modale creazione viaggio -->
-  <div class="modal-backdrop" id="newTripModal">
+  <!-- Modale creazione / modifica viaggio -->
+  <div class="modal-backdrop" id="tripModal">
     <div class="modal-card">
-      <h3>Nuovo viaggio</h3>
-      <form id="newTripForm">
+      <h3 id="tripModalTitle">Nuovo viaggio</h3>
+      <form id="tripForm">
+        <input type="hidden" id="editingTripId" />
         <div class="field-group">
           <label for="tripTitleInput">Titolo del viaggio</label>
           <input type="text" id="tripTitleInput" placeholder="Es. Weekend a Napoli" required />
@@ -694,7 +717,17 @@
           <input type="date" id="tripEndInput" required />
         </div>
         <div class="field-group">
-          <label for="tripThemeSelect">Copertina della card</label>
+          <label for="tripCurrencySelect">Valuta</label>
+          <select id="tripCurrencySelect">
+            <option value="EUR">EUR (€)</option>
+            <option value="USD">USD ($)</option>
+            <option value="GBP">GBP (£)</option>
+            <option value="CHF">CHF</option>
+            <option value="JPY">JPY (¥)</option>
+          </select>
+        </div>
+        <div class="field-group">
+          <label for="tripThemeSelect">Sfondo / tema copertina</label>
           <select id="tripThemeSelect">
             <option value="coast">Costa &amp; Azzurro</option>
             <option value="sunset">Tramonto &amp; Corallo</option>
@@ -702,8 +735,14 @@
             <option value="night">City Break &amp; Indaco</option>
           </select>
         </div>
+        <div class="field-group">
+          <label for="tripPhotoInput">Foto copertina (opzionale)</label>
+          <input type="file" id="tripPhotoInput" accept="image/*" />
+          <div class="cover-preview-box" id="coverPreviewBox"></div>
+          <button class="btn btn-ghost btn-sm" id="clearPhotoBtn" type="button" style="align-self: flex-start; margin-top: 6px;">Rimuovi foto</button>
+        </div>
         <div class="row-form" style="justify-content: flex-end; margin-top: 14px;">
-          <button class="btn btn-ghost" id="cancelNewTripBtn" type="button">Annulla</button>
+          <button class="btn btn-ghost" id="cancelTripModalBtn" type="button">Annulla</button>
           <button class="btn btn-primary" type="submit">Salva viaggio</button>
         </div>
       </form>
@@ -711,26 +750,16 @@
   </div>
 
   <script>
-    const STORAGE_KEY = 'splitrip_data_v1';
+    const STORAGE_KEY = 'splitrip_data_v2';
 
     const COVER_STYLES = {
-      coast: {
-        label: 'Costa',
-        bg: 'linear-gradient(135deg, #0284c7, #06b6d4)'
-      },
-      sunset: {
-        label: 'Tramonto',
-        bg: 'linear-gradient(135deg, #ea580c, #ec4899)'
-      },
-      alpine: {
-        label: 'Montagna',
-        bg: 'linear-gradient(135deg, #0d9488, #2563eb)'
-      },
-      night: {
-        label: 'City Break',
-        bg: 'linear-gradient(135deg, #1e293b, #4f46e5)'
-      }
+      coast: { label: 'Costa', bg: 'linear-gradient(135deg, #0284c7, #06b6d4)' },
+      sunset: { label: 'Tramonto', bg: 'linear-gradient(135deg, #ea580c, #ec4899)' },
+      alpine: { label: 'Montagna', bg: 'linear-gradient(135deg, #0d9488, #2563eb)' },
+      night: { label: 'City Break', bg: 'linear-gradient(135deg, #1e293b, #4f46e5)' }
     };
+
+    let draftPhotoDataUrl = null;
 
     function getSeedTrips() {
       const today = new Date();
@@ -746,11 +775,17 @@
           title: 'Weekend sul Mare',
           startDate: addDays(5),
           endDate: addDays(8),
+          currency: 'EUR',
           theme: 'coast',
+          photo: null,
           members: ['Giulia', 'Marco', 'Luca'],
           expenses: [
             { id: 'e1', title: 'Casa vacanze', amount: 240, payer: 'Giulia' },
             { id: 'e2', title: 'Pranzo pesce', amount: 96, payer: 'Marco' }
+          ],
+          stops: [
+            { id: 's1', title: 'Arrivo e check-in', note: 'Ore 15:00' },
+            { id: 's2', title: 'Passeggiata sul lungomare', note: 'Tramonto' }
           ]
         }
       ];
@@ -761,13 +796,28 @@
       selectedTripId: null
     };
 
+    function normalizeTrip(t) {
+      return {
+        id: t.id || ('trip-' + Date.now() + '-' + Math.random().toString(36).slice(2, 6)),
+        title: t.title || 'Viaggio senza titolo',
+        startDate: t.startDate || new Date().toISOString().slice(0, 10),
+        endDate: t.endDate || new Date().toISOString().slice(0, 10),
+        currency: t.currency || 'EUR',
+        theme: t.theme || 'coast',
+        photo: t.photo || null,
+        members: Array.isArray(t.members) && t.members.length ? t.members : ['Tu'],
+        expenses: Array.isArray(t.expenses) ? t.expenses : [],
+        stops: Array.isArray(t.stops) ? t.stops : []
+      };
+    }
+
     function loadState() {
       try {
-        const raw = localStorage.getItem(STORAGE_KEY);
+        const raw = localStorage.getItem(STORAGE_KEY) || localStorage.getItem('splitrip_data_v1');
         if (raw) {
           const parsed = JSON.parse(raw);
           if (Array.isArray(parsed.trips)) {
-            state.trips = parsed.trips;
+            state.trips = parsed.trips.map(normalizeTrip);
             state.selectedTripId = parsed.selectedTripId || null;
           }
         } else {
@@ -786,7 +836,6 @@
       localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
     }
 
-    // Seleziona il viaggio la cui data è più vicina a oggi
     function pickClosestTripId(trips) {
       if (!trips.length) return null;
       const now = new Date().setHours(0, 0, 0, 0);
@@ -806,11 +855,49 @@
       return best.id;
     }
 
-    function formatEuro(val) {
-      return new Intl.NumberFormat('it-IT', {
-        style: 'currency',
-        currency: 'EUR'
-      }).format(Number(val) || 0);
+    function formatMoney(val, currency = 'EUR') {
+      try {
+        return new Intl.NumberFormat('it-IT', {
+          style: 'currency',
+          currency
+        }).format(Number(val) || 0);
+      } catch (e) {
+        return `${currency} ${(Number(val) || 0).toFixed(2)}`;
+      }
+    }
+
+    function getCoverCss(trip) {
+      if (trip.photo) {
+        return `url("${trip.photo}")`;
+      }
+      const c = COVER_STYLES[trip.theme] || COVER_STYLES.coast;
+      return c.bg;
+    }
+
+    function computeSettlements(members, balances) {
+      const debtors = [];
+      const creditors = [];
+      for (const m of members) {
+        const b = Number(balances[m] || 0);
+        if (b < -0.01) debtors.push({ person: m, amount: -b });
+        else if (b > 0.01) creditors.push({ person: m, amount: b });
+      }
+      debtors.sort((a, b) => b.amount - a.amount);
+      creditors.sort((a, b) => b.amount - a.amount);
+
+      const transfers = [];
+      let i = 0, j = 0;
+      while (i < debtors.length && j < creditors.length) {
+        const pay = Math.min(debtors[i].amount, creditors[j].amount);
+        if (pay > 0.01) {
+          transfers.push({ from: debtors[i].person, to: creditors[j].person, amount: pay });
+        }
+        debtors[i].amount -= pay;
+        creditors[j].amount -= pay;
+        if (debtors[i].amount <= 0.01) i++;
+        if (creditors[j].amount <= 0.01) j++;
+      }
+      return transfers;
     }
 
     function getActiveTrip() {
@@ -832,14 +919,15 @@
         const card = document.createElement('article');
         card.className = 'trip-card' + (trip.id === state.selectedTripId ? ' selected' : '');
         card.innerHTML = `
-          <div class="trip-cover" style="background-image: ${cover.bg}">
-            <span class="trip-badge">${cover.label}</span>
+          <div class="trip-cover" style="background-image: ${getCoverCss(trip)}">
+            <span class="trip-badge">${trip.photo ? 'Foto' : cover.label}</span>
+            <span class="trip-badge">${escapeHtml(trip.currency)}</span>
           </div>
           <div class="trip-card-body">
             <h3 class="trip-card-title">${escapeHtml(trip.title)}</h3>
             <div class="trip-card-meta">
               <span>${escapeHtml(trip.startDate)} → ${escapeHtml(trip.endDate)}</span>
-              <span>${formatEuro(total)}</span>
+              <strong>${formatMoney(total, trip.currency)}</strong>
             </div>
           </div>
         `;
@@ -855,21 +943,21 @@
       const active = getActiveTrip();
       const panel = document.getElementById('activeTripSection');
       panel.classList.toggle('hidden', !active);
-
       if (!active) return;
 
+      const cur = active.currency || 'EUR';
       document.getElementById('activeTripTitle').textContent = active.title;
-      document.getElementById('activeTripDates').textContent = `${active.startDate} → ${active.endDate}`;
+      document.getElementById('activeTripMeta').textContent = `${active.startDate} → ${active.endDate} • ${active.members.length} partecipanti`;
 
       const total = active.expenses.reduce((acc, e) => acc + Number(e.amount || 0), 0);
       const count = active.members.length;
       const perPerson = count > 0 ? total / count : 0;
 
-      document.getElementById('statTotal').textContent = formatEuro(total);
-      document.getElementById('statPerPerson').textContent = formatEuro(perPerson);
+      document.getElementById('statTotal').textContent = formatMoney(total, cur);
+      document.getElementById('statPerPerson').textContent = formatMoney(perPerson, cur);
       document.getElementById('statMembersCount').textContent = String(count);
+      document.getElementById('statCurrency').textContent = cur;
 
-      // Calcolo saldi netti
       const paidMap = Object.fromEntries(active.members.map(m => [m, 0]));
       for (const exp of active.expenses) {
         if (paidMap[exp.payer] !== undefined) {
@@ -877,6 +965,7 @@
         }
       }
 
+      const balances = {};
       const membersList = document.getElementById('membersList');
       membersList.innerHTML = '';
       const payerSelect = document.getElementById('expensePayerSelect');
@@ -884,6 +973,7 @@
 
       for (const member of active.members) {
         const balance = (paidMap[member] || 0) - perPerson;
+        balances[member] = balance;
         const sign = balance > 0.009 ? '+' : '';
         const color = balance > 0.009 ? 'var(--accent-ok)' : (balance < -0.009 ? 'var(--accent-coral)' : 'var(--text-muted)');
 
@@ -891,7 +981,10 @@
         li.className = 'list-item';
         li.innerHTML = `
           <span>${escapeHtml(member)}</span>
-          <strong style="color: ${color}">${sign}${formatEuro(balance)}</strong>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <strong style="color: ${color}">${sign}${formatMoney(balance, cur)}</strong>
+            ${active.members.length > 1 ? `<button class="btn btn-ghost btn-sm" data-remove-member="${escapeAttr(member)}" type="button" title="Rimuovi">×</button>` : ''}
+          </div>
         `;
         membersList.appendChild(li);
 
@@ -899,6 +992,35 @@
         opt.value = member;
         opt.textContent = `Pagato da ${member}`;
         payerSelect.appendChild(opt);
+      }
+
+      membersList.querySelectorAll('[data-remove-member]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const name = btn.getAttribute('data-remove-member');
+          active.members = active.members.filter(m => m !== name);
+          saveState();
+          render();
+        });
+      });
+
+      const settlementsList = document.getElementById('settlementsList');
+      settlementsList.innerHTML = '';
+      const transfers = computeSettlements(active.members, balances);
+      if (!transfers.length) {
+        const li = document.createElement('li');
+        li.className = 'list-item';
+        li.textContent = 'Tutti i conti sono già in pari.';
+        settlementsList.appendChild(li);
+      } else {
+        for (const tr of transfers) {
+          const li = document.createElement('li');
+          li.className = 'list-item';
+          li.innerHTML = `
+            <span><strong>${escapeHtml(tr.from)}</strong> → <strong>${escapeHtml(tr.to)}</strong></span>
+            <strong style="color: var(--accent-cyan)">${formatMoney(tr.amount, cur)}</strong>
+          `;
+          settlementsList.appendChild(li);
+        }
       }
 
       const expensesList = document.getElementById('expensesList');
@@ -911,10 +1033,46 @@
             <div><strong>${escapeHtml(exp.title)}</strong></div>
             <div style="font-size: 0.78rem; color: var(--text-muted)">Pagato da ${escapeHtml(exp.payer)}</div>
           </div>
-          <strong>${formatEuro(exp.amount)}</strong>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <strong>${formatMoney(exp.amount, cur)}</strong>
+            <button class="btn btn-ghost btn-sm" data-remove-exp="${escapeAttr(exp.id)}" type="button" title="Elimina spesa">×</button>
+          </div>
         `;
         expensesList.appendChild(li);
       }
+
+      expensesList.querySelectorAll('[data-remove-exp]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const id = btn.getAttribute('data-remove-exp');
+          active.expenses = active.expenses.filter(e => e.id !== id);
+          saveState();
+          render();
+        });
+      });
+
+      const stopsList = document.getElementById('stopsList');
+      stopsList.innerHTML = '';
+      for (const st of active.stops) {
+        const li = document.createElement('li');
+        li.className = 'list-item';
+        li.innerHTML = `
+          <div>
+            <div><strong>${escapeHtml(st.title)}</strong></div>
+            ${st.note ? `<div style="font-size: 0.78rem; color: var(--text-muted)">${escapeHtml(st.note)}</div>` : ''}
+          </div>
+          <button class="btn btn-ghost btn-sm" data-remove-stop="${escapeAttr(st.id)}" type="button" title="Rimuovi tappa">×</button>
+        `;
+        stopsList.appendChild(li);
+      }
+
+      stopsList.querySelectorAll('[data-remove-stop]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const id = btn.getAttribute('data-remove-stop');
+          active.stops = active.stops.filter(s => s.id !== id);
+          saveState();
+          render();
+        });
+      });
     }
 
     function escapeHtml(str) {
@@ -925,28 +1083,80 @@
         .replaceAll('"', '&quot;');
     }
 
-    // Drawer & Modale
+    function escapeAttr(str) {
+      return escapeHtml(str).replaceAll("'", '&#39;');
+    }
+
+    function updateCoverPreview() {
+      const theme = document.getElementById('tripThemeSelect').value;
+      const box = document.getElementById('coverPreviewBox');
+      if (draftPhotoDataUrl) {
+        box.style.backgroundImage = `url("${draftPhotoDataUrl}")`;
+      } else {
+        box.style.backgroundImage = (COVER_STYLES[theme] || COVER_STYLES.coast).bg;
+      }
+    }
+
+    function compressImageFile(file, maxWidth = 960, quality = 0.76) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => {
+          const img = new Image();
+          img.onload = () => {
+            const scale = Math.min(1, maxWidth / img.width);
+            const canvas = document.createElement('canvas');
+            canvas.width = Math.round(img.width * scale);
+            canvas.height = Math.round(img.height * scale);
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+            resolve(canvas.toDataURL('image/jpeg', quality));
+          };
+          img.onerror = reject;
+          img.src = reader.result;
+        };
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+    }
+
     const drawer = document.getElementById('drawer');
     const drawerBackdrop = document.getElementById('drawerBackdrop');
-    const newTripModal = document.getElementById('newTripModal');
+    const tripModal = document.getElementById('tripModal');
 
     function setDrawerOpen(open) {
       drawer.classList.toggle('open', open);
       drawerBackdrop.classList.toggle('open', open);
     }
 
-    function setNewTripModalOpen(open) {
-      newTripModal.classList.toggle('open', open);
-      if (open) {
-        const todayStr = new Date().toISOString().slice(0, 10);
-        if (!document.getElementById('tripStartInput').value) {
-          document.getElementById('tripStartInput').value = todayStr;
-        }
-        if (!document.getElementById('tripEndInput').value) {
-          document.getElementById('tripEndInput').value = todayStr;
-        }
-        document.getElementById('tripTitleInput').focus();
+    function openTripModal(tripToEdit = null) {
+      const todayStr = new Date().toISOString().slice(0, 10);
+      if (tripToEdit) {
+        document.getElementById('tripModalTitle').textContent = 'Modifica viaggio';
+        document.getElementById('editingTripId').value = tripToEdit.id;
+        document.getElementById('tripTitleInput').value = tripToEdit.title;
+        document.getElementById('tripStartInput').value = tripToEdit.startDate;
+        document.getElementById('tripEndInput').value = tripToEdit.endDate;
+        document.getElementById('tripCurrencySelect').value = tripToEdit.currency || 'EUR';
+        document.getElementById('tripThemeSelect').value = tripToEdit.theme || 'coast';
+        draftPhotoDataUrl = tripToEdit.photo || null;
+      } else {
+        document.getElementById('tripModalTitle').textContent = 'Nuovo viaggio';
+        document.getElementById('editingTripId').value = '';
+        document.getElementById('tripTitleInput').value = '';
+        document.getElementById('tripStartInput').value = todayStr;
+        document.getElementById('tripEndInput').value = todayStr;
+        document.getElementById('tripCurrencySelect').value = 'EUR';
+        document.getElementById('tripThemeSelect').value = 'coast';
+        draftPhotoDataUrl = null;
       }
+      document.getElementById('tripPhotoInput').value = '';
+      updateCoverPreview();
+      tripModal.classList.add('open');
+      document.getElementById('tripTitleInput').focus();
+    }
+
+    function closeTripModal() {
+      tripModal.classList.remove('open');
     }
 
     document.getElementById('burgerBtn').addEventListener('click', () => setDrawerOpen(true));
@@ -960,7 +1170,41 @@
 
     document.getElementById('navNewTripBtn').addEventListener('click', () => {
       setDrawerOpen(false);
-      setNewTripModalOpen(true);
+      openTripModal(null);
+    });
+
+    document.getElementById('navExportBtn').addEventListener('click', () => {
+      setDrawerOpen(false);
+      const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `splitrip-backup-${new Date().toISOString().slice(0, 10)}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+    });
+
+    document.getElementById('navImportBtn').addEventListener('click', () => {
+      setDrawerOpen(false);
+      document.getElementById('importJsonInput').click();
+    });
+
+    document.getElementById('importJsonInput').addEventListener('change', async (e) => {
+      const file = e.target.files?.[0];
+      if (!file) return;
+      try {
+        const text = await file.text();
+        const parsed = JSON.parse(text);
+        if (Array.isArray(parsed.trips)) {
+          state.trips = parsed.trips.map(normalizeTrip);
+          state.selectedTripId = parsed.selectedTripId || pickClosestTripId(state.trips);
+          saveState();
+          render();
+        }
+      } catch (err) {
+        alert('File JSON non valido.');
+      }
+      e.target.value = '';
     });
 
     document.getElementById('navResetDemoBtn').addEventListener('click', () => {
@@ -975,35 +1219,71 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     });
 
-    document.getElementById('openNewTripBtn').addEventListener('click', () => setNewTripModalOpen(true));
-    document.getElementById('welcomeCreateBtn').addEventListener('click', () => setNewTripModalOpen(true));
-    document.getElementById('cancelNewTripBtn').addEventListener('click', () => setNewTripModalOpen(false));
+    document.getElementById('openNewTripBtn').addEventListener('click', () => openTripModal(null));
+    document.getElementById('welcomeCreateBtn').addEventListener('click', () => openTripModal(null));
+    document.getElementById('editTripBtn').addEventListener('click', () => openTripModal(getActiveTrip()));
+    document.getElementById('cancelTripModalBtn').addEventListener('click', closeTripModal);
 
-    document.getElementById('newTripForm').addEventListener('submit', (e) => {
+    document.getElementById('tripThemeSelect').addEventListener('change', updateCoverPreview);
+    document.getElementById('clearPhotoBtn').addEventListener('click', () => {
+      draftPhotoDataUrl = null;
+      document.getElementById('tripPhotoInput').value = '';
+      updateCoverPreview();
+    });
+
+    document.getElementById('tripPhotoInput').addEventListener('change', async (e) => {
+      const file = e.target.files?.[0];
+      if (!file) return;
+      try {
+        draftPhotoDataUrl = await compressImageFile(file);
+        updateCoverPreview();
+      } catch (err) {
+        alert('Impossibile leggere questa immagine.');
+      }
+    });
+
+    document.getElementById('tripForm').addEventListener('submit', (e) => {
       e.preventDefault();
+      const editId = document.getElementById('editingTripId').value;
       const title = document.getElementById('tripTitleInput').value.trim();
       const startDate = document.getElementById('tripStartInput').value;
       const endDate = document.getElementById('tripEndInput').value;
+      const currency = document.getElementById('tripCurrencySelect').value;
       const theme = document.getElementById('tripThemeSelect').value;
 
       if (!title || !startDate || !endDate) return;
 
-      const newTrip = {
-        id: 'trip-' + Date.now(),
-        title,
-        startDate,
-        endDate,
-        theme,
-        members: ['Tu'],
-        expenses: []
-      };
+      if (editId) {
+        const existing = state.trips.find(t => t.id === editId);
+        if (existing) {
+          existing.title = title;
+          existing.startDate = startDate;
+          existing.endDate = endDate;
+          existing.currency = currency;
+          existing.theme = theme;
+          existing.photo = draftPhotoDataUrl;
+          state.selectedTripId = existing.id;
+        }
+      } else {
+        const newTrip = normalizeTrip({
+          id: 'trip-' + Date.now(),
+          title,
+          startDate,
+          endDate,
+          currency,
+          theme,
+          photo: draftPhotoDataUrl,
+          members: ['Tu'],
+          expenses: [],
+          stops: []
+        });
+        state.trips.unshift(newTrip);
+        state.selectedTripId = newTrip.id;
+      }
 
-      state.trips.unshift(newTrip);
-      state.selectedTripId = newTrip.id;
       saveState();
       render();
-      e.target.reset();
-      setNewTripModalOpen(false);
+      closeTripModal();
     });
 
     document.getElementById('deleteTripBtn').addEventListener('click', () => {
@@ -1052,6 +1332,28 @@
 
       titleInput.value = '';
       amountInput.value = '';
+      saveState();
+      render();
+    });
+
+    document.getElementById('addStopForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const active = getActiveTrip();
+      if (!active) return;
+      const titleInput = document.getElementById('stopTitleInput');
+      const noteInput = document.getElementById('stopNoteInput');
+      const title = titleInput.value.trim();
+      const note = noteInput.value.trim();
+      if (!title) return;
+
+      active.stops.push({
+        id: 'stop-' + Date.now(),
+        title,
+        note
+      });
+
+      titleInput.value = '';
+      noteInput.value = '';
       saveState();
       render();
     });
