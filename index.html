@@ -9,10 +9,10 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="Splitrip" />
-  <link rel="manifest" href="/WayLocal/manifest.json?v=20261123" />
+  <link rel="manifest" href="/WayLocal/manifest.json?v=20261124" />
 
-  <link id="dynamicFavicon" rel="icon" type="image/png" href="/WayLocal/icon-192.png?v=20261123" />
-  <link id="dynamicAppleIcon" rel="apple-touch-icon" sizes="180x180" href="/WayLocal/icon-192.png?v=20261123" />
+  <link id="dynamicFavicon" rel="icon" type="image/png" href="/WayLocal/icon-192.png?v=20261124" />
+  <link id="dynamicAppleIcon" rel="apple-touch-icon" sizes="180x180" href="/WayLocal/icon-192.png?v=20261124" />
 
   <style>
     :root,
@@ -347,6 +347,30 @@
       gap: 8px;
     }
 
+    .filter-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 14px;
+    }
+
+    .pill-btn {
+      border: 1px solid var(--border);
+      background: var(--bg-card);
+      color: var(--text-muted);
+      border-radius: 999px;
+      padding: 6px 12px;
+      font-size: 0.84rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .pill-btn.active {
+      background: linear-gradient(135deg, var(--accent-blue), var(--accent-cyan));
+      color: #ffffff;
+      border-color: transparent;
+    }
+
     .trips-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(275px, 1fr));
@@ -641,6 +665,88 @@
       min-width: 105px !important;
     }
 
+    .split-checkboxes {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      width: 100%;
+      padding: 8px 10px;
+      border-radius: var(--radius-md);
+      background: var(--bg-app);
+      border: 1px solid var(--border);
+    }
+
+    .split-check-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 0.86rem !important;
+      color: var(--text-main);
+      cursor: pointer;
+      padding: 3px 7px;
+      border-radius: 6px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+    }
+
+    .split-check-label input[type="checkbox"] {
+      accent-color: var(--accent-cyan);
+      margin: 0;
+    }
+
+    .badge-cat {
+      display: inline-block;
+      font-size: 0.74rem;
+      padding: 2px 7px;
+      border-radius: 999px;
+      background: rgba(14, 165, 233, 0.14);
+      color: var(--accent-cyan);
+      border: 1px solid rgba(14, 165, 233, 0.25);
+      margin-right: 5px;
+      font-weight: 600;
+    }
+
+    .cat-breakdown {
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+      margin-top: 6px;
+    }
+
+    .cat-bar-row {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      font-size: 0.85rem;
+    }
+
+    .cat-bar-track {
+      height: 7px;
+      border-radius: 999px;
+      background: var(--bg-app);
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+
+    .cat-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent-blue), var(--accent-cyan));
+      border-radius: 999px;
+    }
+
+    .stop-done {
+      text-decoration: line-through;
+      opacity: 0.6;
+    }
+
+    .stop-check {
+      width: 18px;
+      height: 18px;
+      accent-color: var(--accent-ok);
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
     .btn {
       border: 1px solid transparent;
       border-radius: var(--radius-md);
@@ -734,6 +840,30 @@
       background-size: cover;
       background-position: center;
       margin-top: 6px;
+    }
+
+    .toast-banner {
+      position: fixed;
+      bottom: calc(18px + var(--safe-bottom));
+      left: 50%;
+      transform: translateX(-50%) translateY(140%);
+      z-index: 90;
+      background: var(--bg-surface);
+      color: var(--text-main);
+      border: 1px solid var(--accent-cyan);
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.45);
+      padding: 10px 18px;
+      border-radius: 999px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      transition: transform 0.22s ease;
+      pointer-events: none;
+      max-width: 90vw;
+      text-align: center;
+    }
+
+    .toast-banner.show {
+      transform: translateX(-50%) translateY(0);
     }
 
     .hidden {
@@ -871,7 +1001,15 @@
     <section id="tripsCatalogSection">
       <div class="section-head">
         <h2>I tuoi viaggi</h2>
-        <button class="btn btn-primary btn-sm" id="openNewTripBtn" type="button">+ Nuovo viaggio</button>
+        <div class="actions-inline">
+          <input type="search" id="tripSearchInput" placeholder="Cerca viaggio o valuta..." style="max-width: 220px; padding: 7px 11px;" />
+          <button class="btn btn-primary btn-sm" id="openNewTripBtn" type="button">+ Nuovo viaggio</button>
+        </div>
+      </div>
+      <div class="filter-pills" id="tripFilterPills">
+        <button type="button" class="pill-btn active" data-filter="all">Tutti</button>
+        <button type="button" class="pill-btn" data-filter="upcoming">In programma / In corso</button>
+        <button type="button" class="pill-btn" data-filter="past">Conclusi</button>
       </div>
       <div class="trips-grid" id="tripsGrid"></div>
     </section>
@@ -883,6 +1021,8 @@
           <h2 style="margin: 0;">Dettaglio viaggio</h2>
         </div>
         <div class="actions-inline">
+          <button class="btn btn-ghost btn-sm" id="shareSummaryBtn" type="button" title="Copia riepilogo conti per WhatsApp / Telegram">Condividi riepilogo</button>
+          <button class="btn btn-ghost btn-sm" id="exportCsvBtn" type="button" title="Scarica tabella spese in CSV">Esporta CSV</button>
           <button class="btn btn-ghost btn-sm" id="editTripBtn" type="button">Modifica viaggio / foto / valuta</button>
           <button class="btn btn-ghost btn-sm" id="deleteTripBtn" type="button">Elimina</button>
         </div>
@@ -916,6 +1056,7 @@
         <div class="stat-box">
           <div class="stat-label">Spesa totale (EUR)</div>
           <div class="stat-val" id="statTotal">0,00 €</div>
+          <div class="fx-sub" id="statBudgetSub"></div>
         </div>
         <div class="stat-box">
           <div class="stat-label">Quota media a persona (EUR)</div>
@@ -949,31 +1090,60 @@
 
       <div class="grid-2">
         <div class="sub-card">
-          <h3>Spese condivise (convertite in EUR)</h3>
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px;flex-wrap:wrap;">
+            <h3 style="margin:0;">Spese condivise (convertite in EUR)</h3>
+            <select id="expenseCategoryFilter" style="flex:0 0 auto;padding:6px 10px;font-size:0.86rem;" aria-label="Filtra spese per categoria">
+              <option value="all">Tutte le categorie</option>
+              <option value="Alloggio">Alloggio</option>
+              <option value="Ristoranti & Bar">Ristoranti &amp; Bar</option>
+              <option value="Trasporti">Trasporti</option>
+              <option value="Attività & Biglietti">Attività &amp; Biglietti</option>
+              <option value="Shopping & Varie">Shopping &amp; Varie</option>
+            </select>
+          </div>
           <ul class="list-clean" id="expensesList"></ul>
           <form class="row-form" id="addExpenseForm">
             <input type="text" id="expenseTitleInput" placeholder="Descrizione (es. Cena)" required />
             <input type="number" id="expenseAmountInput" placeholder="Importo" step="0.01" min="0.01" required />
             <select id="expenseCurrencyInputSelect" class="expense-currency-select" aria-label="Valuta importo inserito"></select>
+            <select id="expenseCategorySelect" aria-label="Categoria spesa">
+              <option value="Ristoranti & Bar">🍽️ Ristoranti &amp; Bar</option>
+              <option value="Alloggio">🏨 Alloggio</option>
+              <option value="Trasporti">🚆 Trasporti</option>
+              <option value="Attività & Biglietti">🎟️ Attività &amp; Biglietti</option>
+              <option value="Shopping & Varie">🛍️ Shopping &amp; Varie</option>
+            </select>
+            <input type="date" id="expenseDateInput" aria-label="Data spesa" />
             <select id="expensePayerSelect" required></select>
-            <button class="btn btn-coral btn-sm" type="submit">Registra</button>
+            <div style="width:100%;">
+              <div style="font-size:0.8rem;color:var(--text-muted);margin-bottom:4px;">Dividi tra:</div>
+              <div class="split-checkboxes" id="expenseSplitCheckboxes"></div>
+            </div>
+            <button class="btn btn-coral btn-sm" type="submit">Registra spesa</button>
           </form>
         </div>
 
-        <div class="sub-card">
-          <h3>Tappe e note itinerario</h3>
-          <ul class="list-clean" id="stopsList"></ul>
-          <form class="row-form" id="addStopForm">
-            <input type="text" id="stopTitleInput" placeholder="Tappa o attività (es. Traghetto)" required />
-            <input type="text" id="stopNoteInput" placeholder="Nota / orario (opzionale)" />
-            <button class="btn btn-primary btn-sm" type="submit">Aggiungi tappa</button>
-          </form>
+        <div style="display:flex;flex-direction:column;gap:18px;">
+          <div class="sub-card">
+            <h3>Tappe e checklist itinerario</h3>
+            <ul class="list-clean" id="stopsList"></ul>
+            <form class="row-form" id="addStopForm">
+              <input type="text" id="stopTitleInput" placeholder="Tappa o attività (es. Traghetto)" required />
+              <input type="date" id="stopDateInput" aria-label="Data tappa" />
+              <input type="text" id="stopNoteInput" placeholder="Nota / orario (opzionale)" />
+              <button class="btn btn-primary btn-sm" type="submit">Aggiungi tappa</button>
+            </form>
+          </div>
+
+          <div class="sub-card">
+            <h3>Ripartizione spese per categoria (EUR)</h3>
+            <div class="cat-breakdown" id="categoryBreakdownBox"></div>
+          </div>
         </div>
       </div>
     </section>
   </main>
 
-  <!-- Modale creazione / modifica viaggio -->
   <div class="modal-backdrop" id="tripModal">
     <div class="modal-card">
       <h3 id="tripModalTitle">Nuovo viaggio</h3>
@@ -995,6 +1165,10 @@
           <label for="tripCurrencySelect">Valuta per cambio giornaliero verso EUR e inserimento spese</label>
           <input type="search" id="currencyFilterInput" placeholder="Filtra per paese, bandiera o codice (es. Giappone, JPY, CHF)..." autocomplete="off" />
           <select id="tripCurrencySelect" required></select>
+        </div>
+        <div class="field-group">
+          <label for="tripBudgetInput">Budget massimo stimato in EUR (opzionale)</label>
+          <input type="number" id="tripBudgetInput" placeholder="Es. 1200" step="1" min="0" />
         </div>
         <div class="field-group">
           <label for="tripThemeSelect">Sfondo / tema copertina</label>
@@ -1019,8 +1193,10 @@
     </div>
   </div>
 
+  <div class="toast-banner" id="toastBanner" role="status" aria-live="polite"></div>
+
   <script>
-    const STORAGE_KEY = 'splitrip_data_v4';
+    const STORAGE_KEY = 'splitrip_data_v5';
     const ALLOWED_APP_THEMES = ['dark', 'light', 'ocean', 'sunset', 'forest'];
 
     const CURRENCIES = [
@@ -1231,6 +1407,19 @@
 
     let draftPhotoDataUrl = null;
     let isFetchingFx = false;
+    let catalogFilter = 'all';
+    let catalogSearch = '';
+    let expenseCategoryFilter = 'all';
+    let toastTimer = null;
+
+    function showToast(msg) {
+      const el = document.getElementById('toastBanner');
+      if (!el) return;
+      el.textContent = msg;
+      el.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => el.classList.remove('show'), 2600);
+    }
 
     function getSeedTrips() {
       const today = new Date();
@@ -1248,6 +1437,7 @@
           startDate: addDays(5),
           endDate: addDays(8),
           currency: 'EUR',
+          budgetEur: 600,
           eurPerUnit: 1,
           fxDate: todayStr,
           fxSource: 'eur',
@@ -1255,12 +1445,12 @@
           photo: null,
           members: ['Giulia', 'Marco', 'Luca'],
           expenses: [
-            { id: 'e1', title: 'Casa vacanze', amountEur: 240, originalAmount: 240, originalCurrency: 'EUR', fxRateApplied: 1, fxDateApplied: todayStr, payer: 'Giulia' },
-            { id: 'e2', title: 'Pranzo pesce', amountEur: 96, originalAmount: 96, originalCurrency: 'EUR', fxRateApplied: 1, fxDateApplied: todayStr, payer: 'Marco' }
+            { id: 'e1', title: 'Casa vacanze', category: 'Alloggio', date: addDays(5), amountEur: 240, originalAmount: 240, originalCurrency: 'EUR', fxRateApplied: 1, fxDateApplied: todayStr, payer: 'Giulia', splitAmong: ['Giulia', 'Marco', 'Luca'] },
+            { id: 'e2', title: 'Pranzo pesce', category: 'Ristoranti & Bar', date: addDays(6), amountEur: 96, originalAmount: 96, originalCurrency: 'EUR', fxRateApplied: 1, fxDateApplied: todayStr, payer: 'Marco', splitAmong: ['Giulia', 'Marco', 'Luca'] }
           ],
           stops: [
-            { id: 's1', title: 'Arrivo e check-in', note: 'Ore 15:00' },
-            { id: 's2', title: 'Passeggiata sul lungomare', note: 'Tramonto' }
+            { id: 's1', title: 'Arrivo e check-in', date: addDays(5), note: 'Ore 15:00', done: false },
+            { id: 's2', title: 'Passeggiata sul lungomare', date: addDays(6), note: 'Tramonto', done: false }
           ]
         }
       ];
@@ -1310,7 +1500,7 @@
       if (metaTheme) metaTheme.setAttribute('content', themeColors[safeTheme] || '#1d4ed8');
     }
 
-    function normalizeExpense(exp, fallbackCurrency = 'EUR', fallbackRate = 1, fallbackDate = null) {
+    function normalizeExpense(exp, fallbackCurrency = 'EUR', fallbackRate = 1, fallbackDate = null, tripMembers = ['Tu']) {
       const origCurr = CURRENCY_MAP[exp.originalCurrency] ? exp.originalCurrency : (exp.currency || fallbackCurrency || 'EUR');
       const rawAmount = Number(exp.originalAmount ?? exp.amount ?? 0);
       const appliedRate = origCurr === 'EUR'
@@ -1322,15 +1512,21 @@
       if ((!amountEur || amountEur <= 0) && rawAmount > 0) {
         amountEur = origCurr === 'EUR' ? rawAmount : (rawAmount * appliedRate);
       }
+      const validSplit = Array.isArray(exp.splitAmong)
+        ? exp.splitAmong.filter(m => tripMembers.includes(m))
+        : [];
       return {
         id: exp.id || ('exp-' + Date.now() + '-' + Math.random().toString(36).slice(2, 5)),
         title: exp.title || 'Spesa',
+        category: exp.category || 'Shopping & Varie',
+        date: exp.date || fallbackDate || new Date().toISOString().slice(0, 10),
         amountEur: Number(amountEur) || 0,
         originalAmount: Number(rawAmount) || Number(amountEur) || 0,
         originalCurrency: origCurr,
         fxRateApplied: appliedRate,
         fxDateApplied: exp.fxDateApplied || fallbackDate || new Date().toISOString().slice(0, 10),
-        payer: exp.payer || 'Tu'
+        payer: exp.payer || tripMembers[0] || 'Tu',
+        splitAmong: validSplit.length ? validSplit : [...tripMembers]
       };
     }
 
@@ -1338,26 +1534,35 @@
       const validCode = CURRENCY_MAP[t.currency] ? t.currency : (t.currency || 'EUR');
       const rate = validCode === 'EUR' ? 1 : (Number(t.eurPerUnit) > 0 ? Number(t.eurPerUnit) : 1);
       const todayStr = new Date().toISOString().slice(0, 10);
+      const members = Array.isArray(t.members) && t.members.length ? t.members : ['Tu'];
       return {
         id: t.id || ('trip-' + Date.now() + '-' + Math.random().toString(36).slice(2, 6)),
         title: t.title || 'Viaggio senza titolo',
         startDate: t.startDate || todayStr,
         endDate: t.endDate || todayStr,
         currency: validCode,
+        budgetEur: Number(t.budgetEur) > 0 ? Number(t.budgetEur) : 0,
         eurPerUnit: rate,
         fxDate: t.fxDate || todayStr,
         fxSource: t.fxSource || (validCode === 'EUR' ? 'eur' : 'manual'),
         theme: t.theme || 'coast',
         photo: typeof t.photo === 'string' && t.photo.startsWith('data:image/') ? t.photo : null,
-        members: Array.isArray(t.members) && t.members.length ? t.members : ['Tu'],
-        expenses: Array.isArray(t.expenses) ? t.expenses.map(e => normalizeExpense(e, validCode, rate, t.fxDate || todayStr)) : [],
-        stops: Array.isArray(t.stops) ? t.stops : []
+        members,
+        expenses: Array.isArray(t.expenses) ? t.expenses.map(e => normalizeExpense(e, validCode, rate, t.fxDate || todayStr, members)) : [],
+        stops: Array.isArray(t.stops) ? t.stops.map(s => ({
+          id: s.id || ('stop-' + Date.now() + '-' + Math.random().toString(36).slice(2, 5)),
+          title: s.title || 'Tappa',
+          date: s.date || '',
+          note: s.note || '',
+          done: Boolean(s.done)
+        })) : []
       };
     }
 
     function loadState() {
       try {
         const raw = localStorage.getItem(STORAGE_KEY)
+          || localStorage.getItem('splitrip_data_v4')
           || localStorage.getItem('splitrip_data_v3')
           || localStorage.getItem('splitrip_data_v2')
           || localStorage.getItem('splitrip_data_v1');
@@ -1426,7 +1631,7 @@
     function formatRateNumber(rate) {
       const n = Number(rate) || 0;
       if (n === 0) return '0';
-      const decimals = n < 0.01 ? 6 : (n < 1 ? 4 : 4);
+      const decimals = n < 0.01 ? 6 : 4;
       return n.toLocaleString('it-IT', {
         minimumFractionDigits: 2,
         maximumFractionDigits: decimals
@@ -1508,6 +1713,9 @@
         trip.fxDate = res.fxDate;
         trip.fxSource = res.fxSource;
         saveState();
+        if (force) showToast(`Cambio ${trip.currency} → EUR aggiornato`);
+      } else if (force) {
+        showToast('Impossibile aggiornare online: verifica la connessione.');
       }
       render();
     }
@@ -1627,6 +1835,9 @@
     function openTripDetail(tripId) {
       state.selectedTripId = tripId;
       state.view = 'detail';
+      expenseCategoryFilter = 'all';
+      const catFilterEl = document.getElementById('expenseCategoryFilter');
+      if (catFilterEl) catFilterEl.value = 'all';
       saveState();
       render();
       const active = getActiveTrip();
@@ -1639,6 +1850,31 @@
       saveState();
       render();
       window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function getTripBalanceData(trip) {
+      const paidMap = Object.fromEntries(trip.members.map(m => [m, 0]));
+      const owedMap = Object.fromEntries(trip.members.map(m => [m, 0]));
+
+      for (const exp of trip.expenses) {
+        const amtEur = Number(exp.amountEur ?? exp.amount ?? 0);
+        if (paidMap[exp.payer] !== undefined) {
+          paidMap[exp.payer] += amtEur;
+        }
+        const beneficiaries = (Array.isArray(exp.splitAmong) && exp.splitAmong.length)
+          ? exp.splitAmong.filter(m => trip.members.includes(m))
+          : trip.members;
+        const share = beneficiaries.length > 0 ? amtEur / beneficiaries.length : 0;
+        for (const b of beneficiaries) {
+          owedMap[b] = (owedMap[b] || 0) + share;
+        }
+      }
+
+      const balances = {};
+      for (const m of trip.members) {
+        balances[m] = (paidMap[m] || 0) - (owedMap[m] || 0);
+      }
+      return { paidMap, owedMap, balances };
     }
 
     function render() {
@@ -1657,7 +1893,25 @@
       const grid = document.getElementById('tripsGrid');
       grid.innerHTML = '';
 
-      for (const trip of orderedTrips) {
+      const todayStr = new Date().toISOString().slice(0, 10);
+      const q = catalogSearch.trim().toLowerCase();
+
+      const visibleTrips = orderedTrips.filter(trip => {
+        if (catalogFilter === 'upcoming' && trip.endDate < todayStr) return false;
+        if (catalogFilter === 'past' && trip.endDate >= todayStr) return false;
+        if (q) {
+          const cMeta = getCurrencyMeta(trip.currency);
+          const hay = `${trip.title} ${trip.currency} ${cMeta.country}`.toLowerCase();
+          if (!hay.includes(q)) return false;
+        }
+        return true;
+      });
+
+      if (!visibleTrips.length && hasTrips && !showDetail) {
+        grid.innerHTML = `<div class="sub-card" style="grid-column: 1 / -1; text-align: center; color: var(--text-muted);">Nessun viaggio corrisponde ai filtri selezionati.</div>`;
+      }
+
+      for (const trip of visibleTrips) {
         const cover = COVER_STYLES[trip.theme] || COVER_STYLES.coast;
         const cMeta = getCurrencyMeta(trip.currency);
         const totalEur = trip.expenses.reduce((acc, e) => acc + Number(e.amountEur ?? e.amount ?? 0), 0);
@@ -1721,6 +1975,9 @@
       syncExpenseCurrencyOptions(active);
       renderFxBar(active, isFetchingFx);
 
+      const expDateInput = document.getElementById('expenseDateInput');
+      if (expDateInput && !expDateInput.value) expDateInput.value = todayStr;
+
       document.getElementById('activeTripCover').style.backgroundImage = getCoverCss(active);
       document.getElementById('activeTripTitle').textContent = active.title;
       document.getElementById('activeTripMeta').textContent = `${active.startDate} → ${active.endDate} • ${cMeta.flag} ${cMeta.country} • ${active.members.length} partecipanti`;
@@ -1730,26 +1987,36 @@
       const perPersonEur = count > 0 ? totalEur / count : 0;
 
       document.getElementById('statTotal').textContent = formatEur(totalEur);
+      const budgetSubEl = document.getElementById('statBudgetSub');
+      if (Number(active.budgetEur) > 0) {
+        const pct = Math.round((totalEur / active.budgetEur) * 100);
+        const over = totalEur > active.budgetEur;
+        budgetSubEl.style.color = over ? 'var(--accent-coral)' : 'var(--accent-ok)';
+        budgetSubEl.textContent = `${pct}% del budget (${formatEur(active.budgetEur)})`;
+      } else {
+        budgetSubEl.textContent = '';
+      }
+
       document.getElementById('statPerPerson').textContent = formatEur(perPersonEur);
       document.getElementById('statMembersCount').textContent = String(count);
       document.getElementById('statCurrency').textContent = `${cMeta.flag} ${cMeta.code} — ${cMeta.country}`;
 
-      const paidMap = Object.fromEntries(active.members.map(m => [m, 0]));
-      for (const exp of active.expenses) {
-        if (paidMap[exp.payer] !== undefined) {
-          paidMap[exp.payer] += Number(exp.amountEur ?? exp.amount ?? 0);
-        }
-      }
+      const { balances } = getTripBalanceData(active);
 
-      const balances = {};
       const membersList = document.getElementById('membersList');
       membersList.innerHTML = '';
       const payerSelect = document.getElementById('expensePayerSelect');
+      const prevPayer = payerSelect.value;
       payerSelect.innerHTML = '';
 
+      const splitBox = document.getElementById('expenseSplitCheckboxes');
+      const prevChecked = new Set(
+        [...splitBox.querySelectorAll('input[type="checkbox"]:checked')].map(cb => cb.value)
+      );
+      splitBox.innerHTML = '';
+
       for (const member of active.members) {
-        const balance = (paidMap[member] || 0) - perPersonEur;
-        balances[member] = balance;
+        const balance = balances[member] || 0;
         const sign = balance > 0.009 ? '+' : '';
         const color = balance > 0.009 ? 'var(--accent-ok)' : (balance < -0.009 ? 'var(--accent-coral)' : 'var(--text-muted)');
 
@@ -1768,12 +2035,32 @@
         opt.value = member;
         opt.textContent = `Pagato da ${member}`;
         payerSelect.appendChild(opt);
+
+        const lbl = document.createElement('label');
+        lbl.className = 'split-check-label';
+        const cb = document.createElement('input');
+        cb.type = 'checkbox';
+        cb.value = member;
+        cb.checked = prevChecked.size > 0 ? prevChecked.has(member) : true;
+        lbl.appendChild(cb);
+        lbl.appendChild(document.createTextNode(member));
+        splitBox.appendChild(lbl);
+      }
+
+      if (prevPayer && active.members.includes(prevPayer)) {
+        payerSelect.value = prevPayer;
       }
 
       membersList.querySelectorAll('[data-remove-member]').forEach(btn => {
         btn.addEventListener('click', () => {
           const name = btn.getAttribute('data-remove-member');
           active.members = active.members.filter(m => m !== name);
+          for (const exp of active.expenses) {
+            if (Array.isArray(exp.splitAmong)) {
+              exp.splitAmong = exp.splitAmong.filter(m => m !== name);
+              if (!exp.splitAmong.length) exp.splitAmong = [...active.members];
+            }
+          }
           saveState();
           render();
         });
@@ -1793,15 +2080,55 @@
           li.className = 'list-item';
           li.innerHTML = `
             <span><strong>${escapeHtml(tr.from)}</strong> → <strong>${escapeHtml(tr.to)}</strong></span>
-            <strong style="color: var(--accent-cyan)">${formatEur(tr.amount)}</strong>
+            <div style="display:flex;align-items:center;gap:8px;">
+              <strong style="color: var(--accent-cyan)">${formatEur(tr.amount)}</strong>
+              <button class="btn btn-ghost btn-sm" data-settle-from="${escapeAttr(tr.from)}" data-settle-to="${escapeAttr(tr.to)}" data-settle-amt="${tr.amount.toFixed(2)}" type="button" title="Registra saldo avvenuto">Salda</button>
+            </div>
           `;
           settlementsList.appendChild(li);
         }
       }
 
+      settlementsList.querySelectorAll('[data-settle-from]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const from = btn.getAttribute('data-settle-from');
+          const to = btn.getAttribute('data-settle-to');
+          const amt = parseFloat(btn.getAttribute('data-settle-amt'));
+          if (!from || !to || !(amt > 0)) return;
+          active.expenses.push({
+            id: 'exp-settle-' + Date.now(),
+            title: `Rimborso ${from} → ${to}`,
+            category: 'Shopping & Varie',
+            date: new Date().toISOString().slice(0, 10),
+            amountEur: amt,
+            originalAmount: amt,
+            originalCurrency: 'EUR',
+            fxRateApplied: 1,
+            fxDateApplied: new Date().toISOString().slice(0, 10),
+            payer: from,
+            splitAmong: [to]
+          });
+          saveState();
+          render();
+          showToast(`Rimborso di ${formatEur(amt)} registrato`);
+        });
+      });
+
       const expensesList = document.getElementById('expensesList');
       expensesList.innerHTML = '';
-      for (const exp of active.expenses) {
+      const filteredExpenses = active.expenses.filter(e =>
+        expenseCategoryFilter === 'all' || (e.category || 'Shopping & Varie') === expenseCategoryFilter
+      );
+
+      if (!filteredExpenses.length) {
+        const li = document.createElement('li');
+        li.className = 'list-item';
+        li.style.color = 'var(--text-muted)';
+        li.textContent = 'Nessuna spesa registrata per questo filtro.';
+        expensesList.appendChild(li);
+      }
+
+      for (const exp of filteredExpenses) {
         const amtEur = Number(exp.amountEur ?? exp.amount ?? 0);
         const origCurr = exp.originalCurrency || 'EUR';
         const origAmt = Number(exp.originalAmount ?? amtEur);
@@ -1809,13 +2136,17 @@
         const origNote = origCurr !== 'EUR'
           ? ` • ${formatForeignAmount(origAmt, origCurr)} (cambio: 1 ${origCurr} = ${formatRateNumber(appliedRate)} €${exp.fxDateApplied ? ` del ${exp.fxDateApplied}` : ''})`
           : '';
+        const splitInfo = (Array.isArray(exp.splitAmong) && exp.splitAmong.length && exp.splitAmong.length < active.members.length)
+          ? ` • Diviso tra: ${exp.splitAmong.join(', ')}`
+          : '';
+        const dateNote = exp.date ? ` • ${exp.date}` : '';
 
         const li = document.createElement('li');
         li.className = 'list-item';
         li.innerHTML = `
           <div>
-            <div><strong>${escapeHtml(exp.title)}</strong></div>
-            <div style="font-size: 0.82rem; color: var(--text-muted)">Pagato da ${escapeHtml(exp.payer)}${escapeHtml(origNote)}</div>
+            <div><span class="badge-cat">${escapeHtml(exp.category || 'Varie')}</span><strong>${escapeHtml(exp.title)}</strong></div>
+            <div style="font-size: 0.82rem; color: var(--text-muted)">Pagato da ${escapeHtml(exp.payer)}${escapeHtml(dateNote)}${escapeHtml(origNote)}${escapeHtml(splitInfo)}</div>
           </div>
           <div style="display:flex;align-items:center;gap:8px;">
             <strong>${formatEur(amtEur)}</strong>
@@ -1834,20 +2165,65 @@
         });
       });
 
+      // Ripartizione per categoria
+      const breakdownBox = document.getElementById('categoryBreakdownBox');
+      breakdownBox.innerHTML = '';
+      const catTotals = {};
+      for (const exp of active.expenses) {
+        const cat = exp.category || 'Shopping & Varie';
+        catTotals[cat] = (catTotals[cat] || 0) + Number(exp.amountEur ?? 0);
+      }
+      const catEntries = Object.entries(catTotals).sort((a, b) => b[1] - a[1]);
+      if (!catEntries.length || totalEur <= 0) {
+        breakdownBox.innerHTML = `<div style="font-size:0.86rem;color:var(--text-muted);">Registra almeno una spesa per vedere il grafico per categoria.</div>`;
+      } else {
+        for (const [cat, val] of catEntries) {
+          const pct = Math.min(100, Math.round((val / totalEur) * 100));
+          const row = document.createElement('div');
+          row.className = 'cat-bar-row';
+          row.innerHTML = `
+            <div style="display:flex;justify-content:space-between;">
+              <span>${escapeHtml(cat)}</span>
+              <strong>${formatEur(val)} (${pct}%)</strong>
+            </div>
+            <div class="cat-bar-track"><div class="cat-bar-fill" style="width:${pct}%"></div></div>
+          `;
+          breakdownBox.appendChild(row);
+        }
+      }
+
+      // Tappe itinerario
       const stopsList = document.getElementById('stopsList');
       stopsList.innerHTML = '';
-      for (const st of active.stops) {
+      const sortedStops = [...active.stops].sort((a, b) => String(a.date || '9999').localeCompare(String(b.date || '9999')));
+      for (const st of sortedStops) {
         const li = document.createElement('li');
         li.className = 'list-item';
+        const subParts = [st.date, st.note].filter(Boolean).join(' • ');
         li.innerHTML = `
-          <div>
-            <div><strong>${escapeHtml(st.title)}</strong></div>
-            ${st.note ? `<div style="font-size: 0.82rem; color: var(--text-muted)">${escapeHtml(st.note)}</div>` : ''}
+          <div style="display:flex;align-items:center;gap:10px;">
+            <input type="checkbox" class="stop-check" data-toggle-stop="${escapeAttr(st.id)}" ${st.done ? 'checked' : ''} aria-label="Segna tappa completata" />
+            <div class="${st.done ? 'stop-done' : ''}">
+              <div><strong>${escapeHtml(st.title)}</strong></div>
+              ${subParts ? `<div style="font-size: 0.82rem; color: var(--text-muted)">${escapeHtml(subParts)}</div>` : ''}
+            </div>
           </div>
           <button class="btn btn-ghost btn-sm" data-remove-stop="${escapeAttr(st.id)}" type="button" title="Rimuovi tappa">×</button>
         `;
         stopsList.appendChild(li);
       }
+
+      stopsList.querySelectorAll('[data-toggle-stop]').forEach(cb => {
+        cb.addEventListener('change', () => {
+          const id = cb.getAttribute('data-toggle-stop');
+          const found = active.stops.find(s => s.id === id);
+          if (found) {
+            found.done = cb.checked;
+            saveState();
+            render();
+          }
+        });
+      });
 
       stopsList.querySelectorAll('[data-remove-stop]').forEach(btn => {
         btn.addEventListener('click', () => {
@@ -1966,6 +2342,7 @@
         document.getElementById('tripEndInput').value = tripToEdit.endDate;
         syncReturnDateFromStart(true);
         document.getElementById('tripCurrencySelect').value = targetCurrency;
+        document.getElementById('tripBudgetInput').value = tripToEdit.budgetEur > 0 ? String(tripToEdit.budgetEur) : '';
         document.getElementById('tripThemeSelect').value = tripToEdit.theme || 'coast';
         draftPhotoDataUrl = tripToEdit.photo || null;
       } else {
@@ -1977,6 +2354,7 @@
         document.getElementById('tripEndInput').value = todayStr;
         syncReturnDateFromStart(true);
         document.getElementById('tripCurrencySelect').value = 'EUR';
+        document.getElementById('tripBudgetInput').value = '';
         document.getElementById('tripThemeSelect').value = 'coast';
         draftPhotoDataUrl = null;
       }
@@ -1989,6 +2367,93 @@
     function closeTripModal() {
       tripModal.classList.remove('open');
     }
+
+    // Event listeners catalogo e filtri
+    document.getElementById('tripSearchInput').addEventListener('input', (e) => {
+      catalogSearch = e.target.value;
+      render();
+    });
+
+    document.getElementById('tripFilterPills').querySelectorAll('[data-filter]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        catalogFilter = btn.getAttribute('data-filter');
+        document.getElementById('tripFilterPills').querySelectorAll('[data-filter]').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        render();
+      });
+    });
+
+    document.getElementById('expenseCategoryFilter').addEventListener('change', (e) => {
+      expenseCategoryFilter = e.target.value;
+      render();
+    });
+
+    // Condividi riepilogo su WhatsApp / Appunti
+    document.getElementById('shareSummaryBtn').addEventListener('click', async () => {
+      const active = getActiveTrip();
+      if (!active) return;
+      const totalEur = active.expenses.reduce((acc, e) => acc + Number(e.amountEur ?? 0), 0);
+      const { balances } = getTripBalanceData(active);
+      const transfers = computeSettlements(active.members, balances);
+
+      const lines = [
+        `✈️ *${active.title}* (${active.startDate} → ${active.endDate})`,
+        `💶 Totale spese: ${formatEur(totalEur)}`,
+        ``,
+        `👥 *Saldi partecipanti:*`,
+        ...active.members.map(m => {
+          const b = balances[m] || 0;
+          return `• ${m}: ${b > 0.009 ? '+' : ''}${formatEur(b)}`;
+        }),
+        ``,
+        `💸 *Rimborsi consigliati:*`,
+        ...(transfers.length
+          ? transfers.map(t => `• ${t.from} → ${t.to}: ${formatEur(t.amount)}`)
+          : ['• Tutti i conti sono in pari!'])
+      ];
+      const text = lines.join('\n');
+
+      try {
+        if (navigator.share) {
+          await navigator.share({ title: `Riepilogo ${active.title}`, text });
+        } else {
+          await navigator.clipboard.writeText(text);
+          showToast('Riepilogo copiato negli appunti!');
+        }
+      } catch (e) {
+        try {
+          await navigator.clipboard.writeText(text);
+          showToast('Riepilogo copiato negli appunti!');
+        } catch (_) {}
+      }
+    });
+
+    // Esporta CSV
+    document.getElementById('exportCsvBtn').addEventListener('click', () => {
+      const active = getActiveTrip();
+      if (!active) return;
+      const headers = ['Data', 'Descrizione', 'Categoria', 'Pagato da', 'Diviso tra', 'Importo Originale', 'Valuta', 'Cambio EUR', 'Totale EUR'];
+      const rows = active.expenses.map(e => [
+        e.date || '',
+        `"${String(e.title || '').replaceAll('"', '""')}"`,
+        `"${String(e.category || '').replaceAll('"', '""')}"`,
+        `"${String(e.payer || '').replaceAll('"', '""')}"`,
+        `"${(e.splitAmong || active.members).join(', ')}"`,
+        Number(e.originalAmount ?? 0).toFixed(2).replace('.', ','),
+        e.originalCurrency || 'EUR',
+        Number(e.fxRateApplied ?? 1).toFixed(6).replace('.', ','),
+        Number(e.amountEur ?? 0).toFixed(2).replace('.', ',')
+      ]);
+      const csvContent = '\uFEFF' + [headers.join(';'), ...rows.map(r => r.join(';'))].join('\n');
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `splitrip-${active.title.toLowerCase().replace(/[^a-z0-9]+/g, '-')}.csv`;
+      a.click();
+      URL.revokeObjectURL(url);
+      showToast('File CSV esportato');
+    });
 
     document.getElementById('refreshFxBtn').addEventListener('click', () => {
       const active = getActiveTrip();
@@ -2008,6 +2473,7 @@
       active.fxSource = 'manual';
       saveState();
       render();
+      showToast('Cambio manuale salvato');
     });
 
     document.getElementById('alignExpensesFxBtn').addEventListener('click', () => {
@@ -2026,14 +2492,11 @@
       }
       saveState();
       render();
+      showToast('Tutte le spese in valuta sono state riallineate');
     });
 
-    document.getElementById('tripStartInput').addEventListener('change', () => {
-      syncReturnDateFromStart(true);
-    });
-    document.getElementById('tripStartInput').addEventListener('input', () => {
-      syncReturnDateFromStart(true);
-    });
+    document.getElementById('tripStartInput').addEventListener('change', () => syncReturnDateFromStart(true));
+    document.getElementById('tripStartInput').addEventListener('input', () => syncReturnDateFromStart(true));
 
     document.getElementById('currencyFilterInput').addEventListener('input', (e) => {
       populateCurrencySelect(e.target.value, document.getElementById('tripCurrencySelect').value);
@@ -2053,9 +2516,7 @@
       openCatalogView();
     });
 
-    document.getElementById('backToCatalogBtn').addEventListener('click', () => {
-      openCatalogView();
-    });
+    document.getElementById('backToCatalogBtn').addEventListener('click', () => openCatalogView());
 
     document.getElementById('navNewTripBtn').addEventListener('click', () => {
       setDrawerOpen(false);
@@ -2071,6 +2532,7 @@
       a.download = `splitrip-backup-${new Date().toISOString().slice(0, 10)}.json`;
       a.click();
       URL.revokeObjectURL(url);
+      showToast('Backup JSON scaricato');
     });
 
     document.getElementById('navImportBtn').addEventListener('click', () => {
@@ -2091,6 +2553,7 @@
           state.view = parsed.view === 'detail' && getActiveTrip() ? 'detail' : 'catalog';
           saveState();
           render();
+          showToast('Backup importato con successo');
         }
       } catch (err) {
         alert('File JSON non valido.');
@@ -2105,12 +2568,10 @@
       state.view = 'catalog';
       saveState();
       render();
+      showToast('Dati di esempio ripristinati');
     });
 
-    document.getElementById('brandHomeBtn').addEventListener('click', () => {
-      openCatalogView();
-    });
-
+    document.getElementById('brandHomeBtn').addEventListener('click', () => openCatalogView());
     document.getElementById('openNewTripBtn').addEventListener('click', () => openTripModal(null));
     document.getElementById('welcomeCreateBtn').addEventListener('click', () => openTripModal(null));
     document.getElementById('editTripBtn').addEventListener('click', () => {
@@ -2149,6 +2610,7 @@
       const startDate = document.getElementById('tripStartInput').value;
       let endDate = document.getElementById('tripEndInput').value;
       const currency = document.getElementById('tripCurrencySelect').value;
+      const budgetEur = Math.max(0, parseFloat(document.getElementById('tripBudgetInput').value) || 0);
       const theme = document.getElementById('tripThemeSelect').value;
 
       if (!title || !startDate || !endDate) return;
@@ -2163,6 +2625,7 @@
           existing.startDate = startDate;
           existing.endDate = endDate;
           existing.currency = currency;
+          existing.budgetEur = budgetEur;
           if (currency === 'EUR') {
             existing.eurPerUnit = 1;
             existing.fxDate = new Date().toISOString().slice(0, 10);
@@ -2183,6 +2646,7 @@
           startDate,
           endDate,
           currency,
+          budgetEur,
           theme,
           photo: draftPhotoDataUrl,
           members: ['Tu'],
@@ -2209,6 +2673,7 @@
       state.view = 'catalog';
       saveState();
       render();
+      showToast('Viaggio eliminato');
     });
 
     document.getElementById('addMemberForm').addEventListener('submit', (e) => {
@@ -2232,12 +2697,21 @@
       const titleInput = document.getElementById('expenseTitleInput');
       const amountInput = document.getElementById('expenseAmountInput');
       const curSelect = document.getElementById('expenseCurrencyInputSelect');
+      const catSelect = document.getElementById('expenseCategorySelect');
+      const dateInput = document.getElementById('expenseDateInput');
       const payerSelect = document.getElementById('expensePayerSelect');
 
       const title = titleInput.value.trim();
       const rawAmount = parseFloat(amountInput.value);
       const inputCurrency = curSelect.value || 'EUR';
+      const category = catSelect.value || 'Shopping & Varie';
+      const date = dateInput.value || new Date().toISOString().slice(0, 10);
       const payer = payerSelect.value;
+
+      const checkedMembers = [...document.querySelectorAll('#expenseSplitCheckboxes input[type="checkbox"]:checked')]
+        .map(cb => cb.value)
+        .filter(m => active.members.includes(m));
+      const splitAmong = checkedMembers.length ? checkedMembers : [...active.members];
 
       if (!title || isNaN(rawAmount) || rawAmount <= 0 || !payer) return;
 
@@ -2250,18 +2724,22 @@
       active.expenses.push({
         id: 'exp-' + Date.now(),
         title,
+        category,
+        date,
         amountEur,
         originalAmount: rawAmount,
         originalCurrency: inputCurrency,
         fxRateApplied: rate,
         fxDateApplied,
-        payer
+        payer,
+        splitAmong
       });
 
       titleInput.value = '';
       amountInput.value = '';
       saveState();
       render();
+      showToast('Spesa registrata');
     });
 
     document.getElementById('addStopForm').addEventListener('submit', (e) => {
@@ -2269,15 +2747,19 @@
       const active = getActiveTrip();
       if (!active) return;
       const titleInput = document.getElementById('stopTitleInput');
+      const dateInput = document.getElementById('stopDateInput');
       const noteInput = document.getElementById('stopNoteInput');
       const title = titleInput.value.trim();
+      const date = dateInput.value || '';
       const note = noteInput.value.trim();
       if (!title) return;
 
       active.stops.push({
         id: 'stop-' + Date.now(),
         title,
-        note
+        date,
+        note,
+        done: false
       });
 
       titleInput.value = '';
