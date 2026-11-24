@@ -869,9 +869,95 @@
     .hidden {
       display: none !important;
     }
+  
+    .invite-gate-wrap {
+      min-height: 100dvh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: calc(24px + var(--safe-top)) calc(18px + var(--safe-right)) calc(24px + var(--safe-bottom)) calc(18px + var(--safe-left));
+    }
+
+    .invite-card {
+      width: 100%;
+      max-width: 440px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      padding: 28px 22px;
+      box-shadow: 0 20px 44px rgba(2, 6, 23, 0.45);
+      text-align: center;
+    }
+
+    .invite-card h1 {
+      margin: 12px 0 6px;
+      font-size: 1.4rem;
+    }
+
+    .invite-card p {
+      margin: 0 0 18px;
+      color: var(--text-muted);
+      font-size: 0.94rem;
+    }
+
+    .invite-form {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      text-align: left;
+    }
+
+    .invite-error {
+      color: #fb7185;
+      font-size: 0.88rem;
+      min-height: 1.2em;
+      text-align: center;
+    }
+
   </style>
 </head>
 <body>
+
+  <div id="inviteGateSection" class="invite-gate-wrap">
+    <div class="invite-card">
+      <svg class="welcome-icon" viewBox="0 0 192 192" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <defs>
+          <linearGradient id="invBg" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#0b132b" />
+            <stop offset="55%" stop-color="#1d4ed8" />
+            <stop offset="100%" stop-color="#0ea5e9" />
+          </linearGradient>
+          <linearGradient id="invCard" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#ffffff" />
+            <stop offset="100%" stop-color="#f8fafc" />
+          </linearGradient>
+          <linearGradient id="invCoral" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#f97316" />
+            <stop offset="100%" stop-color="#fb7185" />
+          </linearGradient>
+        </defs>
+        <rect width="192" height="192" rx="46" fill="url(#invBg)" />
+        <rect x="24" y="34" width="144" height="124" rx="24" fill="url(#invCard)" />
+        <path d="M68 64 C68 57.5 62.5 53.5 55.5 53.5 C48.5 53.5 43 57.5 43 63.5 C43 69.5 49 72.5 56.5 74.5 C64 76.5 69.5 80 69.5 87 C69.5 93.5 63.5 98 55.5 98 C47.5 98 42 93.8 41.5 88"
+              fill="none" stroke="#1d4ed8" stroke-width="6.5" stroke-linecap="round" />
+        <path d="M128 50 C117.5 50 109.5 58 109.5 68.5 C109.5 82.5 128 98 128 98 C128 98 146.5 82.5 146.5 68.5 C146.5 58 138.5 50 128 50 Z"
+              fill="#0284c7" />
+        <rect x="40" y="124" width="50" height="9" rx="4.5" fill="#1d4ed8" fill-opacity="0.85" />
+        <rect x="102" y="124" width="50" height="9" rx="4.5" fill="url(#invCoral)" />
+      </svg>
+      <h1>Accesso riservato Splitrip</h1>
+      <p>Inserisci il codice d'invito per sbloccare l'applicazione.</p>
+      <form id="inviteForm" class="invite-form">
+        <label for="inviteCodeInput">Codice d'invito</label>
+        <input type="text" id="inviteCodeInput" placeholder="Es. ST-XXXXX-XXXXX-XXXXX-XXXXX" autocomplete="off" required />
+        <button type="submit" class="btn btn-primary">Sblocca Splitrip</button>
+        <div id="inviteErrorMsg" class="invite-error" role="alert"></div>
+      </form>
+    </div>
+  </div>
+
+  <div id="splitripAppShell" class="hidden">
+
   <header class="topbar">
     <div class="brand" id="brandHomeBtn" title="Torna all'elenco viaggi">
       <svg id="brandSvg" class="brand-icon" viewBox="0 0 192 192" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -1194,6 +1280,8 @@
   </div>
 
   <div class="toast-banner" id="toastBanner" role="status" aria-live="polite"></div>
+
+    </div>
 
   <script>
     const STORAGE_KEY = 'splitrip_data_v5';
@@ -2768,21 +2856,149 @@
       render();
     });
 
-    populateCurrencySelect('', 'EUR');
-    loadState();
-    render();
-    rasterizeBrandIconToPng(192);
+const ACCESS_EPOCH = '2026-11-epoch-1';
+    const INVITE_AUTH_KEY = 'splitrip_invite_auth_v1';
+    const ALLOWED_INVITE_HASHES = [
+      'ba5764bc67d0916ca94eaa5432a43c9d3312f20142a924e0a35b980391abb168'
+    ];
 
-    const initialActive = getActiveTrip();
-    if (state.view === 'detail' && initialActive) {
-      syncTripDailyFx(initialActive, false);
+    async function sha256Hex(value) {
+      const normalized = String(value || '').trim().toUpperCase();
+      if (!normalized || !window.crypto?.subtle) return '';
+      const buf = new TextEncoder().encode(normalized);
+      const digest = await window.crypto.subtle.digest('SHA-256', buf);
+      return [...new Uint8Array(digest)]
+        .map(b => b.toString(16).padStart(2, '0'))
+        .join('');
     }
 
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/WayLocal/sw.js').catch(() => {});
-      });
+    function hasValidEpochAccess() {
+      try {
+        const raw = localStorage.getItem(INVITE_AUTH_KEY);
+        if (!raw) return false;
+        const parsed = JSON.parse(raw);
+        return Boolean(parsed && parsed.epoch === ACCESS_EPOCH && parsed.authorized === true);
+      } catch (e) {
+        return false;
+      }
     }
+
+    function grantEpochAccess() {
+      try {
+        localStorage.setItem(INVITE_AUTH_KEY, JSON.stringify({
+          epoch: ACCESS_EPOCH,
+          authorized: true,
+          unlockedAt: new Date().toISOString()
+        }));
+      } catch (e) {}
+    }
+
+    function extractInviteCodeFromUrl() {
+      let code = '';
+      try {
+        const url = new URL(window.location.href);
+        code = url.searchParams.get('invite') || url.searchParams.get('code') || '';
+        if (!code && url.hash) {
+          const hashStr = url.hash.startsWith('#') ? url.hash.slice(1) : url.hash;
+          const hashParams = new URLSearchParams(hashStr.includes('=') ? hashStr : '');
+          code = hashParams.get('invite') || hashParams.get('code') || '';
+        }
+      } catch (e) {}
+      return String(code || '').trim();
+    }
+
+    function scrubInviteFromUrl() {
+      try {
+        const url = new URL(window.location.href);
+        let changed = false;
+        for (const key of ['invite', 'code']) {
+          if (url.searchParams.has(key)) {
+            url.searchParams.delete(key);
+            changed = true;
+          }
+        }
+        if (url.hash && (url.hash.includes('invite=') || url.hash.includes('code='))) {
+          const rawHash = url.hash.slice(1);
+          const params = new URLSearchParams(rawHash);
+          params.delete('invite');
+          params.delete('code');
+          const nextHash = params.toString();
+          url.hash = nextHash ? '#' + nextHash : '';
+          changed = true;
+        }
+        if (changed) {
+          window.history.replaceState({}, document.title, url.toString());
+        }
+      } catch (e) {}
+    }
+
+    function setAppUnlocked(unlocked) {
+      const gateEl = document.getElementById('inviteGateSection');
+      const shellEl = document.getElementById('splitripAppShell');
+      if (gateEl) gateEl.classList.toggle('hidden', unlocked);
+      if (shellEl) shellEl.classList.toggle('hidden', !unlocked);
+    }
+
+    async function verifyAndUnlockInvite(rawCode, fromUrl = false) {
+      const errEl = document.getElementById('inviteErrorMsg');
+      const hex = await sha256Hex(rawCode);
+      if (hex && ALLOWED_INVITE_HASHES.includes(hex)) {
+        grantEpochAccess();
+        if (fromUrl) scrubInviteFromUrl();
+        if (errEl) errEl.textContent = '';
+        setAppUnlocked(true);
+        startSplitripApp();
+        return true;
+      }
+      if (!fromUrl && errEl) {
+        errEl.textContent = 'Codice d'invito non valido.';
+      }
+      return false;
+    }
+
+    let splitripStarted = false;
+    function startSplitripApp() {
+      if (splitripStarted) return;
+      splitripStarted = true;
+      populateCurrencySelect('', 'EUR');
+      loadState();
+      render();
+      rasterizeBrandIconToPng(192);
+
+      const initialActive = getActiveTrip();
+      if (state.view === 'detail' && initialActive) {
+        syncTripDailyFx(initialActive, false);
+      }
+
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/WayLocal/sw.js').catch(() => {});
+        });
+      }
+    }
+
+    document.getElementById('inviteForm')?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const input = document.getElementById('inviteCodeInput');
+      await verifyAndUnlockInvite(input?.value || '', false);
+    });
+
+    (async function initInviteGate() {
+      const urlCode = extractInviteCodeFromUrl();
+      if (urlCode) {
+        const ok = await verifyAndUnlockInvite(urlCode, true);
+        if (ok) return;
+      } else {
+        scrubInviteFromUrl();
+      }
+
+      if (hasValidEpochAccess()) {
+        setAppUnlocked(true);
+        startSplitripApp();
+      } else {
+        setAppUnlocked(false);
+      }
+    })();
   </script>
 </body>
 </html>
