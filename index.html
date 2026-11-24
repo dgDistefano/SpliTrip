@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>Splitrip — Viaggi e Quote</title>
+  <title>Splitrip — Viaggi, Pianificazione e Quote</title>
 
   <meta name="theme-color" content="#1d4ed8" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -31,6 +31,7 @@
       --accent-cyan: #0ea5e9;
       --accent-coral: #f97316;
       --accent-ok: #10b981;
+      --accent-warn: #f59e0b;
     }
 
     html[data-app-theme="light"] {
@@ -48,6 +49,7 @@
       --accent-cyan: #0284c7;
       --accent-coral: #ea580c;
       --accent-ok: #059669;
+      --accent-warn: #d97706;
     }
 
     html[data-app-theme="ocean"] {
@@ -65,6 +67,7 @@
       --accent-cyan: #06b6d4;
       --accent-coral: #f97316;
       --accent-ok: #2dd4bf;
+      --accent-warn: #fbbf24;
     }
 
     html[data-app-theme="sunset"] {
@@ -82,6 +85,7 @@
       --accent-cyan: #f97316;
       --accent-coral: #fb7185;
       --accent-ok: #34d399;
+      --accent-warn: #fbbf24;
     }
 
     html[data-app-theme="forest"] {
@@ -99,6 +103,7 @@
       --accent-cyan: #10b981;
       --accent-coral: #f97316;
       --accent-ok: #4ade80;
+      --accent-warn: #facc15;
     }
 
     :root {
@@ -371,6 +376,46 @@
       border-color: transparent;
     }
 
+    /* Tabs dettaglio viaggio */
+    .detail-tabs {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin: 14px 0 18px;
+      padding: 6px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+    }
+
+    .detail-tab-btn {
+      flex: 1 1 160px;
+      padding: 10px 14px;
+      border-radius: var(--radius-md);
+      border: 1px solid transparent;
+      background: transparent;
+      color: var(--text-muted);
+      font-weight: 700;
+      font-size: 0.94rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      transition: all 0.16s ease;
+    }
+
+    .detail-tab-btn:hover {
+      color: var(--text-main);
+      background: var(--bg-item);
+    }
+
+    .detail-tab-btn.active {
+      background: linear-gradient(135deg, var(--accent-blue), var(--accent-cyan));
+      color: #ffffff;
+      box-shadow: 0 4px 12px rgba(2, 132, 199, 0.25);
+    }
+
     .trips-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(275px, 1fr));
@@ -479,7 +524,7 @@
       background-position: center;
       position: relative;
       overflow: hidden;
-      margin: 14px 0 18px;
+      margin: 14px 0 14px;
       border: 1px solid var(--border);
       display: flex;
       align-items: flex-end;
@@ -651,6 +696,7 @@
     }
 
     input[type="text"],
+    input[type="url"],
     input[type="search"],
     input[type="date"],
     input[type="number"],
@@ -704,6 +750,62 @@
       border: 1px solid rgba(14, 165, 233, 0.25);
       margin-right: 5px;
       font-weight: 600;
+    }
+
+    .badge-ok {
+      background: rgba(16, 185, 129, 0.15);
+      color: var(--accent-ok);
+      border-color: rgba(16, 185, 129, 0.3);
+    }
+
+    .badge-warn {
+      background: rgba(245, 158, 11, 0.15);
+      color: var(--accent-warn);
+      border-color: rgba(245, 158, 11, 0.3);
+    }
+
+    .badge-coral {
+      background: rgba(249, 115, 22, 0.15);
+      color: var(--accent-coral);
+      border-color: rgba(249, 115, 22, 0.3);
+    }
+
+    .ext-link-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 9px;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      text-decoration: none;
+      color: var(--accent-cyan);
+      background: rgba(14, 165, 233, 0.12);
+      border: 1px solid rgba(14, 165, 233, 0.28);
+      transition: background 0.15s ease;
+    }
+
+    .ext-link-pill:hover {
+      background: rgba(14, 165, 233, 0.24);
+    }
+
+    .maps-link-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 9px;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      text-decoration: none;
+      color: var(--accent-ok);
+      background: rgba(16, 185, 129, 0.12);
+      border: 1px solid rgba(16, 185, 129, 0.28);
+      transition: background 0.15s ease;
+    }
+
+    .maps-link-pill:hover {
+      background: rgba(16, 185, 129, 0.24);
     }
 
     .cat-breakdown {
@@ -869,7 +971,7 @@
     .hidden {
       display: none !important;
     }
-  
+
     .invite-gate-wrap {
       min-height: 100dvh;
       display: flex;
@@ -913,7 +1015,6 @@
       min-height: 1.2em;
       text-align: center;
     }
-
   </style>
 </head>
 <body>
@@ -958,333 +1059,440 @@
 
   <div id="splitripAppShell" class="hidden">
 
-  <header class="topbar">
-    <div class="brand" id="brandHomeBtn" title="Torna all'elenco viaggi">
-      <svg id="brandSvg" class="brand-icon" viewBox="0 0 192 192" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <defs>
-          <linearGradient id="hdrBg" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stop-color="#0b132b" />
-            <stop offset="55%" stop-color="#1d4ed8" />
-            <stop offset="100%" stop-color="#0ea5e9" />
-          </linearGradient>
-          <linearGradient id="hdrCard" x1="0%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" stop-color="#ffffff" />
-            <stop offset="100%" stop-color="#f8fafc" />
-          </linearGradient>
-          <linearGradient id="hdrCoral" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stop-color="#f97316" />
-            <stop offset="100%" stop-color="#fb7185" />
-          </linearGradient>
-        </defs>
-        <rect width="192" height="192" rx="46" fill="url(#hdrBg)" />
-        <circle cx="152" cy="34" r="64" fill="#38bdf8" fill-opacity="0.16" />
-        <rect x="24" y="34" width="144" height="124" rx="24" fill="url(#hdrCard)" />
-        <line x1="96" y1="50" x2="96" y2="104" stroke="#e2e8f0" stroke-width="2.5" stroke-linecap="round" />
-        <path d="M68 64 C68 57.5 62.5 53.5 55.5 53.5 C48.5 53.5 43 57.5 43 63.5 C43 69.5 49 72.5 56.5 74.5 C64 76.5 69.5 80 69.5 87 C69.5 93.5 63.5 98 55.5 98 C47.5 98 42 93.8 41.5 88"
-              fill="none" stroke="#1d4ed8" stroke-width="6.5" stroke-linecap="round" />
-        <path d="M74 78 C84 78 90 73 102 73" fill="none" stroke="#38bdf8" stroke-width="3.5" stroke-linecap="round" stroke-dasharray="4 5" />
-        <path d="M128 50 C117.5 50 109.5 58 109.5 68.5 C109.5 82.5 128 98 128 98 C128 98 146.5 82.5 146.5 68.5 C146.5 58 138.5 50 128 50 Z"
-              fill="#0284c7" />
-        <circle cx="128" cy="68.5" r="5.5" fill="#ffffff" />
-        <line x1="40" y1="114" x2="152" y2="114" stroke="#f1f5f9" stroke-width="2" />
-        <rect x="40" y="124" width="50" height="9" rx="4.5" fill="#1d4ed8" fill-opacity="0.85" />
-        <rect x="102" y="124" width="50" height="9" rx="4.5" fill="url(#hdrCoral)" />
-      </svg>
-      <div>
-        <div class="brand-title">Splitrip</div>
-        <div class="brand-sub">Itinerari e spese condivise in EUR</div>
-      </div>
-    </div>
-
-    <button class="burger-btn" id="burgerBtn" type="button" aria-label="Apri menu di navigazione">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
-        <line x1="3" y1="6" x2="21" y2="6" />
-        <line x1="3" y1="12" x2="21" y2="12" />
-        <line x1="3" y1="18" x2="21" y2="18" />
-      </svg>
-    </button>
-  </header>
-
-  <div class="drawer-backdrop" id="drawerBackdrop"></div>
-  <aside class="drawer" id="drawer" aria-label="Menu principale">
-    <div class="drawer-header">
-      <strong>Menu Splitrip</strong>
-      <button class="btn btn-ghost btn-sm" id="closeDrawerBtn" type="button">Chiudi</button>
-    </div>
-    <button class="drawer-nav-btn" id="navTripsBtn" type="button">
-      <span>Tutti i viaggi</span>
-      <span id="drawerTripCount">0</span>
-    </button>
-    <button class="drawer-nav-btn" id="navNewTripBtn" type="button">
-      <span>+ Nuovo viaggio</span>
-      <span>→</span>
-    </button>
-    <button class="drawer-nav-btn" id="navExportBtn" type="button">
-      <span>Esporta backup JSON</span>
-      <span>↓</span>
-    </button>
-    <button class="drawer-nav-btn" id="navImportBtn" type="button">
-      <span>Importa backup JSON</span>
-      <span>↑</span>
-    </button>
-    <input type="file" id="importJsonInput" accept="application/json" class="hidden" />
-    <button class="drawer-nav-btn" id="navResetDemoBtn" type="button">
-      <span>Ripristina esempio</span>
-      <span>↺</span>
-    </button>
-
-    <div class="drawer-section">
-      <div class="field-group" style="margin-bottom: 0; margin-top: 6px;">
-        <label for="appThemeSelect">Tema dell'applicazione</label>
-        <select id="appThemeSelect">
-          <option value="dark">Scuro (Blu &amp; Corallo)</option>
-          <option value="light">Chiaro (Ghiaccio &amp; Blu)</option>
-          <option value="ocean">Oceano (Abisso &amp; Ciano)</option>
-          <option value="sunset">Tramonto (Rosa &amp; Arancio)</option>
-          <option value="forest">Foresta (Bosco &amp; Smeraldo)</option>
-        </select>
-      </div>
-    </div>
-  </aside>
-
-  <main class="container">
-    <section class="welcome-box hidden" id="welcomeSection">
-      <svg class="welcome-icon" viewBox="0 0 192 192" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <defs>
-          <linearGradient id="welBg" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stop-color="#0b132b" />
-            <stop offset="55%" stop-color="#1d4ed8" />
-            <stop offset="100%" stop-color="#0ea5e9" />
-          </linearGradient>
-          <linearGradient id="welCard" x1="0%" y1="0%" x2="0%" y2="100%">
-            <stop offset="0%" stop-color="#ffffff" />
-            <stop offset="100%" stop-color="#f8fafc" />
-          </linearGradient>
-          <linearGradient id="welCoral" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stop-color="#f97316" />
-            <stop offset="100%" stop-color="#fb7185" />
-          </linearGradient>
-        </defs>
-        <rect width="192" height="192" rx="46" fill="url(#welBg)" />
-        <circle cx="152" cy="34" r="64" fill="#38bdf8" fill-opacity="0.16" />
-        <rect x="24" y="34" width="144" height="124" rx="24" fill="url(#welCard)" />
-        <line x1="96" y1="50" x2="96" y2="104" stroke="#e2e8f0" stroke-width="2.5" stroke-linecap="round" />
-        <path d="M68 64 C68 57.5 62.5 53.5 55.5 53.5 C48.5 53.5 43 57.5 43 63.5 C43 69.5 49 72.5 56.5 74.5 C64 76.5 69.5 80 69.5 87 C69.5 93.5 63.5 98 55.5 98 C47.5 98 42 93.8 41.5 88"
-              fill="none" stroke="#1d4ed8" stroke-width="6.5" stroke-linecap="round" />
-        <path d="M74 78 C84 78 90 73 102 73" fill="none" stroke="#38bdf8" stroke-width="3.5" stroke-linecap="round" stroke-dasharray="4 5" />
-        <path d="M128 50 C117.5 50 109.5 58 109.5 68.5 C109.5 82.5 128 98 128 98 C128 98 146.5 82.5 146.5 68.5 C146.5 58 138.5 50 128 50 Z"
-              fill="#0284c7" />
-        <circle cx="128" cy="68.5" r="5.5" fill="#ffffff" />
-        <line x1="40" y1="114" x2="152" y2="114" stroke="#f1f5f9" stroke-width="2" />
-        <rect x="40" y="124" width="50" height="9" rx="4.5" fill="#1d4ed8" fill-opacity="0.85" />
-        <rect x="102" y="124" width="50" height="9" rx="4.5" fill="url(#welCoral)" />
-      </svg>
-      <h1>Benvenuti su Splitrip</h1>
-      <p>Pianifica i viaggi con il tuo gruppo, monitora il cambio giornaliero in Euro, registra spese in valuta o in EUR e dividi le quote in Euro.</p>
-      <button class="btn btn-primary" id="welcomeCreateBtn" type="button">+ Crea il tuo primo viaggio</button>
-    </section>
-
-    <section id="tripsCatalogSection">
-      <div class="section-head">
-        <h2>I tuoi viaggi</h2>
-        <div class="actions-inline">
-          <input type="search" id="tripSearchInput" placeholder="Cerca viaggio o valuta..." style="max-width: 220px; padding: 7px 11px;" />
-          <button class="btn btn-primary btn-sm" id="openNewTripBtn" type="button">+ Nuovo viaggio</button>
-        </div>
-      </div>
-      <div class="filter-pills" id="tripFilterPills">
-        <button type="button" class="pill-btn active" data-filter="all">Tutti</button>
-        <button type="button" class="pill-btn" data-filter="upcoming">In programma / In corso</button>
-        <button type="button" class="pill-btn" data-filter="past">Conclusi</button>
-      </div>
-      <div class="trips-grid" id="tripsGrid"></div>
-    </section>
-
-    <section class="active-trip-panel hidden" id="activeTripSection">
-      <div class="section-head">
-        <div class="actions-inline" style="align-items: center;">
-          <button class="btn btn-ghost btn-sm" id="backToCatalogBtn" type="button">← Tutti i viaggi</button>
-          <h2 style="margin: 0;">Dettaglio viaggio</h2>
-        </div>
-        <div class="actions-inline">
-          <button class="btn btn-ghost btn-sm" id="shareSummaryBtn" type="button" title="Copia riepilogo conti per WhatsApp / Telegram">Condividi riepilogo</button>
-          <button class="btn btn-ghost btn-sm" id="exportCsvBtn" type="button" title="Scarica tabella spese in CSV">Esporta CSV</button>
-          <button class="btn btn-ghost btn-sm" id="editTripBtn" type="button">Modifica viaggio / foto / valuta</button>
-          <button class="btn btn-ghost btn-sm" id="deleteTripBtn" type="button">Elimina</button>
+    <header class="topbar">
+      <div class="brand" id="brandHomeBtn" title="Torna all'elenco viaggi">
+        <svg id="brandSvg" class="brand-icon" viewBox="0 0 192 192" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <defs>
+            <linearGradient id="hdrBg" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#0b132b" />
+              <stop offset="55%" stop-color="#1d4ed8" />
+              <stop offset="100%" stop-color="#0ea5e9" />
+            </linearGradient>
+            <linearGradient id="hdrCard" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="#ffffff" />
+              <stop offset="100%" stop-color="#f8fafc" />
+            </linearGradient>
+            <linearGradient id="hdrCoral" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#f97316" />
+              <stop offset="100%" stop-color="#fb7185" />
+            </linearGradient>
+          </defs>
+          <rect width="192" height="192" rx="46" fill="url(#hdrBg)" />
+          <circle cx="152" cy="34" r="64" fill="#38bdf8" fill-opacity="0.16" />
+          <rect x="24" y="34" width="144" height="124" rx="24" fill="url(#hdrCard)" />
+          <line x1="96" y1="50" x2="96" y2="104" stroke="#e2e8f0" stroke-width="2.5" stroke-linecap="round" />
+          <path d="M68 64 C68 57.5 62.5 53.5 55.5 53.5 C48.5 53.5 43 57.5 43 63.5 C43 69.5 49 72.5 56.5 74.5 C64 76.5 69.5 80 69.5 87 C69.5 93.5 63.5 98 55.5 98 C47.5 98 42 93.8 41.5 88"
+                fill="none" stroke="#1d4ed8" stroke-width="6.5" stroke-linecap="round" />
+          <path d="M74 78 C84 78 90 73 102 73" fill="none" stroke="#38bdf8" stroke-width="3.5" stroke-linecap="round" stroke-dasharray="4 5" />
+          <path d="M128 50 C117.5 50 109.5 58 109.5 68.5 C109.5 82.5 128 98 128 98 C128 98 146.5 82.5 146.5 68.5 C146.5 58 138.5 50 128 50 Z"
+                fill="#0284c7" />
+          <circle cx="128" cy="68.5" r="5.5" fill="#ffffff" />
+          <line x1="40" y1="114" x2="152" y2="114" stroke="#f1f5f9" stroke-width="2" />
+          <rect x="40" y="124" width="50" height="9" rx="4.5" fill="#1d4ed8" fill-opacity="0.85" />
+          <rect x="102" y="124" width="50" height="9" rx="4.5" fill="url(#hdrCoral)" />
+        </svg>
+        <div>
+          <div class="brand-title">Splitrip</div>
+          <div class="brand-sub">Pianificazione, itinerari e spese in EUR</div>
         </div>
       </div>
 
-      <div class="active-trip-cover" id="activeTripCover">
-        <div class="active-trip-cover-content">
-          <h3 id="activeTripTitle">Viaggio</h3>
-          <div class="trip-card-meta" id="activeTripMeta"></div>
-        </div>
-        <div class="active-trip-cover-actions">
-          <button class="btn btn-ghost btn-sm" id="quickChangePhotoBtn" type="button" style="background: rgba(9, 14, 26, 0.68); color: #ffffff; border-color: rgba(255,255,255,0.22);">Cambia foto</button>
-        </div>
+      <button class="burger-btn" id="burgerBtn" type="button" aria-label="Apri menu di navigazione">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+          <line x1="3" y1="6" x2="21" y2="6" />
+          <line x1="3" y1="12" x2="21" y2="12" />
+          <line x1="3" y1="18" x2="21" y2="18" />
+        </svg>
+      </button>
+    </header>
+
+    <div class="drawer-backdrop" id="drawerBackdrop"></div>
+    <aside class="drawer" id="drawer" aria-label="Menu principale">
+      <div class="drawer-header">
+        <strong>Menu Splitrip</strong>
+        <button class="btn btn-ghost btn-sm" id="closeDrawerBtn" type="button">Chiudi</button>
       </div>
+      <button class="drawer-nav-btn" id="navTripsBtn" type="button">
+        <span>Tutti i viaggi</span>
+        <span id="drawerTripCount">0</span>
+      </button>
+      <button class="drawer-nav-btn" id="navPlanTripBtn" type="button">
+        <span>🧭 Pianifica viaggio</span>
+        <span>→</span>
+      </button>
+      <button class="drawer-nav-btn" id="navNewTripBtn" type="button">
+        <span>+ Nuovo viaggio</span>
+        <span>→</span>
+      </button>
+      <button class="drawer-nav-btn" id="navExportBtn" type="button">
+        <span>Esporta backup JSON</span>
+        <span>↓</span>
+      </button>
+      <button class="drawer-nav-btn" id="navImportBtn" type="button">
+        <span>Importa backup JSON</span>
+        <span>↑</span>
+      </button>
+      <input type="file" id="importJsonInput" accept="application/json" class="hidden" />
+      <button class="drawer-nav-btn" id="navResetDemoBtn" type="button">
+        <span>Ripristina esempio</span>
+        <span>↺</span>
+      </button>
 
-      <div class="fx-bar" id="fxBar">
-        <div class="fx-main">
-          <span class="fx-title" id="fxLabelTitle">Cambio giornaliero verso l'Euro</span>
-          <div class="fx-rate-line" id="fxRateDisplay">1,00 € = 1,00 €</div>
-          <div class="fx-sub" id="fxMetaDisplay">Ogni spesa in valuta estera blocca il cambio del giorno alla registrazione.</div>
-        </div>
-        <div class="fx-controls" id="fxControlsBox">
-          <button class="btn btn-ghost btn-sm" id="refreshFxBtn" type="button">Aggiorna cambio oggi</button>
-          <input type="number" id="manualFxInput" class="fx-manual-input" step="0.000001" min="0.000001" placeholder="1 XXX = ? €" title="Valore in EUR di 1 unità di valuta estera" />
-          <button class="btn btn-ghost btn-sm" id="saveManualFxBtn" type="button">Imposta cambio</button>
-          <button class="btn btn-ghost btn-sm" id="alignExpensesFxBtn" type="button" title="Aggiorna le spese esistenti in valuta estera al cambio attuale">Allinea spese al cambio attuale</button>
-        </div>
-      </div>
-
-      <div class="stats-row">
-        <div class="stat-box">
-          <div class="stat-label">Spesa totale (EUR)</div>
-          <div class="stat-val" id="statTotal">0,00 €</div>
-          <div class="fx-sub" id="statBudgetSub"></div>
-        </div>
-        <div class="stat-box">
-          <div class="stat-label">Quota media a persona (EUR)</div>
-          <div class="stat-val" id="statPerPerson">0,00 €</div>
-        </div>
-        <div class="stat-box">
-          <div class="stat-label">Partecipanti</div>
-          <div class="stat-val" id="statMembersCount">0</div>
-        </div>
-        <div class="stat-box">
-          <div class="stat-label">Valuta di riferimento</div>
-          <div class="stat-val" id="statCurrency">🇮🇹 EUR — Area Euro / Italia</div>
-        </div>
-      </div>
-
-      <div class="grid-2">
-        <div class="sub-card">
-          <h3>Partecipanti e saldi netti (EUR)</h3>
-          <ul class="list-clean" id="membersList"></ul>
-          <form class="row-form" id="addMemberForm">
-            <input type="text" id="memberNameInput" placeholder="Nome partecipante" required />
-            <button class="btn btn-primary btn-sm" type="submit">Aggiungi</button>
-          </form>
-        </div>
-
-        <div class="sub-card">
-          <h3>Rimborsi consigliati (EUR)</h3>
-          <ul class="list-clean" id="settlementsList"></ul>
-        </div>
-      </div>
-
-      <div class="grid-2">
-        <div class="sub-card">
-          <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px;flex-wrap:wrap;">
-            <h3 style="margin:0;">Spese condivise (convertite in EUR)</h3>
-            <select id="expenseCategoryFilter" style="flex:0 0 auto;padding:6px 10px;font-size:0.86rem;" aria-label="Filtra spese per categoria">
-              <option value="all">Tutte le categorie</option>
-              <option value="Alloggio">Alloggio</option>
-              <option value="Ristoranti & Bar">Ristoranti &amp; Bar</option>
-              <option value="Trasporti">Trasporti</option>
-              <option value="Attività & Biglietti">Attività &amp; Biglietti</option>
-              <option value="Shopping & Varie">Shopping &amp; Varie</option>
-            </select>
-          </div>
-          <ul class="list-clean" id="expensesList"></ul>
-          <form class="row-form" id="addExpenseForm">
-            <input type="text" id="expenseTitleInput" placeholder="Descrizione (es. Cena)" required />
-            <input type="number" id="expenseAmountInput" placeholder="Importo" step="0.01" min="0.01" required />
-            <select id="expenseCurrencyInputSelect" class="expense-currency-select" aria-label="Valuta importo inserito"></select>
-            <select id="expenseCategorySelect" aria-label="Categoria spesa">
-              <option value="Ristoranti & Bar">🍽️ Ristoranti &amp; Bar</option>
-              <option value="Alloggio">🏨 Alloggio</option>
-              <option value="Trasporti">🚆 Trasporti</option>
-              <option value="Attività & Biglietti">🎟️ Attività &amp; Biglietti</option>
-              <option value="Shopping & Varie">🛍️ Shopping &amp; Varie</option>
-            </select>
-            <input type="date" id="expenseDateInput" aria-label="Data spesa" />
-            <select id="expensePayerSelect" required></select>
-            <div style="width:100%;">
-              <div style="font-size:0.8rem;color:var(--text-muted);margin-bottom:4px;">Dividi tra:</div>
-              <div class="split-checkboxes" id="expenseSplitCheckboxes"></div>
-            </div>
-            <button class="btn btn-coral btn-sm" type="submit">Registra spesa</button>
-          </form>
-        </div>
-
-        <div style="display:flex;flex-direction:column;gap:18px;">
-          <div class="sub-card">
-            <h3>Tappe e checklist itinerario</h3>
-            <ul class="list-clean" id="stopsList"></ul>
-            <form class="row-form" id="addStopForm">
-              <input type="text" id="stopTitleInput" placeholder="Tappa o attività (es. Traghetto)" required />
-              <input type="date" id="stopDateInput" aria-label="Data tappa" />
-              <input type="text" id="stopNoteInput" placeholder="Nota / orario (opzionale)" />
-              <button class="btn btn-primary btn-sm" type="submit">Aggiungi tappa</button>
-            </form>
-          </div>
-
-          <div class="sub-card">
-            <h3>Ripartizione spese per categoria (EUR)</h3>
-            <div class="cat-breakdown" id="categoryBreakdownBox"></div>
-          </div>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <div class="modal-backdrop" id="tripModal">
-    <div class="modal-card">
-      <h3 id="tripModalTitle">Nuovo viaggio</h3>
-      <form id="tripForm">
-        <input type="hidden" id="editingTripId" />
-        <div class="field-group">
-          <label for="tripTitleInput">Titolo del viaggio</label>
-          <input type="text" id="tripTitleInput" placeholder="Es. Viaggio a Tokyo" required />
-        </div>
-        <div class="field-group">
-          <label for="tripStartInput">Data di partenza</label>
-          <input type="date" id="tripStartInput" required />
-        </div>
-        <div class="field-group">
-          <label for="tripEndInput">Data di rientro</label>
-          <input type="date" id="tripEndInput" required />
-        </div>
-        <div class="field-group">
-          <label for="tripCurrencySelect">Valuta per cambio giornaliero verso EUR e inserimento spese</label>
-          <input type="search" id="currencyFilterInput" placeholder="Filtra per paese, bandiera o codice (es. Giappone, JPY, CHF)..." autocomplete="off" />
-          <select id="tripCurrencySelect" required></select>
-        </div>
-        <div class="field-group">
-          <label for="tripBudgetInput">Budget massimo stimato in EUR (opzionale)</label>
-          <input type="number" id="tripBudgetInput" placeholder="Es. 1200" step="1" min="0" />
-        </div>
-        <div class="field-group">
-          <label for="tripThemeSelect">Sfondo / tema copertina</label>
-          <select id="tripThemeSelect">
-            <option value="coast">Costa &amp; Azzurro</option>
-            <option value="sunset">Tramonto &amp; Corallo</option>
-            <option value="alpine">Montagna &amp; Smeraldo</option>
-            <option value="night">City Break &amp; Indaco</option>
+      <div class="drawer-section">
+        <div class="field-group" style="margin-bottom: 0; margin-top: 6px;">
+          <label for="appThemeSelect">Tema dell'applicazione</label>
+          <select id="appThemeSelect">
+            <option value="dark">Scuro (Blu &amp; Corallo)</option>
+            <option value="light">Chiaro (Ghiaccio &amp; Blu)</option>
+            <option value="ocean">Oceano (Abisso &amp; Ciano)</option>
+            <option value="sunset">Tramonto (Rosa &amp; Arancio)</option>
+            <option value="forest">Foresta (Bosco &amp; Smeraldo)</option>
           </select>
         </div>
-        <div class="field-group">
-          <label for="tripPhotoInput">Foto copertina (opzionale)</label>
-          <input type="file" id="tripPhotoInput" accept="image/*" />
-          <div class="cover-preview-box" id="coverPreviewBox"></div>
-          <button class="btn btn-ghost btn-sm" id="clearPhotoBtn" type="button" style="align-self: flex-start; margin-top: 6px;">Rimuovi foto</button>
+      </div>
+    </aside>
+
+    <main class="container">
+      <section class="welcome-box hidden" id="welcomeSection">
+        <svg class="welcome-icon" viewBox="0 0 192 192" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <defs>
+            <linearGradient id="welBg" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#0b132b" />
+              <stop offset="55%" stop-color="#1d4ed8" />
+              <stop offset="100%" stop-color="#0ea5e9" />
+            </linearGradient>
+            <linearGradient id="welCard" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="#ffffff" />
+              <stop offset="100%" stop-color="#f8fafc" />
+            </linearGradient>
+            <linearGradient id="welCoral" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#f97316" />
+              <stop offset="100%" stop-color="#fb7185" />
+            </linearGradient>
+          </defs>
+          <rect width="192" height="192" rx="46" fill="url(#welBg)" />
+          <circle cx="152" cy="34" r="64" fill="#38bdf8" fill-opacity="0.16" />
+          <rect x="24" y="34" width="144" height="124" rx="24" fill="url(#welCard)" />
+          <line x1="96" y1="50" x2="96" y2="104" stroke="#e2e8f0" stroke-width="2.5" stroke-linecap="round" />
+          <path d="M68 64 C68 57.5 62.5 53.5 55.5 53.5 C48.5 53.5 43 57.5 43 63.5 C43 69.5 49 72.5 56.5 74.5 C64 76.5 69.5 80 69.5 87 C69.5 93.5 63.5 98 55.5 98 C47.5 98 42 93.8 41.5 88"
+                fill="none" stroke="#1d4ed8" stroke-width="6.5" stroke-linecap="round" />
+          <path d="M74 78 C84 78 90 73 102 73" fill="none" stroke="#38bdf8" stroke-width="3.5" stroke-linecap="round" stroke-dasharray="4 5" />
+          <path d="M128 50 C117.5 50 109.5 58 109.5 68.5 C109.5 82.5 128 98 128 98 C128 98 146.5 82.5 146.5 68.5 C146.5 58 138.5 50 128 50 Z"
+                fill="#0284c7" />
+          <circle cx="128" cy="68.5" r="5.5" fill="#ffffff" />
+          <line x1="40" y1="114" x2="152" y2="114" stroke="#f1f5f9" stroke-width="2" />
+          <rect x="40" y="124" width="50" height="9" rx="4.5" fill="#1d4ed8" fill-opacity="0.85" />
+          <rect x="102" y="124" width="50" height="9" rx="4.5" fill="url(#welCoral)" />
+        </svg>
+        <h1>Benvenuti su Splitrip</h1>
+        <p>Pianifica preventivi e voli, organizza le tappe con mappe e dividi tutte le spese con il tuo gruppo in Euro.</p>
+        <button class="btn btn-primary" id="welcomeCreateBtn" type="button">+ Crea il tuo primo viaggio</button>
+      </section>
+
+      <section id="tripsCatalogSection">
+        <div class="section-head">
+          <h2>I tuoi viaggi</h2>
+          <div class="actions-inline">
+            <input type="search" id="tripSearchInput" placeholder="Cerca viaggio o valuta..." style="max-width: 220px; padding: 7px 11px;" />
+            <button class="btn btn-ghost btn-sm" id="catalogPlanShortcutBtn" type="button">🧭 Pianifica viaggio</button>
+            <button class="btn btn-primary btn-sm" id="openNewTripBtn" type="button">+ Nuovo viaggio</button>
+          </div>
         </div>
-        <div class="row-form" style="justify-content: flex-end; margin-top: 14px;">
-          <button class="btn btn-ghost" id="cancelTripModalBtn" type="button">Annulla</button>
-          <button class="btn btn-primary" type="submit">Salva viaggio</button>
+        <div class="filter-pills" id="tripFilterPills">
+          <button type="button" class="pill-btn active" data-filter="all">Tutti</button>
+          <button type="button" class="pill-btn" data-filter="upcoming">In programma / In corso</button>
+          <button type="button" class="pill-btn" data-filter="past">Conclusi</button>
         </div>
-      </form>
+        <div class="trips-grid" id="tripsGrid"></div>
+      </section>
+
+      <section class="active-trip-panel hidden" id="activeTripSection">
+        <div class="section-head">
+          <div class="actions-inline" style="align-items: center;">
+            <button class="btn btn-ghost btn-sm" id="backToCatalogBtn" type="button">← Tutti i viaggi</button>
+            <h2 style="margin: 0;">Dettaglio viaggio</h2>
+          </div>
+          <div class="actions-inline">
+            <button class="btn btn-ghost btn-sm" id="shareSummaryBtn" type="button" title="Copia riepilogo conti per WhatsApp / Telegram">Condividi riepilogo</button>
+            <button class="btn btn-ghost btn-sm" id="exportCsvBtn" type="button" title="Scarica tabella spese in CSV">Esporta CSV</button>
+            <button class="btn btn-ghost btn-sm" id="editTripBtn" type="button">Modifica viaggio</button>
+            <button class="btn btn-ghost btn-sm" id="deleteTripBtn" type="button">Elimina</button>
+          </div>
+        </div>
+
+        <div class="active-trip-cover" id="activeTripCover">
+          <div class="active-trip-cover-content">
+            <h3 id="activeTripTitle">Viaggio</h3>
+            <div class="trip-card-meta" id="activeTripMeta"></div>
+          </div>
+          <div class="active-trip-cover-actions">
+            <button class="btn btn-ghost btn-sm" id="quickChangePhotoBtn" type="button" style="background: rgba(9, 14, 26, 0.68); color: #ffffff; border-color: rgba(255,255,255,0.22);">Cambia foto</button>
+          </div>
+        </div>
+
+        <!-- SELETTORE SEZIONI VIAGGIO: PANORAMICA/SPESE vs PIANIFICA VIAGGIO -->
+        <div class="detail-tabs" role="tablist" aria-label="Sezioni del viaggio">
+          <button type="button" class="detail-tab-btn active" id="tabExpensesBtn" data-detail-tab="expenses" role="tab" aria-selected="true">
+            💶 Spese, Quote &amp; Itinerario
+          </button>
+          <button type="button" class="detail-tab-btn" id="tabPlanBtn" data-detail-tab="plan" role="tab" aria-selected="false">
+            🧭 Pianifica viaggio (Preventivi &amp; Voli)
+          </button>
+        </div>
+
+        <div class="fx-bar" id="fxBar">
+          <div class="fx-main">
+            <span class="fx-title" id="fxLabelTitle">Cambio giornaliero verso l'Euro</span>
+            <div class="fx-rate-line" id="fxRateDisplay">1,00 € = 1,00 €</div>
+            <div class="fx-sub" id="fxMetaDisplay">Ogni spesa in valuta estera blocca il cambio del giorno alla registrazione.</div>
+          </div>
+          <div class="fx-controls" id="fxControlsBox">
+            <button class="btn btn-ghost btn-sm" id="refreshFxBtn" type="button">Aggiorna cambio oggi</button>
+            <input type="number" id="manualFxInput" class="fx-manual-input" step="0.000001" min="0.000001" placeholder="1 XXX = ? €" title="Valore in EUR di 1 unità di valuta estera" />
+            <button class="btn btn-ghost btn-sm" id="saveManualFxBtn" type="button">Imposta cambio</button>
+            <button class="btn btn-ghost btn-sm" id="alignExpensesFxBtn" type="button" title="Aggiorna le spese esistenti in valuta estera al cambio attuale">Allinea spese al cambio attuale</button>
+          </div>
+        </div>
+
+        <!-- TAB 1: SPESE, QUOTE & ITINERARIO -->
+        <div id="tripExpensesView">
+          <div class="stats-row">
+            <div class="stat-box">
+              <div class="stat-label">Spesa totale (EUR)</div>
+              <div class="stat-val" id="statTotal">0,00 €</div>
+              <div class="fx-sub" id="statBudgetSub"></div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-label">Quota media a persona (EUR)</div>
+              <div class="stat-val" id="statPerPerson">0,00 €</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-label">Partecipanti</div>
+              <div class="stat-val" id="statMembersCount">0</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-label">Valuta di riferimento</div>
+              <div class="stat-val" id="statCurrency">🇮🇹 EUR — Area Euro / Italia</div>
+            </div>
+          </div>
+
+          <div class="grid-2">
+            <div class="sub-card">
+              <h3>Partecipanti e saldi netti (EUR)</h3>
+              <ul class="list-clean" id="membersList"></ul>
+              <form class="row-form" id="addMemberForm">
+                <input type="text" id="memberNameInput" placeholder="Nome partecipante" required />
+                <button class="btn btn-primary btn-sm" type="submit">Aggiungi</button>
+              </form>
+            </div>
+
+            <div class="sub-card">
+              <h3>Rimborsi consigliati (EUR)</h3>
+              <ul class="list-clean" id="settlementsList"></ul>
+            </div>
+          </div>
+
+          <div class="grid-2">
+            <div class="sub-card">
+              <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px;flex-wrap:wrap;">
+                <h3 style="margin:0;">Spese condivise (convertite in EUR)</h3>
+                <select id="expenseCategoryFilter" style="flex:0 0 auto;padding:6px 10px;font-size:0.86rem;" aria-label="Filtra spese per categoria">
+                  <option value="all">Tutte le categorie</option>
+                  <option value="Alloggio">Alloggio</option>
+                  <option value="Ristoranti &amp; Bar">Ristoranti &amp; Bar</option>
+                  <option value="Trasporti">Trasporti</option>
+                  <option value="Attività &amp; Biglietti">Attività &amp; Biglietti</option>
+                  <option value="Shopping &amp; Varie">Shopping &amp; Varie</option>
+                </select>
+              </div>
+              <ul class="list-clean" id="expensesList"></ul>
+              <form class="row-form" id="addExpenseForm">
+                <input type="text" id="expenseTitleInput" placeholder="Descrizione (es. Cena)" required />
+                <input type="number" id="expenseAmountInput" placeholder="Importo" step="0.01" min="0.01" required />
+                <select id="expenseCurrencyInputSelect" class="expense-currency-select" aria-label="Valuta importo inserito"></select>
+                <select id="expenseCategorySelect" aria-label="Categoria spesa">
+                  <option value="Ristoranti &amp; Bar">🍽️ Ristoranti &amp; Bar</option>
+                  <option value="Alloggio">🏨 Alloggio</option>
+                  <option value="Trasporti">🚆 Trasporti</option>
+                  <option value="Attività &amp; Biglietti">🎟️ Attività &amp; Biglietti</option>
+                  <option value="Shopping &amp; Varie">🛍️ Shopping &amp; Varie</option>
+                </select>
+                <input type="date" id="expenseDateInput" aria-label="Data spesa" />
+                <select id="expensePayerSelect" required></select>
+                <div style="width:100%;">
+                  <div style="font-size:0.8rem;color:var(--text-muted);margin-bottom:4px;">Dividi tra:</div>
+                  <div class="split-checkboxes" id="expenseSplitCheckboxes"></div>
+                </div>
+                <button class="btn btn-coral btn-sm" type="submit">Registra spesa</button>
+              </form>
+            </div>
+
+            <div style="display:flex;flex-direction:column;gap:18px;">
+              <!-- SEZIONE 2.1: TAPPE E CHECKLIST ITINERARIO CON SELETTORE TAPPA/META vs CHECK E GOOGLE MAPS -->
+              <div class="sub-card">
+                <h3>Tappe e checklist itinerario</h3>
+                <ul class="list-clean" id="stopsList"></ul>
+                <form class="row-form" id="addStopForm">
+                  <select id="stopTypeSelect" aria-label="Tipo voce itinerario" style="flex: 0 0 155px;">
+                    <option value="tappa">📍 Tappa/meta</option>
+                    <option value="check">☑️ Check</option>
+                  </select>
+                  <input type="text" id="stopTitleInput" placeholder="Luogo da visitare (es. Colosseo, Roma)" required />
+                  <input type="text" id="stopLocationInput" placeholder="Indirizzo o città per mappa (opzionale)" />
+                  <input type="date" id="stopDateInput" aria-label="Data tappa" />
+                  <input type="text" id="stopNoteInput" placeholder="Nota / orario (opzionale)" />
+                  <div id="stopMapPreviewWrap" style="width:100%;display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:0.82rem;color:var(--text-muted);">
+                    <span>Per le tappe verrà generato automaticamente il link a Google Maps.</span>
+                    <a id="stopMapLivePreview" href="https://www.google.com/maps" target="_blank" rel="noopener noreferrer" class="maps-link-pill hidden">🗺️ Anteprima Google Maps ↗</a>
+                  </div>
+                  <button class="btn btn-primary btn-sm" id="addStopSubmitBtn" type="submit">Aggiungi tappa</button>
+                </form>
+              </div>
+
+              <div class="sub-card">
+                <h3>Ripartizione spese per categoria (EUR)</h3>
+                <div class="cat-breakdown" id="categoryBreakdownBox"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 2: PIANIFICA VIAGGIO (PREVENTIVI CON LINK + MONITORAGGIO VOLI E PREZZI) -->
+        <div id="tripPlanView" class="hidden">
+          <div class="stats-row">
+            <div class="stat-box">
+              <div class="stat-label">Totale preventivi stimati (EUR)</div>
+              <div class="stat-val" id="planQuotesTotalEur">0,00 €</div>
+              <div class="fx-sub" id="planQuotesConfirmedSub">0 confermati/prenotati</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-label">Miglior prezzo volo monitorato</div>
+              <div class="stat-val" id="planFlightsBestEur">—</div>
+              <div class="fx-sub" id="planFlightsCountSub">0 voli monitorati</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-label">Stima complessiva (Preventivi + Volo)</div>
+              <div class="stat-val" id="planCombinedTotalEur">0,00 €</div>
+              <div class="fx-sub">Basata sul volo più conveniente</div>
+            </div>
+          </div>
+
+          <div class="grid-2">
+            <!-- PREVENTIVI CON LINK (HOTEL, ATTRAZIONI A PAGAMENTO, MEZZI) -->
+            <div class="sub-card">
+              <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px;flex-wrap:wrap;">
+                <h3 style="margin:0;">📋 Preventivi &amp; Link (Hotel, Attrazioni, Mezzi)</h3>
+                <select id="quoteCategoryFilter" style="flex:0 0 auto;padding:6px 10px;font-size:0.86rem;" aria-label="Filtra preventivi per tipo">
+                  <option value="all">Tutti i preventivi</option>
+                  <option value="Hotel &amp; Alloggio">🏨 Hotel &amp; Alloggio</option>
+                  <option value="Attrazioni a pagamento">🎟️ Attrazioni a pagamento</option>
+                  <option value="Mezzi (Taxi, Bus, Treno)">🚕 Mezzi (Taxi, Bus, Treno)</option>
+                  <option value="Altro">📌 Altro</option>
+                </select>
+              </div>
+              <ul class="list-clean" id="quotesList"></ul>
+              <form class="row-form" id="addQuoteForm">
+                <select id="quoteCategorySelect" aria-label="Categoria preventivo">
+                  <option value="Hotel &amp; Alloggio">🏨 Hotel &amp; Alloggio</option>
+                  <option value="Attrazioni a pagamento">🎟️ Attrazioni a pagamento</option>
+                  <option value="Mezzi (Taxi, Bus, Treno)">🚕 Mezzi (Taxi, Bus, Treno)</option>
+                  <option value="Altro">📌 Altro</option>
+                </select>
+                <input type="text" id="quoteTitleInput" placeholder="Nome struttura, attrazione o mezzo" required />
+                <input type="number" id="quoteAmountInput" placeholder="Prezzo preventivo" step="0.01" min="0" required />
+                <select id="quoteCurrencySelect" class="expense-currency-select" aria-label="Valuta preventivo"></select>
+                <input type="url" id="quoteUrlInput" placeholder="Link preventivo/prenotazione (https://...)" />
+                <select id="quoteStatusSelect" aria-label="Stato preventivo">
+                  <option value="da_valutare">🔍 Da valutare</option>
+                  <option value="opzionato">⭐ Opzionato</option>
+                  <option value="prenotato">✅ Prenotato</option>
+                </select>
+                <input type="text" id="quoteNoteInput" placeholder="Note (es. cancellazione gratuita, 2 adulti)" />
+                <button class="btn btn-primary btn-sm" type="submit">+ Aggiungi preventivo</button>
+              </form>
+            </div>
+
+            <!-- MONITORAGGIO VOLI E PREZZI -->
+            <div class="sub-card">
+              <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px;flex-wrap:wrap;">
+                <h3 style="margin:0;">✈️ Monitoraggio Voli &amp; Prezzi</h3>
+                <a href="https://www.google.com/travel/flights" target="_blank" rel="noopener noreferrer" class="ext-link-pill">Cerca su Google Voli ↗</a>
+              </div>
+              <ul class="list-clean" id="flightsList"></ul>
+              <form class="row-form" id="addFlightForm">
+                <input type="text" id="flightRouteInput" placeholder="Tratta (es. MXP → TYO A/R)" required />
+                <input type="text" id="flightAirlineInput" placeholder="Compagnia / Scali (es. ITA Airways, diretto)" />
+                <input type="text" id="flightDatesInput" placeholder="Date / Orari (es. 10-20 Mag, 10:30)" />
+                <input type="number" id="flightPriceInput" placeholder="Prezzo attuale (€)" step="0.01" min="0" required />
+                <input type="url" id="flightUrlInput" placeholder="Link offerta volo (Skyscanner, Google Voli...)" />
+                <select id="flightStatusSelect" aria-label="Stato monitoraggio volo">
+                  <option value="monitoraggio">👀 In monitoraggio</option>
+                  <option value="ottimo">🔥 Prezzo ottimo</option>
+                  <option value="acquistato">✅ Acquistato</option>
+                </select>
+                <button class="btn btn-coral btn-sm" type="submit">+ Monitora volo</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <div class="modal-backdrop" id="tripModal">
+      <div class="modal-card">
+        <h3 id="tripModalTitle">Nuovo viaggio</h3>
+        <form id="tripForm">
+          <input type="hidden" id="editingTripId" />
+          <div class="field-group">
+            <label for="tripTitleInput">Titolo del viaggio</label>
+            <input type="text" id="tripTitleInput" placeholder="Es. Viaggio a Tokyo" required />
+          </div>
+          <div class="field-group">
+            <label for="tripStartInput">Data di partenza</label>
+            <input type="date" id="tripStartInput" required />
+          </div>
+          <div class="field-group">
+            <label for="tripEndInput">Data di rientro</label>
+            <input type="date" id="tripEndInput" required />
+          </div>
+          <div class="field-group">
+            <label for="tripCurrencySelect">Valuta per cambio giornaliero verso EUR e inserimento spese</label>
+            <input type="search" id="currencyFilterInput" placeholder="Filtra per paese, bandiera o codice (es. Giappone, JPY, CHF)..." autocomplete="off" />
+            <select id="tripCurrencySelect" required></select>
+          </div>
+          <div class="field-group">
+            <label for="tripBudgetInput">Budget massimo stimato in EUR (opzionale)</label>
+            <input type="number" id="tripBudgetInput" placeholder="Es. 1200" step="1" min="0" />
+          </div>
+          <div class="field-group">
+            <label for="tripThemeSelect">Sfondo / tema copertina</label>
+            <select id="tripThemeSelect">
+              <option value="coast">Costa &amp; Azzurro</option>
+              <option value="sunset">Tramonto &amp; Corallo</option>
+              <option value="alpine">Montagna &amp; Smeraldo</option>
+              <option value="night">City Break &amp; Indaco</option>
+            </select>
+          </div>
+          <div class="field-group">
+            <label for="tripPhotoInput">Foto copertina (opzionale)</label>
+            <input type="file" id="tripPhotoInput" accept="image/*" />
+            <div class="cover-preview-box" id="coverPreviewBox"></div>
+            <button class="btn btn-ghost btn-sm" id="clearPhotoBtn" type="button" style="align-self: flex-start; margin-top: 6px;">Rimuovi foto</button>
+          </div>
+          <div class="row-form" style="justify-content: flex-end; margin-top: 14px;">
+            <button class="btn btn-ghost" id="cancelTripModalBtn" type="button">Annulla</button>
+            <button class="btn btn-primary" type="submit">Salva viaggio</button>
+          </div>
+        </form>
+      </div>
     </div>
+
+    <div class="toast-banner" id="toastBanner" role="status" aria-live="polite"></div>
+
   </div>
 
-  <div class="toast-banner" id="toastBanner" role="status" aria-live="polite"></div>
-
-    </div>
-
   <script>
-    const STORAGE_KEY = 'splitrip_data_v5';
+    const STORAGE_KEY = 'splitrip_data_v6';
     const ALLOWED_APP_THEMES = ['dark', 'light', 'ocean', 'sunset', 'forest'];
 
     const CURRENCIES = [
@@ -1498,6 +1706,8 @@
     let catalogFilter = 'all';
     let catalogSearch = '';
     let expenseCategoryFilter = 'all';
+    let quoteCategoryFilter = 'all';
+    let activeDetailTab = 'expenses'; // 'expenses' | 'plan'
     let toastTimer = null;
 
     function showToast(msg) {
@@ -1507,6 +1717,19 @@
       el.classList.add('show');
       clearTimeout(toastTimer);
       toastTimer = setTimeout(() => el.classList.remove('show'), 2600);
+    }
+
+    function sanitizeExternalUrl(rawUrl) {
+      const val = String(rawUrl || '').trim();
+      if (!val) return '';
+      if (/^https?:\/\//i.test(val)) return val;
+      return 'https://' + val;
+    }
+
+    function buildGoogleMapsUrl(title, location = '') {
+      const query = [location, title].filter(Boolean).join(', ').trim();
+      if (!query) return 'https://www.google.com/maps';
+      return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
     }
 
     function getSeedTrips() {
@@ -1537,8 +1760,16 @@
             { id: 'e2', title: 'Pranzo pesce', category: 'Ristoranti & Bar', date: addDays(6), amountEur: 96, originalAmount: 96, originalCurrency: 'EUR', fxRateApplied: 1, fxDateApplied: todayStr, payer: 'Marco', splitAmong: ['Giulia', 'Marco', 'Luca'] }
           ],
           stops: [
-            { id: 's1', title: 'Arrivo e check-in', date: addDays(5), note: 'Ore 15:00', done: false },
-            { id: 's2', title: 'Passeggiata sul lungomare', date: addDays(6), note: 'Tramonto', done: false }
+            { id: 's1', type: 'check', title: 'Documenti e check-in online', location: '', date: addDays(4), note: 'Entro 24h prima', done: true },
+            { id: 's2', type: 'tappa', title: 'Lungomare e Porto Antico', location: 'Genova', date: addDays(6), note: 'Tramonto', done: false }
+          ],
+          quotes: [
+            { id: 'q1', category: 'Hotel & Alloggio', title: 'B&B Vista Mare (3 notti)', originalAmount: 260, originalCurrency: 'EUR', amountEur: 260, url: 'https://www.booking.com', status: 'prenotato', note: 'Colazione inclusa' },
+            { id: 'q2', category: 'Attrazioni a pagamento', title: 'Acquario + Giro in battello', originalAmount: 84, originalCurrency: 'EUR', amountEur: 84, url: 'https://www.acquariodigenova.it', status: 'da_valutare', note: '3 biglietti intero' },
+            { id: 'q3', category: 'Mezzi (Taxi, Bus, Treno)', title: 'Transfer Stazione → Porto', originalAmount: 22, originalCurrency: 'EUR', amountEur: 22, url: 'https://www.trenitalia.com', status: 'opzionato', note: 'Taxi o bus navetta' }
+          ],
+          flights: [
+            { id: 'f1', route: 'FCO → GOA (A/R)', airline: 'ITA Airways • Diretto', dates: `${addDays(5)} / ${addDays(8)}`, priceEur: 118, prevPriceEur: 134, url: 'https://www.google.com/travel/flights', status: 'ottimo', updatedAt: todayStr }
           ]
         }
       ];
@@ -1639,10 +1870,39 @@
         expenses: Array.isArray(t.expenses) ? t.expenses.map(e => normalizeExpense(e, validCode, rate, t.fxDate || todayStr, members)) : [],
         stops: Array.isArray(t.stops) ? t.stops.map(s => ({
           id: s.id || ('stop-' + Date.now() + '-' + Math.random().toString(36).slice(2, 5)),
+          type: s.type === 'check' ? 'check' : 'tappa',
           title: s.title || 'Tappa',
+          location: s.location || '',
           date: s.date || '',
           note: s.note || '',
           done: Boolean(s.done)
+        })) : [],
+        quotes: Array.isArray(t.quotes) ? t.quotes.map(q => {
+          const qCurr = CURRENCY_MAP[q.originalCurrency] ? q.originalCurrency : 'EUR';
+          const qOrig = Number(q.originalAmount ?? q.amountEur ?? 0);
+          const qEur = qCurr === 'EUR' ? qOrig : (Number(q.amountEur) > 0 ? Number(q.amountEur) : qOrig * rate);
+          return {
+            id: q.id || ('quote-' + Date.now() + '-' + Math.random().toString(36).slice(2, 5)),
+            category: q.category || 'Hotel & Alloggio',
+            title: q.title || 'Preventivo',
+            originalAmount: qOrig,
+            originalCurrency: qCurr,
+            amountEur: qEur,
+            url: q.url || '',
+            status: ['da_valutare', 'opzionato', 'prenotato'].includes(q.status) ? q.status : 'da_valutare',
+            note: q.note || ''
+          };
+        }) : [],
+        flights: Array.isArray(t.flights) ? t.flights.map(fl => ({
+          id: fl.id || ('flight-' + Date.now() + '-' + Math.random().toString(36).slice(2, 5)),
+          route: fl.route || 'Volo',
+          airline: fl.airline || '',
+          dates: fl.dates || '',
+          priceEur: Number(fl.priceEur) || 0,
+          prevPriceEur: fl.prevPriceEur != null ? Number(fl.prevPriceEur) : null,
+          url: fl.url || '',
+          status: ['monitoraggio', 'ottimo', 'acquistato'].includes(fl.status) ? fl.status : 'monitoraggio',
+          updatedAt: fl.updatedAt || todayStr
         })) : []
       };
     }
@@ -1650,6 +1910,7 @@
     function loadState() {
       try {
         const raw = localStorage.getItem(STORAGE_KEY)
+          || localStorage.getItem('splitrip_data_v5')
           || localStorage.getItem('splitrip_data_v4')
           || localStorage.getItem('splitrip_data_v3')
           || localStorage.getItem('splitrip_data_v2')
@@ -1846,30 +2107,45 @@
       return state.trips.find(t => t.id === state.selectedTripId) || null;
     }
 
-    function syncExpenseCurrencyOptions(trip) {
-      const expCurSel = document.getElementById('expenseCurrencyInputSelect');
-      if (!expCurSel || !trip) return;
+    function populateDualCurrencySelect(selectEl, trip) {
+      if (!selectEl || !trip) return;
       const cMeta = getCurrencyMeta(trip.currency);
-      const prev = expCurSel.value;
+      const prev = selectEl.value;
 
-      expCurSel.innerHTML = '';
+      selectEl.innerHTML = '';
       const eurOpt = document.createElement('option');
       eurOpt.value = 'EUR';
       eurOpt.textContent = '🇮🇹 EUR (€)';
-      expCurSel.appendChild(eurOpt);
+      selectEl.appendChild(eurOpt);
 
       if (cMeta.code !== 'EUR') {
         const foreignOpt = document.createElement('option');
         foreignOpt.value = cMeta.code;
         foreignOpt.textContent = `${cMeta.flag} ${cMeta.code} (${cMeta.symbol})`;
-        expCurSel.appendChild(foreignOpt);
+        selectEl.appendChild(foreignOpt);
       }
 
-      if (prev && [...expCurSel.options].some(o => o.value === prev)) {
-        expCurSel.value = prev;
+      if (prev && [...selectEl.options].some(o => o.value === prev)) {
+        selectEl.value = prev;
       } else {
-        expCurSel.value = cMeta.code !== 'EUR' ? cMeta.code : 'EUR';
+        selectEl.value = cMeta.code !== 'EUR' ? cMeta.code : 'EUR';
       }
+    }
+
+    function syncExpenseCurrencyOptions(trip) {
+      populateDualCurrencySelect(document.getElementById('expenseCurrencyInputSelect'), trip);
+      populateDualCurrencySelect(document.getElementById('quoteCurrencySelect'), trip);
+    }
+
+    function setDetailTab(tabName) {
+      activeDetailTab = tabName === 'plan' ? 'plan' : 'expenses';
+      document.querySelectorAll('[data-detail-tab]').forEach(btn => {
+        const isMatch = btn.getAttribute('data-detail-tab') === activeDetailTab;
+        btn.classList.toggle('active', isMatch);
+        btn.setAttribute('aria-selected', isMatch ? 'true' : 'false');
+      });
+      document.getElementById('tripExpensesView').classList.toggle('hidden', activeDetailTab !== 'expenses');
+      document.getElementById('tripPlanView').classList.toggle('hidden', activeDetailTab !== 'plan');
     }
 
     function renderFxBar(trip, loading = false) {
@@ -1886,7 +2162,7 @@
       if (cMeta.code === 'EUR') {
         titleEl.textContent = 'Valuta di riferimento';
         rateEl.textContent = '1,00 € = 1,00 € (Area Euro)';
-        metaEl.textContent = 'Le spese vengono registrate direttamente in Euro.';
+        metaEl.textContent = 'Le spese e i preventivi vengono gestiti direttamente in Euro.';
         controlsBox.classList.add('hidden');
         return;
       }
@@ -1920,12 +2196,16 @@
       }
     }
 
-    function openTripDetail(tripId) {
+    function openTripDetail(tripId, initialTab = 'expenses') {
       state.selectedTripId = tripId;
       state.view = 'detail';
+      activeDetailTab = initialTab;
       expenseCategoryFilter = 'all';
+      quoteCategoryFilter = 'all';
       const catFilterEl = document.getElementById('expenseCategoryFilter');
       if (catFilterEl) catFilterEl.value = 'all';
+      const qFilterEl = document.getElementById('quoteCategoryFilter');
+      if (qFilterEl) qFilterEl.value = 'all';
       saveState();
       render();
       const active = getActiveTrip();
@@ -1963,6 +2243,291 @@
         balances[m] = (paidMap[m] || 0) - (owedMap[m] || 0);
       }
       return { paidMap, owedMap, balances };
+    }
+
+    function updateStopFormUI() {
+      const typeVal = document.getElementById('stopTypeSelect').value;
+      const titleInput = document.getElementById('stopTitleInput');
+      const locInput = document.getElementById('stopLocationInput');
+      const previewWrap = document.getElementById('stopMapPreviewWrap');
+      const previewLink = document.getElementById('stopMapLivePreview');
+      const submitBtn = document.getElementById('addStopSubmitBtn');
+
+      if (typeVal === 'tappa') {
+        titleInput.placeholder = 'Tappa / luogo da visitare (es. Torre Eiffel)';
+        locInput.classList.remove('hidden');
+        previewWrap.classList.remove('hidden');
+        submitBtn.textContent = 'Aggiungi tappa';
+        const t = titleInput.value.trim();
+        const l = locInput.value.trim();
+        if (t || l) {
+          previewLink.href = buildGoogleMapsUrl(t, l);
+          previewLink.classList.remove('hidden');
+        } else {
+          previewLink.classList.add('hidden');
+        }
+      } else {
+        titleInput.placeholder = 'Voce checklist (es. Passaporto, Caricabatterie)';
+        locInput.classList.add('hidden');
+        previewWrap.classList.add('hidden');
+        submitBtn.textContent = 'Aggiungi check';
+      }
+    }
+
+    function renderPlanningSection(active) {
+      const rate = Number(active.eurPerUnit) > 0 ? Number(active.eurPerUnit) : 1;
+
+      // Statistiche pianificazione
+      const quotesTotalEur = active.quotes.reduce((acc, q) => {
+        const eur = q.originalCurrency === 'EUR' ? q.originalAmount : (q.originalAmount * rate);
+        return acc + eur;
+      }, 0);
+      const confirmedCount = active.quotes.filter(q => q.status === 'prenotato').length;
+
+      const flightPrices = active.flights.map(f => Number(f.priceEur) || 0).filter(p => p > 0);
+      const bestFlightEur = flightPrices.length ? Math.min(...flightPrices) : 0;
+
+      document.getElementById('planQuotesTotalEur').textContent = formatEur(quotesTotalEur);
+      document.getElementById('planQuotesConfirmedSub').textContent = `${confirmedCount} su ${active.quotes.length} prenotati`;
+      document.getElementById('planFlightsBestEur').textContent = bestFlightEur > 0 ? formatEur(bestFlightEur) : '—';
+      document.getElementById('planFlightsCountSub').textContent = `${active.flights.length} ${active.flights.length === 1 ? 'volo monitorato' : 'voli monitorati'}`;
+      document.getElementById('planCombinedTotalEur').textContent = formatEur(quotesTotalEur + bestFlightEur);
+
+      // Lista preventivi
+      const quotesList = document.getElementById('quotesList');
+      quotesList.innerHTML = '';
+      const filteredQuotes = active.quotes.filter(q =>
+        quoteCategoryFilter === 'all' || q.category === quoteCategoryFilter
+      );
+
+      if (!filteredQuotes.length) {
+        const li = document.createElement('li');
+        li.className = 'list-item';
+        li.style.color = 'var(--text-muted)';
+        li.textContent = 'Nessun preventivo inserito. Aggiungi hotel, attrazioni a pagamento o trasporti.';
+        quotesList.appendChild(li);
+      }
+
+      const statusLabels = {
+        da_valutare: { text: '🔍 Da valutare', cls: '' },
+        opzionato: { text: '⭐ Opzionato', cls: 'badge-warn' },
+        prenotato: { text: '✅ Prenotato', cls: 'badge-ok' }
+      };
+
+      for (const q of filteredQuotes) {
+        const eurVal = q.originalCurrency === 'EUR' ? q.originalAmount : (q.originalAmount * rate);
+        const origSub = q.originalCurrency !== 'EUR'
+          ? ` (${formatForeignAmount(q.originalAmount, q.originalCurrency)})`
+          : '';
+        const stInfo = statusLabels[q.status] || statusLabels.da_valutare;
+        const safeUrl = sanitizeExternalUrl(q.url);
+
+        const li = document.createElement('li');
+        li.className = 'list-item';
+        li.style.flexDirection = 'column';
+        li.style.alignItems = 'stretch';
+        li.style.gap = '8px';
+        li.innerHTML = `
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px;flex-wrap:wrap;">
+            <div>
+              <div style="margin-bottom:3px;">
+                <span class="badge-cat">${escapeHtml(q.category)}</span>
+                <span class="badge-cat ${stInfo.cls}">${stInfo.text}</span>
+              </div>
+              <strong>${escapeHtml(q.title)}</strong>
+              ${q.note ? `<div style="font-size:0.82rem;color:var(--text-muted);margin-top:2px;">${escapeHtml(q.note)}</div>` : ''}
+            </div>
+            <div style="text-align:right;">
+              <strong style="font-size:1rem;">${formatEur(eurVal)}</strong>
+              ${origSub ? `<div style="font-size:0.78rem;color:var(--text-muted);">${escapeHtml(origSub)}</div>` : ''}
+            </div>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;padding-top:6px;border-top:1px solid var(--border);">
+            <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
+              ${safeUrl ? `<a href="${escapeAttr(safeUrl)}" target="_blank" rel="noopener noreferrer" class="ext-link-pill">🔗 Apri preventivo ↗</a>` : `<span style="font-size:0.78rem;color:var(--text-muted);">Nessun link allegato</span>`}
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
+              <select data-quote-status="${escapeAttr(q.id)}" style="padding:4px 8px;font-size:0.8rem;flex:0 0 auto;" aria-label="Cambia stato preventivo">
+                <option value="da_valutare" ${q.status === 'da_valutare' ? 'selected' : ''}>Da valutare</option>
+                <option value="opzionato" ${q.status === 'opzionato' ? 'selected' : ''}>Opzionato</option>
+                <option value="prenotato" ${q.status === 'prenotato' ? 'selected' : ''}>Prenotato</option>
+              </select>
+              <button class="btn btn-ghost btn-sm" data-quote-to-expense="${escapeAttr(q.id)}" type="button" title="Registra questo preventivo tra le spese condivise">→ Spesa</button>
+              <button class="btn btn-ghost btn-sm" data-remove-quote="${escapeAttr(q.id)}" type="button" title="Elimina preventivo">×</button>
+            </div>
+          </div>
+        `;
+        quotesList.appendChild(li);
+      }
+
+      quotesList.querySelectorAll('[data-quote-status]').forEach(sel => {
+        sel.addEventListener('change', () => {
+          const id = sel.getAttribute('data-quote-status');
+          const found = active.quotes.find(item => item.id === id);
+          if (found) {
+            found.status = sel.value;
+            saveState();
+            render();
+            showToast('Stato preventivo aggiornato');
+          }
+        });
+      });
+
+      quotesList.querySelectorAll('[data-quote-to-expense]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const id = btn.getAttribute('data-quote-to-expense');
+          const q = active.quotes.find(item => item.id === id);
+          if (!q) return;
+          const catMap = {
+            'Hotel & Alloggio': 'Alloggio',
+            'Attrazioni a pagamento': 'Attività & Biglietti',
+            'Mezzi (Taxi, Bus, Treno)': 'Trasporti',
+            'Altro': 'Shopping & Varie'
+          };
+          const appliedRate = q.originalCurrency === 'EUR' ? 1 : rate;
+          const amountEur = q.originalCurrency === 'EUR' ? q.originalAmount : (q.originalAmount * appliedRate);
+          const todayStr = new Date().toISOString().slice(0, 10);
+
+          active.expenses.push({
+            id: 'exp-from-q-' + Date.now(),
+            title: q.title,
+            category: catMap[q.category] || 'Shopping & Varie',
+            date: todayStr,
+            amountEur,
+            originalAmount: q.originalAmount,
+            originalCurrency: q.originalCurrency,
+            fxRateApplied: appliedRate,
+            fxDateApplied: active.fxDate || todayStr,
+            payer: active.members[0] || 'Tu',
+            splitAmong: [...active.members]
+          });
+          q.status = 'prenotato';
+          saveState();
+          render();
+          showToast(`"${q.title}" aggiunto alle spese condivise`);
+        });
+      });
+
+      quotesList.querySelectorAll('[data-remove-quote]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const id = btn.getAttribute('data-remove-quote');
+          active.quotes = active.quotes.filter(item => item.id !== id);
+          saveState();
+          render();
+        });
+      });
+
+      // Lista monitoraggio voli
+      const flightsList = document.getElementById('flightsList');
+      flightsList.innerHTML = '';
+
+      if (!active.flights.length) {
+        const li = document.createElement('li');
+        li.className = 'list-item';
+        li.style.color = 'var(--text-muted)';
+        li.textContent = 'Nessun volo in monitoraggio. Inserisci tratta, prezzo e link per tenere traccia delle tariffe.';
+        flightsList.appendChild(li);
+      }
+
+      const flightStatusMap = {
+        monitoraggio: { text: '👀 In monitoraggio', cls: '' },
+        ottimo: { text: '🔥 Prezzo ottimo', cls: 'badge-ok' },
+        acquistato: { text: '✅ Acquistato', cls: 'badge-warn' }
+      };
+
+      for (const fl of active.flights) {
+        const stInfo = flightStatusMap[fl.status] || flightStatusMap.monitoraggio;
+        const safeUrl = sanitizeExternalUrl(fl.url);
+        let deltaHtml = '';
+        if (fl.prevPriceEur != null && fl.prevPriceEur > 0 && fl.prevPriceEur !== fl.priceEur) {
+          const diff = fl.priceEur - fl.prevPriceEur;
+          const isDown = diff < 0;
+          const color = isDown ? 'var(--accent-ok)' : 'var(--accent-coral)';
+          const arrow = isDown ? '↓' : '↑';
+          deltaHtml = `<span style="font-size:0.78rem;color:${color};font-weight:600;">${arrow} ${formatEur(Math.abs(diff))} (prima ${formatEur(fl.prevPriceEur)})</span>`;
+        }
+
+        const li = document.createElement('li');
+        li.className = 'list-item';
+        li.style.flexDirection = 'column';
+        li.style.alignItems = 'stretch';
+        li.style.gap = '8px';
+        li.innerHTML = `
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px;flex-wrap:wrap;">
+            <div>
+              <div style="margin-bottom:3px;">
+                <span class="badge-cat ${stInfo.cls}">${stInfo.text}</span>
+                ${fl.updatedAt ? `<span style="font-size:0.75rem;color:var(--text-muted);">Agg. ${escapeHtml(fl.updatedAt)}</span>` : ''}
+              </div>
+              <strong>✈️ ${escapeHtml(fl.route)}</strong>
+              <div style="font-size:0.82rem;color:var(--text-muted);margin-top:2px;">
+                ${[fl.airline, fl.dates].filter(Boolean).map(escapeHtml).join(' • ')}
+              </div>
+            </div>
+            <div style="text-align:right;">
+              <strong style="font-size:1.05rem;color:var(--accent-cyan);">${formatEur(fl.priceEur)}</strong>
+              ${deltaHtml ? `<div>${deltaHtml}</div>` : ''}
+            </div>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;padding-top:6px;border-top:1px solid var(--border);">
+            <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
+              ${safeUrl ? `<a href="${escapeAttr(safeUrl)}" target="_blank" rel="noopener noreferrer" class="ext-link-pill">🔗 Apri volo ↗</a>` : `<span style="font-size:0.78rem;color:var(--text-muted);">Nessun link</span>`}
+            </div>
+            <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
+              <button class="btn btn-ghost btn-sm" data-update-flight-price="${escapeAttr(fl.id)}" type="button" title="Aggiorna il prezzo rilevato oggi">Aggiorna €</button>
+              <select data-flight-status="${escapeAttr(fl.id)}" style="padding:4px 8px;font-size:0.8rem;flex:0 0 auto;" aria-label="Cambia stato volo">
+                <option value="monitoraggio" ${fl.status === 'monitoraggio' ? 'selected' : ''}>Monitoraggio</option>
+                <option value="ottimo" ${fl.status === 'ottimo' ? 'selected' : ''}>Prezzo ottimo</option>
+                <option value="acquistato" ${fl.status === 'acquistato' ? 'selected' : ''}>Acquistato</option>
+              </select>
+              <button class="btn btn-ghost btn-sm" data-remove-flight="${escapeAttr(fl.id)}" type="button" title="Rimuovi volo">×</button>
+            </div>
+          </div>
+        `;
+        flightsList.appendChild(li);
+      }
+
+      flightsList.querySelectorAll('[data-update-flight-price]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const id = btn.getAttribute('data-update-flight-price');
+          const fl = active.flights.find(item => item.id === id);
+          if (!fl) return;
+          const raw = prompt(`Nuovo prezzo rilevato per "${fl.route}" (in EUR):`, String(fl.priceEur));
+          if (raw === null) return;
+          const nextVal = parseFloat(raw.replace(',', '.'));
+          if (isNaN(nextVal) || nextVal <= 0) {
+            alert('Inserisci un importo valido maggiore di zero.');
+            return;
+          }
+          fl.prevPriceEur = fl.priceEur;
+          fl.priceEur = nextVal;
+          fl.updatedAt = new Date().toISOString().slice(0, 10);
+          saveState();
+          render();
+          showToast('Prezzo volo aggiornato');
+        });
+      });
+
+      flightsList.querySelectorAll('[data-flight-status]').forEach(sel => {
+        sel.addEventListener('change', () => {
+          const id = sel.getAttribute('data-flight-status');
+          const fl = active.flights.find(item => item.id === id);
+          if (fl) {
+            fl.status = sel.value;
+            saveState();
+            render();
+          }
+        });
+      });
+
+      flightsList.querySelectorAll('[data-remove-flight]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const id = btn.getAttribute('data-remove-flight');
+          active.flights = active.flights.filter(item => item.id !== id);
+          saveState();
+          render();
+        });
+      });
     }
 
     function render() {
@@ -2047,17 +2612,19 @@
             <strong>${formatEur(totalEur)}</strong>
           </div>
           <div class="trip-card-meta" style="font-size: 0.78rem;">
-            <span>${cMeta.flag} ${escapeHtml(cMeta.code)} • ${escapeHtml(cMeta.country)}</span>
+            <span>${cMeta.flag} ${escapeHtml(cMeta.code)} • ${trip.quotes.length} preventivi • ${trip.flights.length} voli</span>
           </div>
         `;
 
         card.appendChild(coverDiv);
         card.appendChild(bodyDiv);
-        card.addEventListener('click', () => openTripDetail(trip.id));
+        card.addEventListener('click', () => openTripDetail(trip.id, 'expenses'));
         grid.appendChild(card);
       }
 
       if (!showDetail || !active) return;
+
+      setDetailTab(activeDetailTab);
 
       const cMeta = getCurrencyMeta(active.currency);
       syncExpenseCurrencyOptions(active);
@@ -2280,23 +2847,30 @@
         }
       }
 
-      // Tappe itinerario
+      // Tappe e checklist itinerario (con distinzione Tappa/meta vs Check + link Google Maps)
       const stopsList = document.getElementById('stopsList');
       stopsList.innerHTML = '';
       const sortedStops = [...active.stops].sort((a, b) => String(a.date || '9999').localeCompare(String(b.date || '9999')));
       for (const st of sortedStops) {
+        const isTappa = st.type !== 'check';
+        const mapsUrl = isTappa ? buildGoogleMapsUrl(st.title, st.location) : '';
+        const subParts = [st.location, st.date, st.note].filter(Boolean).join(' • ');
+
         const li = document.createElement('li');
         li.className = 'list-item';
-        const subParts = [st.date, st.note].filter(Boolean).join(' • ');
         li.innerHTML = `
-          <div style="display:flex;align-items:center;gap:10px;">
-            <input type="checkbox" class="stop-check" data-toggle-stop="${escapeAttr(st.id)}" ${st.done ? 'checked' : ''} aria-label="Segna tappa completata" />
-            <div class="${st.done ? 'stop-done' : ''}">
-              <div><strong>${escapeHtml(st.title)}</strong></div>
-              ${subParts ? `<div style="font-size: 0.82rem; color: var(--text-muted)">${escapeHtml(subParts)}</div>` : ''}
+          <div style="display:flex;align-items:flex-start;gap:10px;min-width:0;flex:1;">
+            <input type="checkbox" class="stop-check" style="margin-top:3px;" data-toggle-stop="${escapeAttr(st.id)}" ${st.done ? 'checked' : ''} aria-label="Segna completato" />
+            <div class="${st.done ? 'stop-done' : ''}" style="min-width:0;flex:1;">
+              <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
+                <span class="badge-cat ${isTappa ? 'badge-ok' : ''}">${isTappa ? '📍 Tappa/meta' : '☑️ Check'}</span>
+                <strong>${escapeHtml(st.title)}</strong>
+              </div>
+              ${subParts ? `<div style="font-size: 0.82rem; color: var(--text-muted); margin-top:2px;">${escapeHtml(subParts)}</div>` : ''}
+              ${isTappa ? `<div style="margin-top:5px;"><a href="${escapeAttr(mapsUrl)}" target="_blank" rel="noopener noreferrer" class="maps-link-pill">🗺️ Apri su Google Maps ↗</a></div>` : ''}
             </div>
           </div>
-          <button class="btn btn-ghost btn-sm" data-remove-stop="${escapeAttr(st.id)}" type="button" title="Rimuovi tappa">×</button>
+          <button class="btn btn-ghost btn-sm" data-remove-stop="${escapeAttr(st.id)}" type="button" title="Rimuovi voce">×</button>
         `;
         stopsList.appendChild(li);
       }
@@ -2321,6 +2895,9 @@
           render();
         });
       });
+
+      updateStopFormUI();
+      renderPlanningSection(active);
     }
 
     function escapeHtml(str) {
@@ -2456,6 +3033,13 @@
       tripModal.classList.remove('open');
     }
 
+    // Event listeners tabs dettaglio
+    document.querySelectorAll('[data-detail-tab]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        setDetailTab(btn.getAttribute('data-detail-tab'));
+      });
+    });
+
     // Event listeners catalogo e filtri
     document.getElementById('tripSearchInput').addEventListener('input', (e) => {
       catalogSearch = e.target.value;
@@ -2473,6 +3057,11 @@
 
     document.getElementById('expenseCategoryFilter').addEventListener('change', (e) => {
       expenseCategoryFilter = e.target.value;
+      render();
+    });
+
+    document.getElementById('quoteCategoryFilter').addEventListener('change', (e) => {
+      quoteCategoryFilter = e.target.value;
       render();
     });
 
@@ -2603,6 +3192,22 @@
       setDrawerOpen(false);
       openCatalogView();
     });
+
+    function goToPlanTrip() {
+      const active = getActiveTrip() || state.trips[0];
+      if (active) {
+        openTripDetail(active.id, 'plan');
+      } else {
+        openTripModal(null);
+      }
+    }
+
+    document.getElementById('navPlanTripBtn').addEventListener('click', () => {
+      setDrawerOpen(false);
+      goToPlanTrip();
+    });
+
+    document.getElementById('catalogPlanShortcutBtn').addEventListener('click', goToPlanTrip);
 
     document.getElementById('backToCatalogBtn').addEventListener('click', () => openCatalogView());
 
@@ -2739,11 +3344,14 @@
           photo: draftPhotoDataUrl,
           members: ['Tu'],
           expenses: [],
-          stops: []
+          stops: [],
+          quotes: [],
+          flights: []
         });
         state.trips.unshift(newTrip);
         state.selectedTripId = newTrip.id;
         state.view = 'detail';
+        activeDetailTab = 'plan';
         targetTrip = newTrip;
       }
 
@@ -2830,33 +3438,129 @@
       showToast('Spesa registrata');
     });
 
+    // Form Tappe / Check con link Google Maps
+    document.getElementById('stopTypeSelect').addEventListener('change', updateStopFormUI);
+    document.getElementById('stopTitleInput').addEventListener('input', updateStopFormUI);
+    document.getElementById('stopLocationInput').addEventListener('input', updateStopFormUI);
+
     document.getElementById('addStopForm').addEventListener('submit', (e) => {
       e.preventDefault();
       const active = getActiveTrip();
       if (!active) return;
+      const typeSelect = document.getElementById('stopTypeSelect');
       const titleInput = document.getElementById('stopTitleInput');
+      const locationInput = document.getElementById('stopLocationInput');
       const dateInput = document.getElementById('stopDateInput');
       const noteInput = document.getElementById('stopNoteInput');
+
+      const type = typeSelect.value === 'check' ? 'check' : 'tappa';
       const title = titleInput.value.trim();
+      const location = type === 'tappa' ? locationInput.value.trim() : '';
       const date = dateInput.value || '';
       const note = noteInput.value.trim();
       if (!title) return;
 
       active.stops.push({
         id: 'stop-' + Date.now(),
+        type,
         title,
+        location,
         date,
         note,
         done: false
       });
 
       titleInput.value = '';
+      locationInput.value = '';
       noteInput.value = '';
       saveState();
       render();
+      showToast(type === 'tappa' ? 'Tappa aggiunta con link Google Maps' : 'Voce checklist aggiunta');
     });
 
-const ACCESS_EPOCH = '2026-11-epoch-1';
+    // Form Preventivi (Pianifica viaggio)
+    document.getElementById('addQuoteForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const active = getActiveTrip();
+      if (!active) return;
+
+      const catSelect = document.getElementById('quoteCategorySelect');
+      const titleInput = document.getElementById('quoteTitleInput');
+      const amountInput = document.getElementById('quoteAmountInput');
+      const curSelect = document.getElementById('quoteCurrencySelect');
+      const urlInput = document.getElementById('quoteUrlInput');
+      const statusSelect = document.getElementById('quoteStatusSelect');
+      const noteInput = document.getElementById('quoteNoteInput');
+
+      const title = titleInput.value.trim();
+      const origAmt = parseFloat(amountInput.value);
+      const origCurr = curSelect.value || 'EUR';
+      if (!title || isNaN(origAmt) || origAmt < 0) return;
+
+      const rate = origCurr === 'EUR' ? 1 : (Number(active.eurPerUnit) > 0 ? Number(active.eurPerUnit) : 1);
+      const amountEur = origCurr === 'EUR' ? origAmt : (origAmt * rate);
+
+      active.quotes.push({
+        id: 'quote-' + Date.now(),
+        category: catSelect.value || 'Hotel & Alloggio',
+        title,
+        originalAmount: origAmt,
+        originalCurrency: origCurr,
+        amountEur,
+        url: urlInput.value.trim(),
+        status: statusSelect.value || 'da_valutare',
+        note: noteInput.value.trim()
+      });
+
+      titleInput.value = '';
+      amountInput.value = '';
+      urlInput.value = '';
+      noteInput.value = '';
+      saveState();
+      render();
+      showToast('Preventivo aggiunto');
+    });
+
+    // Form Monitoraggio Voli (Pianifica viaggio)
+    document.getElementById('addFlightForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const active = getActiveTrip();
+      if (!active) return;
+
+      const routeInput = document.getElementById('flightRouteInput');
+      const airlineInput = document.getElementById('flightAirlineInput');
+      const datesInput = document.getElementById('flightDatesInput');
+      const priceInput = document.getElementById('flightPriceInput');
+      const urlInput = document.getElementById('flightUrlInput');
+      const statusSelect = document.getElementById('flightStatusSelect');
+
+      const route = routeInput.value.trim();
+      const priceEur = parseFloat(priceInput.value);
+      if (!route || isNaN(priceEur) || priceEur < 0) return;
+
+      active.flights.push({
+        id: 'flight-' + Date.now(),
+        route,
+        airline: airlineInput.value.trim(),
+        dates: datesInput.value.trim(),
+        priceEur,
+        prevPriceEur: null,
+        url: urlInput.value.trim(),
+        status: statusSelect.value || 'monitoraggio',
+        updatedAt: new Date().toISOString().slice(0, 10)
+      });
+
+      routeInput.value = '';
+      airlineInput.value = '';
+      datesInput.value = '';
+      priceInput.value = '';
+      urlInput.value = '';
+      saveState();
+      render();
+      showToast('Volo aggiunto al monitoraggio');
+    });
+
+    const ACCESS_EPOCH = '2026-11-epoch-1';
     const INVITE_AUTH_KEY = 'splitrip_invite_auth_v1';
     const ALLOWED_INVITE_HASHES = [
       'ba5764bc67d0916ca94eaa5432a43c9d3312f20142a924e0a35b980391abb168'
